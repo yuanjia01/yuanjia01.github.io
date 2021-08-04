@@ -6,11 +6,11 @@ permalink: /about/
 
 Hi, 
 
-My name is Michael Burton, a North Carolina native, and recent master's of statistics graduate from NC State University's [world renowned statistics department](https://statistics.sciences.ncsu.edu/know-us/rankings-awards-stats/). Prior to completion of my masters I received a B.S. in statistics from the same institution.
+My name is Michael Burton, a North Carolina native, and master's of statistics graduate from NC State University's [world renowned statistics department](https://statistics.sciences.ncsu.edu/know-us/rankings-awards-stats/). Prior to completion of my masters I received a B.S. in statistics from the same institution.
 
 During my time at NC State, I was fortunate to supplement my education with practical experience in data analysis gained through undergraduate research, consulting experiences, and interning with multiple fortune 500 companies. In addition to the technical skills I gained in these various roles I was able to practice interpersonal skills while working both independently and collaboratively in a team based setting. 
 
-I am currently working as a Biostatistician, and not open to new work opportunities.
+Currently I work as a Biostatistican where I perform analyses, program datasets, generate graphs, tables, and listings, and validate program code.
 
 For a copy of my current resume click [here]({{ https://MichaelEBurton.github.io }}/Professional_resume_fall2020.pdf) 
 
@@ -31,14 +31,8 @@ For a copy of my current resume click [here]({{ https://MichaelEBurton.github.io
 + Unix
 + Windows     
       
-**Statistics**:     
+**Statistics!**     
 
-+ Mixed Models
-+ Regression (Linear, Nonlinear, GAMs
-+ ANOVA Models
-+ Multivariate Statistics (MANOVA, PCA, Factor Analysis, Discriminant Analysis)
-+ Longitudinal Data Analysis (Mean and Covariance modeling)
-+ Machine Learning (Tree-Based Methods, Artificial Neural Networks, Clustering)     
 
 ## Contact me
 
