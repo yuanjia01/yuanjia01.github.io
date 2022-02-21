@@ -5,12 +5,6 @@ published: true
 mathjax: true
 ---
 
-<style type="text/css">
-img[src~="bordered"] {
-   border: 1px solid black;
-}
-</style>
-
 Any machine learning practioner will tell you that most of their time isn't
 spent building models. Instead, it's spent obsessing over data. The higher the
 quality of the information captured in your data, the higher the quality of
@@ -49,6 +43,12 @@ again at the zoo of metrics: for the common case of comparing two annotators on
 a binary (yes/no) labeling task, I found this handy table by Krippendorff
 himself comparing various inter-annotator metrics ([Krippendorff
 2004](https://repository.upenn.edu/cgi/viewcontent.cgi?article=1250&context=asc_papers)):
+
+<style type="text/css">
+img[src~="bordered"] {
+   border: 1px solid black;
+}
+</style>
 
 ![table of agreement metrics](/images/krippendorff/krippendorff-2004-fig2.png# bordered)
 
