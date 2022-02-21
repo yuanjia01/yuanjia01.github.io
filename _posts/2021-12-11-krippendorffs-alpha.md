@@ -20,8 +20,8 @@ measure that?"
 You might suggest, "Let's measure how often the labels from different
 annotators agree." If agreement is low, then we know something is wrong and we
 can take steps to clarify the labeling guidelines, retrain the annotators, or
-in the worst case, replace the low-performing annotators. How one makes this
-judgment to fire someone is a different, entirely human, matter.
+in the worst case, replace the low-performing annotators. (How one makes this
+judgment to fire someone is a different, entirely human, matter!)
 
 There is a metric tailor-made for inter-annotator agreement: [Krippendorff's
 alpha](https://en.wikipedia.org/wiki/Krippendorff%27s_alpha). I had no prior
@@ -31,17 +31,17 @@ only way to measure inter-annotator agreement: there is a veritable zoo of
 metrics, going by names like Scott's pi, Fleiss' kappa, and confusingly,
 another kappa by Cohen. Which one is the best?
 
-If you ask Klaus Krippendorff, he'd probably say alpha is the best. Unless he
+If you ask Klaus Krippendorff, he'd probably say alpha is the best...unless he
 was a very modest man, in which case he'd say something about loving all
 ~~children~~ annotator agreement measures equally. For our team's use case,
 alpha is useful because (1) it generalizes to more than two annotators, and
-more importantly, (2) it can handle missing data, in the case an annotator
-didn't label all the data points.
+more importantly, (2) it can handle missing data in the cases where some data
+points haven't been labeled by all annotators.
 
 Now, to gain intuition around what alpha measures, I found it useful to look
 again at the zoo of metrics: for the common case of comparing two annotators on
-a binary (yes/no) labeling task, I found this handy table by Krippendorff
-himself comparing various inter-annotator metrics ([Krippendorff
+a binary (yes/no) labeling task, Krippendorff himself has a handy table
+comparing various inter-annotator metrics ([Krippendorff
 2004](https://repository.upenn.edu/cgi/viewcontent.cgi?article=1250&context=asc_papers)):
 
 <style type="text/css">
@@ -84,26 +84,26 @@ Taking a deeper look at the above table, the metrics largely differ on how the
 denominator estimating the expected disagreement is defined. The thing that
 jumped out at me about Krippendorff's alpha?
 
-> What's with that funny factor of $$n\,/\,(n-1)$$?
+> ...what's with that funny factor of $$n\,/\,(n-1)$$?
 
 Here, $$n$$ is the number of labels: if there are 10 data points, and 3
 annotators, $$n = 30$$. The factor is infinite when $$n = 1$$ and gradually
 approaches one from above as $$n$$ becomes large.
 
-Readers familiar with the construction of estimators might suspect this has
-something to do with unbiased estimation. I'll spend the rest of this post
-trying to convince you they are right, and giving you some insight into the
+If you're familiar with the construction of estimators, you might suspect this
+has something to do with unbiased estimation. I'll spend the rest of this post
+showing why your intuition is correct, and giving you some insight into the
 formula.
 
 To explain the factor, we will work out the answer to the question:
 
 > What's the expected disagreement for two annotators creating binary labels?
 
-Let's set up the scenario mathematically: rather than considering two
-annotators, combine them into a single averaged annotator which produces a
-label $$X_i \in \{0, 1\}$$ for each data point $$i$$. The way to think about
-this averaged annotator is to first randomly select one of the two annotators,
-then ask this annotator to produce a label.
+Let's set up the scenario mathematically: as a shift in framing, rather than
+considering two annotators, combine them into a single averaged annotator which
+produces a label $$X_i \in \{0, 1\}$$ for each data point $$i$$. The way to
+think about this averaged annotator is to first randomly select one of the two
+annotators, then ask this annotator to produce a label.
 
 For binary labels, we have
 
@@ -127,16 +127,15 @@ Scott's $$\pi$$, and the formula seems to make sense: take the observed data
 and estimate $$p$$ from the proportion of positives $$\bar{X}$$, then compute
 $$2 \bar{X} (1-\bar{X})$$.
 
-In the match up that is Scott's $$\pi$$ vs. Krippendorff's $$\alpha$$,
+In the match up between Scott's $$\pi$$ and Krippendorff's $$\alpha$$,
 unfortunately, Scott loses: this naive estimator is biased.
 
 Krippendorff's alpha corrects for this by including a factor of $$n/(n-1)$$,
 similar to [Bessel's
 correction](https://en.wikipedia.org/wiki/Bessel%27s_correction) for estimating
-the population variance. To prove this, the calculation is similar in spirit to
-the derivation of the unbiased estimator for the variance. Let's work out
-expected value of $$\bar{X} \, (1 - \bar{X})$$ and see how much it differs from
-$$p(1-p)$$:
+the population variance, and the proof is similar. We start by asking, "what IS
+the expected value of the naive estimator $$\bar{X} \, (1 - \bar{X})$$ and how
+much does it differ from $$p(1-p)$$?". Time to shut up and calculate:
 
 $$
 \begin{align}
@@ -177,20 +176,19 @@ Returning to the table above from Krippendorff's paper, the denominator is writt
 $$\frac{n}{n-1} 2 \, \bar{p} \, \bar{q}$$
 
 I've used different notation from him, but the idea is the same. You can see
-from the following definitions from this paper
+from the following definitions included in his paper that $$\bar{p} = 1 -
+\bar{X}$$ and $$\bar{q} = \bar{X}$$.
 
 ![contingency table](/images/krippendorff/krippendorff-2004-fig1.png# bordered)
-
-that $$\bar{p} = 1 - \bar{X}$$ and $$\bar{q} = \bar{X}$$.
 
 Krippendorff's alpha provides a useful measure of how often labels from
 different annotators agree. Here is some intuition:
 
-* An $$\alpha = 0.5$$ means the annotators agreed on 50% of the labels they
-  were expected to disagree on by chance.
-
-* An $$\alpha = 0.8$$ means the annotators agreed on 80% of the labels they
-  were expected to disagree on by chance.
+> An $$\alpha = 0.5$$ means the annotators agreed on 50% of the labels they
+> were expected to disagree on by chance.
+>
+> An $$\alpha = 0.8$$ means the annotators agreed on 80% of the labels they
+> were expected to disagree on by chance.
 
 As suggested by Krippendorff, alphas above 0.8 are considered very good
 agreement, and tentative conclusions can be made with data where $$\alpha \ge
@@ -198,8 +196,8 @@ agreement, and tentative conclusions can be made with data where $$\alpha \ge
 examples in content analysis, and we've adopted them for our team's work.
 
 As a footnote, I like to imagine that similar to bias and variance in machine
-learning, there is something akin to "bias" and "variance" in measure of label
-quality. Krippendorff's alpha measures the "variance": how much scatter there
-is between the annotators. Other metrics are needed to monitor bias--whether
-the annotators are labeling the concept correctly--which is a topic for another
-time.
+learning, there is something akin to "bias" and "variance" in the measures for
+label quality. Krippendorff's alpha measures the "variance", namely how much
+scatter there is between the annotators. Other metrics are needed to monitor
+the "bias"--whether the annotators are labeling the concept correctly--which is
+a topic for a separate post.
