@@ -23,18 +23,31 @@ for each data point. As this expensive effort is unfolding, at the top of
 everyone's mind is "how good are the labels we're paying for, and how do we
 measure that?"
 
-An intuitive thing to measure is how often the labels from different annotators
-agree. If agreement is low, then we know something is wrong and we can take
-steps to clarify the labeling guidelines, retrain the annotators, or in the
-worst case, replace the low-performing annotators. (How one makes this judgment
-is a different, entirely human, matter.)
+You might suggest, "Let's measure how often the labels from different
+annotators agree." If agreement is low, then we know something is wrong and we
+can take steps to clarify the labeling guidelines, retrain the annotators, or
+in the worst case, replace the low-performing annotators. How one makes this
+judgment to fire someone is a different, entirely human, matter.
 
 There is a metric tailor-made for inter-annotator agreement: [Krippendorff's
 alpha](https://en.wikipedia.org/wiki/Krippendorff%27s_alpha). I had no prior
-intuition around what this metric meant and our team had adopted it as the
-metric of choice, so I dug into papers. I found this handy table by
-Krippendorff himself comparing various inter-annotator metrics for the case of
-two annotators producing binary labels ([Krippendorff
+intuition around what this metric meant when our team adopted it as the metric
+of choice, so I dug into papers. It turns out Krippendorff's alpha isn't the
+only way to measure inter-annotator agreement: there is a veritable zoo of
+metrics, going by names like Scott's pi, Fleiss' kappa, and confusingly,
+another kappa by Cohen. Which one is the best?
+
+If you ask Klaus Krippendorff, he'd probably say alpha is the best. Unless he
+was a very modest man, in which case he'd say something about loving all
+~~children~~ annotator agreement measures equally. For our team's use case,
+alpha is useful because (1) it generalizes to more than two annotators, and
+more importantly, (2) it can handle missing data, in the case an annotator
+didn't label all the data points.
+
+Now, to gain intuition around what alpha measures, I found it useful to look
+again at the zoo of metrics: for the common case of comparing two annotators on
+a binary (yes/no) labeling task, I found this handy table by Krippendorff
+himself comparing various inter-annotator metrics ([Krippendorff
 2004](https://repository.upenn.edu/cgi/viewcontent.cgi?article=1250&context=asc_papers)):
 
 ![table of agreement metrics](/images/krippendorff/krippendorff-2004-fig2.png# bordered)
@@ -107,20 +120,23 @@ $$ \text{expected disagreement} = 2 \, p \, (1-p) $$
 
 How do we estimate this quantity from the observed data? Naively, one would use
 
-$$ \text{expected disagreement} = 2 \, \bar{X} \, (1 - \bar{X}) $$
+$$ \text{expected disagreement} \stackrel{?}{=} 2 \, \bar{X} \, (1 - \bar{X}) \quad \text{(it's not!)}$$
 
-where $$\bar{X} = (1/n) \sum_i^n X_i $$. It turns out these is the definition
-of Scott's $$\pi$$, and it seems to make sense: take the observed data and
-estimate $$p$$ from the proportion of positives, then compute $$2 \bar{X}
-(1-\bar{X})$$.
+where $$\bar{X} = (1/n) \sum_i^n X_i $$. It turns out this is the definition of
+Scott's $$\pi$$, and the formula seems to make sense: take the observed data
+and estimate $$p$$ from the proportion of positives $$\bar{X}$$, then compute
+$$2 \bar{X} (1-\bar{X})$$.
 
-Unfortunately, this estimator is biased. Krippendorff's alpha corrects for this
-by including a factor of $$n/(n-1)$$, similar to Bessel's correction for
-estimating the population variance.
+In the match up that is Scott's $$\pi$$ vs. Krippendorff's $$\alpha$$,
+unfortunately, Scott loses: this naive estimator is biased.
 
-The calculation is similar in spirit to the derivation of the unbiased
-estimator for the variance. Let's work out expected value of $$\bar{X} \, (1 -
-\bar{X})$$ and see how much it differs from $$p(1-p)$$:
+Krippendorff's alpha corrects for this by including a factor of $$n/(n-1)$$,
+similar to [Bessel's
+correction](https://en.wikipedia.org/wiki/Bessel%27s_correction) for estimating
+the population variance. To prove this, the calculation is similar in spirit to
+the derivation of the unbiased estimator for the variance. Let's work out
+expected value of $$\bar{X} \, (1 - \bar{X})$$ and see how much it differs from
+$$p(1-p)$$:
 
 $$
 \begin{align}
@@ -140,14 +156,14 @@ Simplifying the expression, we get
 $$ \mathbb{E} \, \bar{X} \, (1 - \bar{X}) = p \, (1-p) - \frac{\sigma^2}{n} $$
 
 which is very close to what we want, except for the pesky $$\sigma^2 / n$$
-term. However, for a Bernoulli variable, we know that $$\sigma^2 = p(1-p)$$!
-That means
+term. However, for a Bernoulli variable, we know that $$\sigma^2 = p(1-p)$$.
+What fortune! That means
 
 $$ \mathbb{E} \, \bar{X} \, (1 - \bar{X}) = \left(1 - \frac{1}{n}\right) p \, (1-p) $$
 
 so the unbiased estimator for $$2\, p \, (1-p)$$ is
 
-$$ \text{expected disagreement} = 2 \, \frac{n}{n-1} \, \mathbb{E} \, \bar{X} \, (1 - \bar{X}) $$
+$$ \text{expected disagreement} = 2 \, \frac{n}{n-1} \, \bar{X} \, (1 - \bar{X}) $$
 
 That is where the factor of $$n/(n-1)$$ comes from.
 
@@ -165,7 +181,7 @@ from the following definitions from this paper
 
 ![contingency table](/images/krippendorff/krippendorff-2004-fig1.png# bordered)
 
-that $$\bar{p} = \bar{X}$$ and $$\bar{q} = 1 - \bar{X}$$.
+that $$\bar{p} = 1 - \bar{X}$$ and $$\bar{q} = \bar{X}$$.
 
 Krippendorff's alpha provides a useful measure of how often labels from
 different annotators agree. Here is some intuition:
@@ -178,11 +194,12 @@ different annotators agree. Here is some intuition:
 
 As suggested by Krippendorff, alphas above 0.8 are considered very good
 agreement, and tentative conclusions can be made with data where $$\alpha \ge
-0.667$$ (that is, two thirds). These are rules of thumb.
+0.667$$ (that is, two thirds). These are rules of thumb he derived from
+examples in content analysis, and we've adopted them for our team's work.
 
-Finally, I imagine that there is something like bias and variance when measure
-label quality, similar to the notions of bias and variance in machine learning.
-Krippendorff's alpha measures the variance: how much "scatter" there is between
-the annotators. Other metrics are needed to monitor bias: whether the
-annotators are labeling the concept correctly, which is another matter
-entirely.
+As a footnote, I like to imagine that similar to bias and variance in machine
+learning, there is something akin to "bias" and "variance" in measure of label
+quality. Krippendorff's alpha measures the "variance": how much scatter there
+is between the annotators. Other metrics are needed to monitor bias--whether
+the annotators are labeling the concept correctly--which is a topic for another
+time.
