@@ -40,7 +40,7 @@ I'll start by posing a seemingly unrelated problem to you, but it contains all
 the intuition you'll need to understand Legendre transforms:
 
 > If I give you a curve in the $$x$$-$$y$$ plane, how would you describe its
-> tangent lines to me?
+> tangent lines?
 
 Here is a concrete example: say the curve is the parabola $$f(x) = x^2$$. Pick
 a point on the parabola, say $$(1, 1)$$, and draw the tangent line:
@@ -194,7 +194,7 @@ It turns out the definition changes if the function is concave down to $$g(p) =
 
 ## Visual examples and curves which get us in trouble
 
-Now let's have some fun: I've worked out the Legendre transform in some common
+Let's have some fun: I've worked out the Legendre transform in some common
 cases to give you a sense of how it behaves. Taking a function and translating
 the curve upwards shifts the Legendre transform an equal amount downwards:
 
@@ -210,6 +210,10 @@ is only defined for $$p > 0$$ because the slopes of the tangent lines are all
 positive.
 
 ![](/images/legendre/legendre-exponential.png)
+
+The transform of the (natural) logarithm is again a logarithm:
+
+![](/images/legendre/legendre-logarithm.png)
 
 And for a fun one, the Legendre transform of a circle $$f(x) = \pm
 \sqrt{1-x^2}$$ is the hyperbola $$g(p) = \mp \sqrt{1+p^2}$$:
@@ -236,10 +240,10 @@ in the transform correspond to the two points where $$f$$ changes concavity.
 
 As an aside, transforms of non-convex functions are related to convex hulls and
 the [Maxwell construction](https://en.wikipedia.org/wiki/Maxwell_construction),
-but to avoid these complexities, we'll deal only with convex or concavee
+but to avoid these complexities, we'll deal only with convex or concave
 functions going forward.
 
-## Derivative inverses
+## Differentials and potentials
 
 Behavior of differentials:
 
@@ -256,8 +260,33 @@ $$dg = x\,dp$$
 Point is the slope of the Legendre transform is the original independent
 variable $$x$$.
 
-What happens when we have a function $$f(x,y)$$ of multiple variables and
-transform just one of them?
+In classical mechanics, a common question we want to know is "when an object is
+at some position $$x$$, what is the force $$F$$ acting on it?" For example,
+when a mass attached to a spring is stretched to a displacement $$x$$ away from
+its equilibrium position, what is the force $$F$$ will the mass experience? One
+way to answer this question is with the potential energy $$V(x)$$: taking its
+derivative with respect to $$x$$ tells us the force:
+
+$$ F(x) = -\frac{dV(x)}{dx} $$
+
+For the case of a spring with spring constant $$k$$, the potential energy is
+$$V(x) = kx^2/2$$ and the force is $$F(x) = -kx$$, which is Hooke's law.
+
+What if we wanted to invert the question: "when an object is experiencing a
+force $$F$$, what is its position $$x$$?" The easy answer would be to invert
+the equation between force and position, which in the case of the spring,
+gives:
+
+$$ x(F) = -F/k $$
+
+But what if we wanted a potential "energy" which is a function of the force
+$$F$$ and whose derivative gives us the position? This is the
+Legendre transform of $$V(x)$$:
+
+$$ dW = -x dF $$
+
+Going back to differentials, what happens when we have a function $$f(x,y)$$ of
+multiple variables and transform just one of them?
 
 $$df = p\,dx + q\,dy$$
 
@@ -281,6 +310,66 @@ $$f(x)$$ and $$g(p)$$ are inverses of one another.
 ![area-interpretation](/images/legendre/area.png)
 
 [Relationship with Laplace transform via saddle point]
+
+# Maximizing entropy
+
+For students of thermodynamics, you may remember being introduced to a quantity
+called the Helmholtz free energy, $$F = E - TS$$, and being told it is the
+Legendre transform of the energy $$E$$. What does this quantity physically
+measure and why is it related to energy by a Legendre transform?
+
+What is entropy? Define entropy: it's the number of states compatible with
+macroscopic constraints. Empirically, it's also a ratio of heat flow to
+temperature. Consider bringing up entropy tables.
+
+Assume the 2nd law of thermodynamics: that a system will evolve in such a way
+to maximize it's entropy.
+
+Given the classic set up of a system $$A$$ and a much bigger reservoir $$B$$,
+what division of energy between the two parts maximizes entropy? Imagine we
+start off with all the energy in $$B$$ and none in $$A$$. No energy in $$A$$
+means its contribution to the entropy is zero, so
+
+$$S_\text{tot} = S_B(E_\text{tot})$$
+
+As we allow energy $$E$$ to flow from $$B$$ to $$A$$, the entropy of $$B$$ will
+decrease while the entropy of $$A$$ increases.
+
+$$S_\text{tot}(E, E_\text{tot}) = S_A(E) + S_B(E_\text{tot} - E)$$
+
+How much does the entropy of $$B$$ decrease by? Taylor expand:
+
+$$S_B(E_\text{tot} - E) \approx S_B(E_\text{tot}) - E \left. \frac{\partial S_B}{\partial E} \right|_{E = E_\text{tot}}$$
+
+We call the slope of the reservoir's entropy $$\beta(E)$$, the inverse temperature.
+
+$$\Delta S_\text{tot}(E) = S_A(E) - E \, \beta(E)$$
+
+Where $$\Delta S_\text{tot}(E) = S_\text{tot}(E, E_\text{tot}) -
+S_B(E_\text{tot})$$. The right hand side is the Legendre transform of the
+entropy of $$A$$.
+
+Because for a big system, its entropy is nearly linear in the energy, the
+maximization of total entropy leads to the Legendre transform.
+
+$$\Delta S_\text{tot}(\beta) = S_A(E(\beta)) - E(\beta) \, \beta$$
+
+The Legendre transform of the entropy tells us how much the entropy will be
+produced when bringing the system from absolute zero to $$T = 1 / \beta$$.
+
+What does the Helmholtz free energy physically correspond to? The quantity
+$$\beta F$$ is the total amount of entropy produced when bringing the system
+from absolute zero to its final equilibrium temperature when placed in contact
+with the resevoir.
+
+Why is it's slope something we feel as hot and cold? Think about if we felt
+total energy instead of temperature: we'd find the Earth unbearable.
+
+Why are thermodynamic conventions different than the symmetric mathematical
+presentation we chose above?
+
+What is an example of this maximization in action? Example of gas piston with
+spring. [Wait, doesn't this involve a change in volume?]
 
 # Notes
 
