@@ -1,14 +1,15 @@
 ---
 layout: post
-title: "Bayesian sample size determination for binomial processes"
+title: "Bayesian sample size determination for Bernoulli trials"
 published: true
 mathjax: true
+draft: true
 ---
 
-How many times do you need to flip a coin of unknown bias to determine whether
-it lands heads more than half the time? This problem sounds contrived, but it's
-a case of a more general problem of *sample size determination* as applied to
-Bernoulli trials.
+How many times do you need to flip a possibly unfair coin to determine whether
+it's biased towards heads? This problem sounds contrived, but it's a case of a
+more general problem of *sample size determination* as applied to Bernoulli
+trials.
 
 Here are two realistic problems that are slight variations of the above: How
 many ad impressions do I need to serve to conclude that one ad is better than
