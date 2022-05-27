@@ -81,7 +81,7 @@ Air!
 
 Let's get started.
 
-## Bayesian inference
+## Bayes theorem
 
 Suppose you already flipped the coin $$N$$ times and you observed $$k$$ heads.
 What does this data $$\mathcal{D} = (N, k)$$ tell you about the probability
