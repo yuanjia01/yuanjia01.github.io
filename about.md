@@ -12,7 +12,7 @@ During my time at NC State, I was fortunate to supplement my education with prac
 
 Currently I work remotely as a Biostatistican at WCG Statsitics Collaborative. In this position I have been exposed to a myriad of projects across clinical disease areas (E.g. oncology, ophthalmology, kidney-disease) My day-to-day role involves programming and validating production analysis datasets, tables, figures, and listing. I have also had the opportunity to train new employees, create table shells, draft DMC minutes, and lead SAS program training.
 
-For a copy of my current resume click [here]({{ https://MichaelEBurton.github.io }}/Professional_resume_fall2020.pdf) 
+For a copy of my current resume click [here]({{ https://MichaelEBurton.github.io }}/michael_burton_resume_fall2022.pdf) 
 
 ## Skills
 **Programming Languages**:    
