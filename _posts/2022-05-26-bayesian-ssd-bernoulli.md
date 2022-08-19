@@ -6,39 +6,100 @@ mathjax: true
 draft: true
 ---
 
-How many times do you need to flip a possibly unfair coin to determine whether
-it's biased towards heads? This problem formulation is contrived--I've never
-come across a biased coin in real life--but it's an example of the more general
-problem of *sample size determination* as applied to Bernoulli trials.
+I'm going to pose to you a contrived question: let's say someone hands you a
+coin that may or may not be unfair. How many times do you need to flip it to
+confidently determine whether it's biased towards heads?
 
-Here are two realistic problems that are equivalent to the above: How many
-impressions do I need to serve to determine whether my new ad reaches my
-conversion threshold of 2.5%? How many positive test samples do I need to feed
-my classifier to confirm whether its recall is greater than 70%?
+It's contrived because I've never come across a biased coin in real life. Maybe
+it's because I haven't looked hard enough. \*shrug\* Regardless, it's an example of the
+more general problem of *sample size determination* as applied to Bernoulli
+trials.
+
+I'll use the coin flipping example in this post, but here are two realistic
+problems that are equivalent:
+
+1. How many impressions do I need to serve to determine whether my new ad
+   reaches a target conversion threshold of 2.5%?
+
+2. How many positive test samples do I need to feed my classifier to confirm
+   whether its recall is greater than 70%?
 
 Inspired by Keith Goldfeld's
 [post](https://www.rdatagen.net/post/2021-06-01-bayesian-power-analysis/),
-we're going to solve this using Bayesian inference, and hopefully not require a
-computing cluster to do it...because math.
+we're going to solve this using Bayesian inference, and do enough math to
+simplify the equations so that the can be computed on a laptop.
 
-## Where we're going
+## Probability of probabilities
 
-I'm going to begin at the end and paste here the final form we'll arrive at:
+The end result will be an equation for the probability that we're confident
+whether the coin is biased towards heads.
 
-$$ P_\mu(P_{\lambda,N}(\theta > \theta_0) \geq 1-\alpha) = \int_0^1 d\pi \,
-   P_\mu(\pi) \, \mathbb{1}\left(P_{\lambda,N}(\theta > \theta_0 | \pi) \geq 1
-   - \alpha \right) $$
+Aside: what does the word "confident" mean in this context? Keep reading to
+find out.
 
-It looks complicated, but we'll build up to this formula in this post, one
-step at a time. I want to note a few things:
+A key input to the equation is the number of times $$N$$ we choose to flip the
+coin. Intuitively, the equation should tell us that if we flip the coin only a
+few times, the probability that we can confidently proclaim the coin to be
+biased should be low. Conversely, a large number of flips means the probability
+that we can confidently determine biased-ness is higher.
+
+Another piece of intuition: the smaller the actual bias of the coin, the lower
+the probability we'll be able to detect whether the coin is unfair.
+
+The output to the equation is a probability, and we can motivate it by
+reasoning through simulation:
+
+1. Since we don't know *a priori* the bias of the coin, make a guess of its
+   distribution by defining a *data generation prior* $$P_\mu(\theta_0)$$ and
+   sample a possible bias $$\theta_0$$ from $$P_\mu$$.
+
+2. Flip the biased coin $$\theta_0$$ a fixed number of times $$N$$ to generate
+   the data $$\mathcal{D}_N = (k, N-k)$$, where $$k$$ is the number of heads
+   and $$N-k$$ is the number of tails. In other words, sample $$\mathcal{D}_N$$
+   from the likelihood $$P(\mathcal{D}_N \vert \theta_0)$$.
+
+3. Given the data $$\mathcal{D}_N$$, compute the probability that the estimated
+   bias $$\theta$$ exceeds some threshold $$\theta_t$$ by using the posterior
+   $$P_\lambda(\theta > \theta_t \vert \mathcal{D}_N)$$. For checking whether
+   the coin is biased towards heads, set $$\theta_t = 0.5$$. Note: an input to
+   the posterior is a *data analysis prior* $$P_\lambda(\theta)$$, which I'll
+   discuss below.
+
+4. If the probability is greater than $$1 - \alpha$$, which is our *confidence*
+   level, add one to a running tally $$T$$. Often, $$\alpha$$ is set to
+   $$0.05$$, so that we are $$95\%$$ confident.
+
+5. Repeat steps 1-4 $$M$$ times, and report the probability $$T/M = \beta$$ at
+   the end. The quantity $$\beta$$ is the proportion of experiments which would
+   result in a confident determination of the fairness of the coin.
+
+To convert the simulation procedure into an equation, chain steps 2, 3 and 4
+together:
+
+$$ \sum_{\mathcal{D}_N} P_\lambda(\theta > \theta_t \vert \mathcal{D}_N) \,
+   P(\mathcal{D}_N \vert \theta_0) > 1 - \alpha $$
+
+When wrapped with the indicator function $$\mathbb{1}(\cdot)$$, this is the
+binary quantity we take the expected value of in steps 1 and 5, meaning:
+
+$$ \int_0^1 d\theta_0 \, P_\mu(\theta_0) \, \mathbb{1}\left(
+   \sum_{\mathcal{D}_N} P_\lambda(\theta > \theta_t \vert \mathcal{D}_N) \,
+   P(\mathcal{D}_N \vert \theta_0) > 1 - \alpha \right) = \beta$$
+
+It looks complicated, but we'll break down each factor in this post. I want to
+note a few things:
 
 * Operationally, it's a one-dimensional definite integral. This means we have a
   chance at numerically evaluating it.
 
-* The left hand side is a function of five variables: number of data points
-  $$N$$, the threshold $$\theta_0$$, a confidence level $$\alpha$$, and two
-  shape parameters $$\lambda$$ and $$\mu$$ characterizing prior distributions.
-  These will be the inputs to our code.
+* The left hand side is a function of three quantities: the number of data
+  points $$N$$, the threshold $$\theta_t$$, a confidence level $$\alpha$$. The
+  right hand side is the proportion of successful experiments $$\beta$$. If we
+  input three of these four variables, our code should be able to solve for the
+  fourth.
+
+* There are two parameters $$\lambda$$ and $$\mu$$ characterizing the prior
+  distributions.
 
 The factor in the integrand with the indicator function is
 
@@ -66,7 +127,7 @@ def func(n: int, theta0: float, p: float, alpha: float, lambda_: tuple = (1, 1))
     k = np.arange(n+1)
     a = k + lambda_[0]
     b = n - k + lambda_[1]
-    ss = np.sum(np.exp(beta.logcdf(theta0, a, b) + binom.logpmf(k, n, p)))
+    ss = np.sum(beta.cdf(theta0, a, b) * binom.pmf(k, n, p))
     return alpha - ss
 
 def integrand(p, n, theta0, alpha, lambda_, mu):
@@ -115,13 +176,19 @@ $$1$$ uniformly, namely a uniform prior of $$\lambda_1 = \lambda_2 = 1$$. For
 $$N = 10$$ coin flips and $$k = 6$$ heads, the posterior is roughly bell-shaped
 centered around $$\theta = 0.6$$:
 
-[IMAGE]
+![posterior 10 samples](/images/bayesian-ssd-bernoulli/posterior-10-samples.png)
 
 If we had observed more data, say $$N = 100$$ with the same proportion of heads
 $$k = 60$$, the distribution becomes narrower, because our uncertainty is
 smaller:
 
-[IMAGE]
+![posterior 100 samples](/images/bayesian-ssd-bernoulli/posterior-100-samples.png)
+
+With the posterior in hand, let's go back to our main question: how many times
+do you need to flip a possibly unfair coin to determine whether it's biased
+towards heads? Translated into math:
+
+$$ $$
 
 We want to know the probability the coin is biased towards heads, meaning
 $$P(\theta > \theta_0)$$ with the threshold $$\theta_0 = 0.5$$. For this, we
@@ -165,4 +232,10 @@ Most of the components we can work out (semi)-analytically:
 $$ P_\lambda(\theta|\mathcal{D}_N) = \text{Beta}(\theta; \text{H} + \lambda_1, \text{T} + \lambda_2) $$
 
 $$ P(\mathcal{D}_N|\pi) = \text{Bin}(\text{H}; N, \pi) $$
+
+I'll start by pasting the final equation we'll arrive at:
+
+$$ P_\mu(P_{\lambda,N}(\theta > \theta_t) \geq 1-\alpha) = \int_0^1 d\theta_0 \,
+   P_\mu(\theta_0) \, \mathbb{1}\left(P_{\lambda,N}(\theta > \theta_t | \theta_0) \geq 1
+   - \alpha \right) $$
 
