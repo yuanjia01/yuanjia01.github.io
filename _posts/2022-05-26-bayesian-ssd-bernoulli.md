@@ -24,12 +24,13 @@ problems that are equivalent:
 2. How many positive test samples do I need to feed my classifier to confirm
    whether its recall is greater than 70%?
 
-Inspired by Keith Goldfeld's
-[post](https://www.rdatagen.net/post/2021-06-01-bayesian-power-analysis/),
-we're going to solve this using Bayesian inference, and do enough math to
-simplify the equations so that the can be computed on a laptop.
+Inspired by Prof. Keith Goldfeld's
+[post](https://www.rdatagen.net/post/2021-06-01-bayesian-power-analysis/)
+(check it out, he's got some useful literature references), we're going to
+solve this using Bayesian inference, and do enough math to simplify the
+equations so that the can be computed on a laptop.
 
-## Probability of probabilities
+## An expectation over probabilities
 
 The end result will be an equation for the probability that we're confident
 whether the coin is biased towards heads.
@@ -65,58 +66,53 @@ reasoning through simulation:
    the posterior is a *data analysis prior* $$P_\lambda(\theta)$$, which I'll
    discuss below.
 
-4. If the probability is greater than $$1 - \alpha$$, which is our *confidence*
-   level, add one to a running tally $$T$$. Often, $$\alpha$$ is set to
-   $$0.05$$, so that we are $$95\%$$ confident.
+4. If the probability is greater than or equal to $$1 - \alpha$$, which is our
+   *confidence* level, add one to a running tally $$T$$. Often, $$\alpha$$ is
+   set to $$0.05$$, so that we are $$95\%$$ confident.
 
 5. Repeat steps 1-4 $$M$$ times, and report the probability $$T/M = \beta$$ at
    the end. The quantity $$\beta$$ is the proportion of experiments which would
    result in a confident determination of the fairness of the coin.
 
-To convert the simulation procedure into an equation, chain steps 2, 3 and 4
+To convert the simulation procedure into an equation, chain steps 3 and 4
 together:
 
-$$ \sum_{\mathcal{D}_N} P_\lambda(\theta > \theta_t \vert \mathcal{D}_N) \,
-   P(\mathcal{D}_N \vert \theta_0) > 1 - \alpha $$
+$$ P_\lambda(\theta > \theta_t \vert \mathcal{D}_N) \geq 1 - \alpha $$
 
-When wrapped with the indicator function $$\mathbb{1}(\cdot)$$, this is the
-binary quantity we take the expected value of in steps 1 and 5, meaning:
+This is the boolean quantity that tallies whether we can confidently determine
+the biased-ness for a single experiment resulting in data $$\mathcal{D}_N$$.
 
-$$ \int_0^1 d\theta_0 \, P_\mu(\theta_0) \, \mathbb{1}\left(
-   \sum_{\mathcal{D}_N} P_\lambda(\theta > \theta_t \vert \mathcal{D}_N) \,
-   P(\mathcal{D}_N \vert \theta_0) > 1 - \alpha \right) = \beta$$
+I want the proportion of all experiments that result in confident determination
+(steps 1, 2 and 5), which means taking the expected value over the
+distributions for $$\mathcal{D}_N$$ and $$\theta_0$$.
 
-It looks complicated, but we'll break down each factor in this post. I want to
-note a few things:
+To notate mathematically, use the indicator function
+$$\mathbb{1}_A(\mathcal{D}_N)$$ where:
 
-* Operationally, it's a one-dimensional definite integral. This means we have a
-  chance at numerically evaluating it.
+$$ A = \{\mathcal{D}_N : P_\lambda(\theta > \theta_t \vert \mathcal{D}_N) \geq
+   1 - \alpha \} $$
 
-* The left hand side is a function of three quantities: the number of data
+to arrive at:
+
+$$ \beta = \int_0^1 d\theta_0 \, P_\mu(\theta_0) \, \sum_{\mathcal{D}_N}
+   P(\mathcal{D}_N \vert \theta_0) \, \mathbb{1}_A(\mathcal{D}_N) $$
+
+This is the equation we'll implement. It looks complicated, but we'll break
+down each factor in this post. I want to note a few things:
+
+* Operationally, it's a one-dimensional definite integral and a finite sum.
+  This means we have a chance at numerically evaluating it.
+
+* The right hand side is a function of three quantities: the number of data
   points $$N$$, the threshold $$\theta_t$$, a confidence level $$\alpha$$. The
-  right hand side is the proportion of successful experiments $$\beta$$. If we
+  left hand side is the proportion of successful experiments $$\beta$$. If we
   input three of these four variables, our code should be able to solve for the
   fourth.
 
 * There are two parameters $$\lambda$$ and $$\mu$$ characterizing the prior
   distributions.
 
-The factor in the integrand with the indicator function is
-
-$$ \mathbb{1} \left( P_{\lambda,N}(\theta > \theta_0 | \pi) \geq 1 - \alpha
-   \right) = H \left( \alpha - \sum_{k = 0}^N I(\theta_0; k+\lambda_1,
-   N-k+\lambda_2) \, \text{Bin}(k; N, \pi) \right) $$
-
-In this formula:
-
-* The core of the expression is a sum over the binomial distribution
-  $$\text{Bin}$$ weighted by coefficients $$I(\theta_0)$$, which is the CDF of
-  the beta distribution (also known as the regularized beta function). This is
-  a finite sum and we can evaluate it numerically.
-
-* The entire sum is wrapped in $$H$$, the Heaviside step function.
-
-I'll also paste here the Python implementation we'll arrive at:
+I'll also paste here the final Python implementation:
 
 ```python
 import numpy as np
@@ -134,15 +130,104 @@ def integrand(p, n, theta0, alpha, lambda_, mu):
     return np.heaviside(func(n, theta0, p, alpha, lambda_), 0.5) * beta.pdf(p, mu[0], mu[1])
 
 n, theta0, alpha, lambda_, mu = 250, 0.70, 0.05, (1, 1), (10, 2)
-integrate.quad(integrand, 0, 1, args=(n, theta0, alpha, lambda_, mu))
+beta = integrate.quad(integrand, 0, 1, args=(n, theta0, alpha, lambda_, mu))
 ```
 
-It's quite short, and only takes half a second to run on my old 2018 Macbook
-Air!
+The point is that it's quite short, and only takes half a second to run on my
+old 2018 Macbook Air.
 
 Let's get started.
 
-## Bayes theorem
+
+## Step by step
+
+No, I'm not referring to the [sitcom](https://www.imdb.com/title/tt0101205/) or
+the [song](https://www.youtube.com/watch?v=ay6GjmiJTPM) by the New Kids on the
+Block.
+
+### 1 - Data generation prior
+
+This is a classic chicken-and-egg problem: the number of flips required depends
+on the magnitude of unknown bias $$\theta_0$$, which we don't know. So we make
+an educated guess for its distribution, codified in the *data generation prior*
+$$P_\mu(\theta_0)$$.
+
+We'll use a Beta distribution:
+
+$$ P_\mu(\theta_0) = \text{Beta}(\theta_0; \mu_1, \mu_2) =
+   \frac{\theta_0^{\mu_1-1} (1-\theta_0)^{\mu_2-1}}{B(\mu_1, \mu_2)} $$
+
+Let's say we want to simulate a case where the coin is somewhat biased towards
+heads, so I choose $$\mu_1 = 6$$ and $$\mu_2 = 4$$.
+
+### 2 - Likelihood
+
+The likelihood is the probability of observing a certain number of heads and
+tails $$\mathcal{D}_N$$, given the bias parameter $$\theta_0$$. A coin flip is
+a Bernoulli trial. Repeated coin flips result in a Binomial distribution:
+
+$$ P(\mathcal{D}_N|\theta_0) = \text{Bin}(k; N, \theta_0) = \binom{N}{k}
+   \theta_0^{k} (1-\theta_0)^{N-k} $$
+
+### 3 - Posterior
+
+Time to apply Bayesian inference.
+
+Step into the shoes of the experimenter: you're handed a coin with an unknown
+bias $$\theta$$ and observe $$k$$ heads after $$N$$ flips. Bayes theorem tells
+you how to update your beliefs:
+
+$$ P_\lambda(\theta|\mathcal{D}_N) \propto P(\mathcal{D}_N|\theta)
+   P_\lambda(\theta) $$
+
+But what do you choose as your prior $$P_\lambda(\theta)$$?
+
+The point Wang and Gelfand
+[[1](https://projecteuclid.org/journals/statistical-science/volume-17/issue-2/A-simulation-based-approach-to-Bayesian-sample-size-determination-for/10.1214/ss/1030550861.full)]
+make is that the prior used to *generate* (or "sample") the data Step 1 need
+not be the same prior used to *analyze* (or "fit") the data in this step. This
+is the *two-priors approach* [[2](https://www.mdpi.com/1660-4601/18/2/595)].
+
+* When analyzing the data to fit the model, it is usually preferable to let the
+  data drive the inference, so the analysis prior $$P_\lambda(\theta)$$ is
+  encouraged to be relatively uninformative.
+
+* In contrast, the data generation prior encapsulates "what if" scenarios. We
+  don't want to design trials taking into consideration wildly improbable
+  values of the bias, so it makes sense for $$P_\mu(\theta_0)$$ to be less
+  conservative and contain weight in a smaller, reasonable range of biases.
+
+Back to the data analysis prior. I'll again choose a Beta prior because it is
+conjugate to the likelihood, which simplifies the math:
+
+$$ P_\lambda(\theta) = \text{Beta}(\theta; \lambda_1, \lambda_2) $$
+
+but I will set $$\lambda_1 = \lambda_2 = 1$$, which specifies a uniform prior.
+Working through the math results in a posterior which is again a Beta
+distribution:
+
+$$ P_\lambda(\theta|\mathcal{D}_N) = \text{Beta}(\theta; k + \lambda_1, N - k +
+   \lambda_2) $$
+
+What we want in this step is the probability the estimated bias $$\theta$$
+exceeds a some threshold $$\theta_t$$. With the posterior in hand, integrate
+it:
+
+$$ \begin{equation}
+   \begin{split}
+   P_\lambda(\theta > \theta_t|\mathcal{D}_N) &= \int_{\theta_t}^1 \! d\theta \,
+   \text{Beta}(\theta; k + \lambda_1, N - k + \lambda_2) \\
+   &= 1 - I_{\theta_t}(k + \lambda_1, N - k + \lambda_2)
+   \end{split}
+   \end{equation} $$
+
+The regularized Beta function $$I_\theta$$ is the CDF of the Beta distribution.
+
+### 4 - Confidence level
+
+
+
+### 5 - Expectation
 
 Suppose you already flipped the coin $$N$$ times and you observed $$k$$ heads.
 What does this data $$\mathcal{D} = (N, k)$$ tell you about the probability
@@ -238,4 +323,21 @@ I'll start by pasting the final equation we'll arrive at:
 $$ P_\mu(P_{\lambda,N}(\theta > \theta_t) \geq 1-\alpha) = \int_0^1 d\theta_0 \,
    P_\mu(\theta_0) \, \mathbb{1}\left(P_{\lambda,N}(\theta > \theta_t | \theta_0) \geq 1
    - \alpha \right) $$
+
+
+
+The factor in the integrand with the indicator function is
+
+$$ \mathbb{1} \left( P_{\lambda,N}(\theta > \theta_0 | \pi) \geq 1 - \alpha
+   \right) = H \left( \alpha - \sum_{k = 0}^N I(\theta_0; k+\lambda_1,
+   N-k+\lambda_2) \, \text{Bin}(k; N, \pi) \right) $$
+
+In this formula:
+
+* The core of the expression is a sum over the binomial distribution
+  $$\text{Bin}$$ weighted by coefficients $$I(\theta_0)$$, which is the CDF of
+  the beta distribution (also known as the regularized beta function). This is
+  a finite sum and we can evaluate it numerically.
+
+* The entire sum is wrapped in $$H$$, the Heaviside step function.
 
