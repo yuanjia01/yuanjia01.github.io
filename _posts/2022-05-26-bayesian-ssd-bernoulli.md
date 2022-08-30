@@ -6,14 +6,14 @@ mathjax: true
 draft: true
 ---
 
-I'm going to pose to you a contrived question: let's say someone hands you a
-coin that may or may not be unfair. How many times do you need to flip it to
-confidently determine whether it's biased towards heads?
+Let's say someone hands you a coin that may or may not be unfair. How many
+times do you need to flip it to confidently determine whether it's biased
+towards heads?
 
-It's contrived because I've never come across a biased coin in real life. Maybe
-it's because I haven't looked hard enough. \*shrug\* Regardless, it's an example of the
-more general problem of *sample size determination* as applied to Bernoulli
-trials.
+It's a contrived question because I've never come across a biased coin in real
+life. Maybe it's because I haven't looked hard enough. \*shrug\* Regardless,
+it's an example of the more general problem of *sample size determination* as
+applied to Bernoulli trials.
 
 I'll use the coin flipping example in this post, but here are two realistic
 problems that are equivalent:
@@ -152,10 +152,12 @@ on the magnitude of unknown bias $$\theta_0$$, which we don't know. So we make
 an educated guess for its distribution, codified in the *data generation prior*
 $$P_\mu(\theta_0)$$.
 
-We'll use a Beta distribution:
+We'll use a beta distribution:
 
-$$ P_\mu(\theta_0) = \text{Beta}(\theta_0; \mu_1, \mu_2) =
+$$ P_\mu(\theta_0) = \text{Beta}(\theta_0| \mu_1, \mu_2) =
    \frac{\theta_0^{\mu_1-1} (1-\theta_0)^{\mu_2-1}}{B(\mu_1, \mu_2)} $$
+
+where $$\mu$$ is shorthand for $$\mu_1$$ and $$\mu_2$$.
 
 Let's say we want to simulate a case where the coin is somewhat biased towards
 heads, so I choose $$\mu_1 = 6$$ and $$\mu_2 = 4$$.
@@ -166,7 +168,7 @@ The likelihood is the probability of observing a certain number of heads and
 tails $$\mathcal{D}_N$$, given the bias parameter $$\theta_0$$. A coin flip is
 a Bernoulli trial. Repeated coin flips result in a Binomial distribution:
 
-$$ P(\mathcal{D}_N|\theta_0) = \text{Bin}(k; N, \theta_0) = \binom{N}{k}
+$$ P(\mathcal{D}_N|\theta_0) = \text{Bin}(k | N, \theta_0) = \binom{N}{k}
    \theta_0^{k} (1-\theta_0)^{N-k} $$
 
 ### 3 - Posterior
@@ -195,18 +197,18 @@ is the *two-priors approach* [[2](https://www.mdpi.com/1660-4601/18/2/595)].
 * In contrast, the data generation prior encapsulates "what if" scenarios. We
   don't want to design trials taking into consideration wildly improbable
   values of the bias, so it makes sense for $$P_\mu(\theta_0)$$ to be less
-  conservative and contain weight in a smaller, reasonable range of biases.
+  conservative and only have weight in a smaller, reasonable range of biases.
 
-Back to the data analysis prior. I'll again choose a Beta prior because it is
+Back to the data analysis prior. I'll again choose a beta prior because it is
 conjugate to the likelihood, which simplifies the math:
 
-$$ P_\lambda(\theta) = \text{Beta}(\theta; \lambda_1, \lambda_2) $$
+$$ P_\lambda(\theta) = \text{Beta}(\theta | \lambda_1, \lambda_2) $$
 
 but I will set $$\lambda_1 = \lambda_2 = 1$$, which specifies a uniform prior.
-Working through the math results in a posterior which is again a Beta
+Working through the math results in a posterior which is again a beta
 distribution:
 
-$$ P_\lambda(\theta|\mathcal{D}_N) = \text{Beta}(\theta; k + \lambda_1, N - k +
+$$ P_\lambda(\theta|\mathcal{D}_N) = \text{Beta}(\theta | k + \lambda_1, N - k +
    \lambda_2) $$
 
 What we want in this step is the probability the estimated bias $$\theta$$
@@ -216,43 +218,50 @@ it:
 $$ \begin{equation}
    \begin{split}
    P_\lambda(\theta > \theta_t|\mathcal{D}_N) &= \int_{\theta_t}^1 \! d\theta \,
-   \text{Beta}(\theta; k + \lambda_1, N - k + \lambda_2) \\
+   \text{Beta}(\theta| k + \lambda_1, N - k + \lambda_2) \\
    &= 1 - I_{\theta_t}(k + \lambda_1, N - k + \lambda_2)
    \end{split}
    \end{equation} $$
 
-The regularized Beta function $$I_\theta$$ is the CDF of the Beta distribution.
+The regularized beta function $$I_\theta$$ is the CDF of the beta distribution.
 
 ### 4 - Confidence level
 
+Checking whether the output probability in Step 3 is greater than $$1 -
+\alpha$$ is equivalent to
 
+$$ I_{\theta_t}(k + \lambda_1, N - k + \lambda_2) < \alpha $$
+
+This is a simple computation since most statistics libraries provide the CDF
+of the beta distribution.
 
 ### 5 - Expectation
 
-Suppose you already flipped the coin $$N$$ times and you observed $$k$$ heads.
-What does this data $$\mathcal{D} = (N, k)$$ tell you about the probability
-distribution of the bias $$\theta$$ of the coin? Use Bayes theorem!
+Take the expected value of Step 4 over the probability distributions of Step 1
+and 2:
 
-$$ P_\lambda(\theta|\mathcal{D}) \propto P(\mathcal{D}|\theta) P_\lambda(\theta) $$
+$$ \beta = \int_0^1 d\theta_0 \, \text{Beta}(\theta_0 | \mu_1, \mu_2) \,
+   \sum_{k} \text{Bin}(k | N, \theta_0) \, \mathbb{1}_A(\mathcal{D}_N) $$
 
-The posterior is proportional to the likelihood multiplied by the prior, and
-the symbol $$\lambda$$ represents the parameters of the prior distribution. The
-likelihood is a binomial distribution:
+Because we chose a beta prior for $$\theta_0$$, its integral results in a
+beta-binomial distribution:
 
-$$ P(\mathcal{D}|\theta) = \text{Bin}(k; N, \theta) = \binom{N}{k}
-   \theta^{k} (1-\theta)^{N-k} $$
+$$ \mathrm{BetaBin}(k|N,\mu_1,\mu_2) = \int_0^1 d\theta_0 \, \text{Bin}(k | N,
+   \theta_0) \, \text{Beta}(\theta_0 | \mu_1, \mu_2) $$
 
-To make calculations tractable, we'll use a conjugate prior to the binomial
-distribution: the beta distribution.
+The final equation for the proportion of experiments resulting in confident
+determination of the fairness of the coin involves using the indicator function
+to select out which beta-binomial coefficients to keep:
 
-$$ P_\lambda(\theta) = \text{Beta}(\theta; \lambda_1, \lambda_2) = \frac{1}{B(\lambda_1, \lambda_2)}
-   \theta^{\lambda_1-1} (1-\theta)^{\lambda_2-1} $$
+$$ \beta = \sum_k \mathrm{BetaBin}(k|N,\mu_1,\mu_2) \, \mathbb{1}_A(k) $$
 
-I'm using $$\lambda$$ as shorthand for both $$\lambda_1$$ and $$\lambda_2$$.
-Working through the math gives:
+This equation is simple to implement with standard statistical libraries.
 
-$$ P_\lambda(\theta|\mathcal{D}) = \text{Beta}(\theta; k + \lambda_1, N - k +
-   \lambda_2) $$
+## Python implementation
+
+[TBD]
+
+## Garnering intuition
 
 What does this posterior distribution look like? First, we specify a prior
 belief: let's make the most conservative assumption that before we observed any
@@ -269,75 +278,6 @@ smaller:
 
 ![posterior 100 samples](/images/bayesian-ssd-bernoulli/posterior-100-samples.png)
 
-With the posterior in hand, let's go back to our main question: how many times
-do you need to flip a possibly unfair coin to determine whether it's biased
-towards heads? Translated into math:
+## Summary
 
-$$ $$
-
-We want to know the probability the coin is biased towards heads, meaning
-$$P(\theta > \theta_0)$$ with the threshold $$\theta_0 = 0.5$$. For this, we
-choose a confidence, say 95%, which we only want a probability $$\alpha =
-0.05$$ of not meeting the
-
-
-If the threshold we want to meet is $$\theta_0 = 0.7$$ and we want to be
-95% confident of meeting that threshold
-
-But, how do we decide what sample size $$N$$ to select when we don't know what
-the number of heads $$k$$ will be?
-
-## Chicken and the egg
-
-
-## Notes
-
-We'll call the unknown parameter to be estimated $$\theta$$. This is the bias
-of the coin, the conversion rate of an ad, or the precision of a classifier.
-
-The threshold the parameter must surpass we'll call $$\theta_0$$. For the coin
-problem, it's $$0.5$$.
-
-How would we solve this problem via brute force simulations?
-
-1. Sample $$\pi$$ from a data generation prior $$P_\mu(\pi)$$.
-2. Sample data $$\mathcal{D}$$ from the likelihood $$P(\mathcal{D} \vert \pi)$$.
-3. Compute the probability $$P_\lambda(\theta > \theta_0 \vert \mathcal{D})$$.
-4. If the probability is greater than $$1-\alpha$$, add one to a running tally $$K$$.
-5. Repeat steps 1-4 $$N$$ times, and report $$K/N$$ at the end.
-
-The dataset $$\mathcal{D}_N = (\text{H}, \text{T})$$ consists of the number of
-heads and the number of tails $$\text{T}$$. The total number of trials is $$N =
-\text{H} + \text{T}$$. In the following, we'll use either $$(N, \text{H})$$ or
-$$(\text{H}, \text{T})$$ to parameterize the dataset, whichever is more
-convenient.
-
-Most of the components we can work out (semi)-analytically:
-
-$$ P_\lambda(\theta|\mathcal{D}_N) = \text{Beta}(\theta; \text{H} + \lambda_1, \text{T} + \lambda_2) $$
-
-$$ P(\mathcal{D}_N|\pi) = \text{Bin}(\text{H}; N, \pi) $$
-
-I'll start by pasting the final equation we'll arrive at:
-
-$$ P_\mu(P_{\lambda,N}(\theta > \theta_t) \geq 1-\alpha) = \int_0^1 d\theta_0 \,
-   P_\mu(\theta_0) \, \mathbb{1}\left(P_{\lambda,N}(\theta > \theta_t | \theta_0) \geq 1
-   - \alpha \right) $$
-
-
-
-The factor in the integrand with the indicator function is
-
-$$ \mathbb{1} \left( P_{\lambda,N}(\theta > \theta_0 | \pi) \geq 1 - \alpha
-   \right) = H \left( \alpha - \sum_{k = 0}^N I(\theta_0; k+\lambda_1,
-   N-k+\lambda_2) \, \text{Bin}(k; N, \pi) \right) $$
-
-In this formula:
-
-* The core of the expression is a sum over the binomial distribution
-  $$\text{Bin}$$ weighted by coefficients $$I(\theta_0)$$, which is the CDF of
-  the beta distribution (also known as the regularized beta function). This is
-  a finite sum and we can evaluate it numerically.
-
-* The entire sum is wrapped in $$H$$, the Heaviside step function.
-
+[TBD]
