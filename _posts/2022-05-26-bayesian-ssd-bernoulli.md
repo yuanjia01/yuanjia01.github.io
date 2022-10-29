@@ -11,9 +11,9 @@ times do you need to flip it to confidently determine whether it's biased
 towards heads?
 
 It's a contrived question because I've never come across a biased coin in real
-life. Maybe it's because I haven't looked hard enough. \*shrug\* Regardless,
-it's an example of the more general problem of *sample size determination* as
-applied to Bernoulli trials.
+life. Maybe it's because I haven't looked hard enough! Regardless, it's an
+example of the more general problem of *sample size determination* as applied
+to Bernoulli trials.
 
 I'll use the coin flipping example in this post, but here are two realistic
 problems that are equivalent:
@@ -30,25 +30,24 @@ Inspired by Prof. Keith Goldfeld's
 solve this using Bayesian inference, and do enough math to simplify the
 equations so that the can be computed on a laptop.
 
-## An expectation over probabilities
+## End-to-end simulation
 
-The end result will be an equation for the probability that we're confident
-whether the coin is biased towards heads.
+The end result of this section will be an equation for the probability that
+we're confident whether the coin is biased towards heads, and we'll get there
+by reasoning through an end-to-end simulation.
 
-Aside: what does the word "confident" mean in this context? Keep reading to
-find out.
+> Aside: what does the word "confident" mean in this context? See below!
 
 A key input to the equation is the number of times $$N$$ we choose to flip the
-coin. Intuitively, the equation should tell us that if we flip the coin only a
-few times, the probability that we can confidently proclaim the coin to be
-biased should be low. Conversely, a large number of flips means the probability
-that we can confidently determine biased-ness is higher.
+coin. Intuitively, the equation should tell us that:
 
-Another piece of intuition: the smaller the actual bias of the coin, the lower
-the probability we'll be able to detect whether the coin is unfair.
+* the larger the number of coin flips, the higher the probability we can
+  confidently proclaim the coin to be biased
 
-The output to the equation is a probability, and we can motivate it by
-reasoning through simulation:
+* the smaller the actual bias of the coin, the lower the probability we'll be
+  able to detect whether the coin is unfair at a fixed number of clips
+
+The steps of the simulation are as follows:
 
 1. Since we don't know *a priori* the bias of the coin, make a guess of its
    distribution by defining a *data generation prior* $$P_\mu(\theta_0)$$ and
@@ -73,6 +72,8 @@ reasoning through simulation:
 5. Repeat steps 1-4 $$M$$ times, and report the probability $$T/M = \beta$$ at
    the end. The quantity $$\beta$$ is the proportion of experiments which would
    result in a confident determination of the fairness of the coin.
+
+<img src="/images/bayesian-ssd-bernoulli/simulation-flowchart.png" width="500">
 
 To convert the simulation procedure into an equation, chain steps 3 and 4
 together:
@@ -112,31 +113,8 @@ down each factor in this post. I want to note a few things:
 * There are two parameters $$\lambda$$ and $$\mu$$ characterizing the prior
   distributions.
 
-I'll also paste here the final Python implementation:
-
-```python
-import numpy as np
-from scipy.stats import beta, binom
-from scipy import integrate
-
-def func(n: int, theta0: float, p: float, alpha: float, lambda_: tuple = (1, 1)):
-    k = np.arange(n+1)
-    a = k + lambda_[0]
-    b = n - k + lambda_[1]
-    ss = np.sum(beta.cdf(theta0, a, b) * binom.pmf(k, n, p))
-    return alpha - ss
-
-def integrand(p, n, theta0, alpha, lambda_, mu):
-    return np.heaviside(func(n, theta0, p, alpha, lambda_), 0.5) * beta.pdf(p, mu[0], mu[1])
-
-n, theta0, alpha, lambda_, mu = 250, 0.70, 0.05, (1, 1), (10, 2)
-beta = integrate.quad(integrand, 0, 1, args=(n, theta0, alpha, lambda_, mu))
-```
-
-The point is that it's quite short, and only takes half a second to run on my
-old 2018 Macbook Air.
-
-Let's get started.
+In the next section, we'll work out the equations explicitly for Bernoulli
+trials using conjugate priors.
 
 
 ## Step by step
@@ -255,13 +233,52 @@ to select out which beta-binomial coefficients to keep:
 
 $$ \beta = \sum_k \mathrm{BetaBin}(k|N,\mu_1,\mu_2) \, \mathbb{1}_A(k) $$
 
+where
+
+$$ A = \{k : I_{\theta_t}(k + \lambda_1, N - k + \lambda_2) < \alpha \} $$
+
 This equation is simple to implement with standard statistical libraries.
 
 ## Python implementation
 
-[TBD]
+Implementing the equations does not require tricks for numerical stabilization
+and a direct translation of the above two formulas into code serves our
+purposes:
 
-## Garnering intuition
+```python
+import numpy as np
+import scipy.stats as stats
+
+def indicator(k, n, alpha, theta_t, lambda_):
+    a = k + lambda_[0]
+    b = n - k + lambda_[1]
+    return stats.beta.cdf(theta_t, a, b) < alpha
+
+def beta(n, theta_t, alpha, mu, lambda_):
+    k = np.arange(n + 1)
+    bb = stats.betabinom.pmf(k, n, mu[0], mu[1])
+    ind = indicator(k, n, alpha, theta_t, lambda_)
+    return np.sum(bb * ind)
+
+# example usage
+
+n, theta_t, alpha = 100, 0.7, 0.05
+mu = 86, 16
+lambda_ = 1, 1
+
+beta(n, theta_t, alpha, mu, lambda_)  # 0.9025361931661403
+```
+
+The point is that it's quite short, and only takes a few milliseconds to run on
+my old 2018 Macbook Air.
+
+
+## Sample size determination
+
+
+
+
+## Garnering some intuition
 
 What does this posterior distribution look like? First, we specify a prior
 belief: let's make the most conservative assumption that before we observed any
