@@ -3,7 +3,6 @@ layout: post
 title: "Bayesian sample size determination for Bernoulli trials"
 published: true
 mathjax: true
-draft: true
 ---
 
 Let's say someone hands you a coin that may or may not be unfair. How many
@@ -242,8 +241,7 @@ This equation is simple to implement with standard statistical libraries.
 ## Python implementation
 
 Implementing the equations does not require tricks for numerical stabilization
-and a direct translation of the above two formulas into code serves our
-purposes:
+and a direct translation of the above two formulas into code works just fine:
 
 ```python
 import numpy as np
@@ -275,26 +273,113 @@ my old 2018 Macbook Air.
 
 ## Sample size determination
 
+With the requisite tools in hand, let's turn to the business of determining
+sample sizes.
+
+For the first example, suppose we want to know how many samples are needed to
+detect a coin with a large bias towards heads, say with $$\theta_0$$ between
+$$0.6$$ and $$0.9$$. From fiddling with parameters, choosing $$\mu_1 = 10$$ and
+$$\mu_2 = 3$$ results in a data generation prior with significant weight where
+we desire:
+
+![data prior](/images/bayesian-ssd-bernoulli/large-bias-data-generation-prior.png)
+
+Now we can compute the proportion of posterior distributions meeting the 95%
+threshold as a function of the number of samples.
+
+![power vs sample size](/images/bayesian-ssd-bernoulli/large-bias-power.png)
+
+For a strongly biased coin, at around 30 samples, 80% of the posterior
+distributions will lead us to conclude that the coin is indeed biased.
+
+> Why does the proportion zig-zag? The reason is due to the discreteness of the
+> number of posteriors passing the $$1 - \alpha$$ threshold. (More discussion
+> below.)
+
+For the second example, suppose we want detect a coin with a very small bias,
+say 51-49 towards heads. Choosing $$\mu_1 = 51000$$ and $$\mu_2 = 49000$$
+results in a data prior with a sharp peak at $$\theta_0 = 0.51$$:
+
+![data prior](/images/bayesian-ssd-bernoulli/small-bias-data-generation-prior.png)
+
+For such a small bias, we expect to require a large number of samples:
+
+![power vs sample size](/images/bayesian-ssd-bernoulli/small-bias-power.png)
+
+Conclusion: for a 1% bias, over 16000 samples are required so that 80% of the
+posterior distributions will lead us to conclude that the coin is biased
+towards heads.
+
+A useful trick for solving for the sample size given the other three parameters
+is to use the `bisect` module from the Python Standard Library and write a
+lightweight class which provides a list-like interface into the `beta()`
+function:
+
+```python
+from bisect import bisect
+
+def sample_size(threshold, theta_t, alpha, mu, lambda_):
+    class C:
+        def __getitem__(self, n):
+            return beta(n, theta_t, alpha, mu, lambda_)
+    n = 1
+    while beta(n, theta_t, alpha, mu, lambda_) < threshold:
+        n *= 2
+    c = C()
+    return bisect(c, threshold, hi=n)
+
+sample_size(0.8, 0.5, 0.05, (51000, 49000), (1,1))  # 16230
+```
 
 
+## Effects of discreteness
 
-## Garnering some intuition
+Why does the proportion of trials which can confidently detect bias exhibit zig
+zags? Zooming in to the plot of proportion vs. sample size, we see jumps at $$N
+= 4, 7, 10$$.
 
-What does this posterior distribution look like? First, we specify a prior
-belief: let's make the most conservative assumption that before we observed any
-data, we believed the bias of the coin could be anywhere between $$0$$ and
-$$1$$ uniformly, namely a uniform prior of $$\lambda_1 = \lambda_2 = 1$$. For
-$$N = 10$$ coin flips and $$k = 6$$ heads, the posterior is roughly bell-shaped
-centered around $$\theta = 0.6$$:
+![power zoom](/images/bayesian-ssd-bernoulli/power-zoom.png)
 
-![posterior 10 samples](/images/bayesian-ssd-bernoulli/posterior-10-samples.png)
+Take a look at the posteriors: for a given sample size $$N$$, there are $$N+1$$
+posteriors corresponding to observing $$0, 1, 2, \ldots, N$$ heads. The number
+of those posteriors with over 95% density above the threshold $$\theta =
+0.5$$ increments at somewhat arbitrary values of the sample size.
 
-If we had observed more data, say $$N = 100$$ with the same proportion of heads
-$$k = 60$$, the distribution becomes narrower, because our uncertainty is
-smaller:
+No posteriors pass the threshold for $$N = 1, 2, 3$$. But at $$N = 4$$, one of
+the posteriors has over 95% density above $$\theta = 0.5$$ (colored in blue
+below), corresponding to a jump in the proportion of successful trials. The
+same pattern holds for sample sizes of 7 and 10, where additional posteriors
+pass the threshold.
 
-![posterior 100 samples](/images/bayesian-ssd-bernoulli/posterior-100-samples.png)
+![posteriors](/images/bayesian-ssd-bernoulli/posteriors-vs-sample-size.png)
+
+Does this behavior make sense? I frankly am uncertain, but perhaps others have
+encountered the same issue even if I am unaware.
 
 ## Summary
 
-[TBD]
+While Bayesian approaches usually require Monte Carlo simulations due to the
+intractibility of the formulas to analytic methods, the case of Bernoulli
+trials is amenable to analytic manipulation. It's also worth doing because a
+few commonly use metrics--namely accuracy, precision and recall--can be reduced
+to the framework of Bernoulli trials.
+
+Sample size determination may appear to be a rigorous discipline given the
+amount of mathematics required, especially in the Bayesian approach, but in
+practice the prior assumptions aren't known with much accuracy. Returning to
+the example of "how many positive test samples do I need to feed my classifier
+to confirm whether its recall is greater than 70%" posed in the introduction:
+
+* The biggest uncertainty is the parameters of the data generation prior. We
+  cannot be more precise about the computed sample size than the amount of
+  certainty we have over what we think is the model's recall.
+
+* How high a proportion do we want to succeed? Is 80% high enough?
+
+* How exact is the 70% requirement? If the threshold comes from product or business
+  constraints, often it's not rigid. However, there are times
+
+In practice, it makes sense to jitter the numbers to create a table of possible
+scenarios and make a decision on the sample size based on a combination of
+statistical power and other factors like annotation cost and business
+timelines.
