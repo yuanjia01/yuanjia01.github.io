@@ -376,8 +376,12 @@ to confirm whether its recall is greater than 70%" posed in the introduction:
 
 * How high a proportion do we want to succeed? Is 80% high enough?
 
-* How exact is the 70% requirement? If the threshold comes from product or business
-  constraints, often it's not rigid. However, there are times
+* How exact is the 70% requirement? If the threshold comes from product or
+  business constraints, sometimes it's not rigid, especially if it's in the
+  context of non-critical user products (for example, the difference between
+  70% and 75% recall for search over news articles may be a non-issue for
+  clients, while the difference between 95% and 99% recall for identification
+  of pedestrians is critical for autonomous vehicles).
 
 In practice, it makes sense to jitter the numbers to create a table of possible
 scenarios and make a decision on the sample size based on a combination of
