@@ -3,6 +3,7 @@ layout: post
 title: "What is the Legendre Transform?"
 published: true
 mathjax: true
+draft: true
 ---
 
 The Legendre transform is one of those mathematical techniques which physics
@@ -14,16 +15,17 @@ classical mechanics as the link between the Lagrangian and the Hamiltonian.
 
 As compared to more common operations like derivatives and integrals, or even
 other transforms like the Fourier transform, I found the Legendre transform
-more opaque and less intuitive. If someone presented you a function $$f(x)$$,
-and stated that the Legendre transform $$g$$ is defined as $$g = px - f$$, you
-might ask, "but why?"
+more opaque and less intuitive:
 
-You might be told that $$p$$ is the derivative of $$f$$, but again, why?
+* If someone presented you a function $$f(x)$$, and stated that the Legendre
+  transform $$g$$ is defined as $$g = px - f$$, you might ask, "but why?"
 
-What even is the independent variable in this formula?
+* You might be told that $$p$$ is the derivative of $$f$$, but again, why?
 
-And if the formulas weren't frustrating enough, what is the intuition behind the
-Legendre transform anyway?
+* What even is the independent variable in this formula?
+
+* And if the formulas weren't frustrating enough, what is the intuition behind
+  the Legendre transform anyway?
 
 My goal with this post is to share a clear exposition of what the Legendre
 transform is, as well as why it is the right way to describe the deep
@@ -31,13 +33,11 @@ connection between energy, temperature and entropy.
 
 Let's get started.
 
-[//]: Motivate the post by appealing to frustration and common misconceptions of Legendre transforms
-[//]: Have a picture as early on as possible
 
 ## Curves and tangent lines
 
-I'll start by posing a seemingly unrelated problem to you, but it contains all
-the intuition you'll need to understand Legendre transforms:
+I'll start by posing a seemingly unrelated problem, but it contains all the
+intuition you'll need to understand Legendre transforms:
 
 > If I give you a curve in the $$x$$-$$y$$ plane, how would you describe its
 > tangent lines?
@@ -89,8 +89,10 @@ variables $$p$$ and $$g$$. In fact, the curve we constructed is an example of a
 the field of projective geometry: plane curves can be described equally well as
 a set of points or as a set of corresponding tangent lines.
 
-Now you can answer the original question posed: if I give you a curve, the
-Legendre transform is a complete description of its tangent lines.
+Now you can answer the original question posed:
+
+> Given a curve in the $$x$$-$$y$$ plane, the Legendre transform is a complete
+> description of its tangent lines.
 
 In the above example, the function $$g(p)$$ looks suspiciously like a parabola
 as well. How would you compute the Legendre transform algebraically?
@@ -124,7 +126,8 @@ own inverse, an
 
 Now you see the reason we worked with negative $$y$$-intercept: if we had used
 the regular $$y$$-intercept, the triangle height would have been $$f - g$$, and
-the Legendre transform so defined would not be an involution.
+the Legendre transform so defined would have an extra minus sign floating
+around and not be an involution.
 
 One other property to note is that if they were phyiscal quantities, the
 Legendre transform $$g$$ must have the same units as $$f$$. For example, if
@@ -196,7 +199,7 @@ It turns out the definition changes if the function is concave down to $$g(p) =
 
 Let's have some fun: I've worked out the Legendre transform in some common
 cases to give you a sense of how it behaves. Taking a function and translating
-the curve upwards shifts the Legendre transform an equal amount downwards:
+the curve upwards shifts the Legendre transform downwards an equal amount:
 
 ![](/images/legendre/translate-up.png)
 
