@@ -22,10 +22,9 @@ more opaque and less intuitive:
 
 * You might be told that $$p$$ is the derivative of $$f$$, but again, why?
 
-* What even is the independent variable in this formula?
+* What is the independent variable in this formula?
 
-* And if the formulas weren't frustrating enough, what is the intuition behind
-  the Legendre transform anyway?
+* What is the intuition behind the Legendre transform anyway?
 
 My goal with this post is to share a clear exposition of what the Legendre
 transform is, as well as why it is the right way to describe the deep
@@ -91,18 +90,20 @@ a set of points or as a set of corresponding tangent lines.
 
 Now you can answer the original question posed:
 
-> Given a curve in the $$x$$-$$y$$ plane, the Legendre transform is a complete
-> description of its tangent lines.
+> If I give you a curve in the $$x$$-$$y$$ plane, how would you describe its
+> tangent lines?
+>
+> I'd use the Legendre transform!
 
 In the above example, the function $$g(p)$$ looks suspiciously like a parabola
 as well. How would you compute the Legendre transform algebraically?
 
 ## From curves to equations
 
-Rephrasing the question in with some mathematical notation, given a function
-$$f(x)$$ with independent variable $$x$$, what is the procedure to compute the
-Legendre transform $$g(p)$$, where the independent variable $$p$$ ranges over
-the slopes of the tangent lines?
+Let's rephrase the question in mathematical notation: given a function $$f(x)$$
+with independent variable $$x$$, what is the procedure to compute the Legendre
+transform $$g(p)$$, where the independent variable $$p$$ ranges over the slopes
+of the tangent lines?
 
 The trick is to consider the right triangle formed by the points on the
 function $$f$$ and the negative $$y$$-intercept $$g$$:
@@ -129,12 +130,15 @@ the regular $$y$$-intercept, the triangle height would have been $$f - g$$, and
 the Legendre transform so defined would have an extra minus sign floating
 around and not be an involution.
 
+> Aside: not everyone defines the Legendre transform this way, so pay attention
+> to minus sign conventions in the literature.
+
 One other property to note is that if they were phyiscal quantities, the
 Legendre transform $$g$$ must have the same units as $$f$$. For example, if
-$$f$$ had units of energy, then $$g$$ must also be some transformed measure of
-energy. Likewise, the product $$p x$$ must also have units of energy. [How does
-this relate to $$p$$ and $$x$$ being conjugate variables? What's the definition
-of a conjugate variable and what physical process do they represent?]
+$$f$$ had units of energy, then $$g$$ must also be a measure of energy.
+Likewise, the product $$p x$$ must also have units of energy. [How does this
+relate to $$p$$ and $$x$$ being conjugate variables? What's the definition of a
+conjugate variable and what physical process do they represent?]
 
 Finally, solving for $$g$$, we get
 
@@ -145,20 +149,25 @@ what is lost is the notion of what is the independent variable. Since the
 Legendre transform is a function of the tangent line slopes, what we do is the
 following: given the input $$f(x)$$
 
-1. Find the tangent line slopes by taking the derivative $$p(x) = \frac{df(x)}{dx}$$
-2. Invert this equation to get $$x(p) = \left(\frac{df}{dx}\right)^{-1}(p)$$
+1. Find the tangent line slopes by taking the derivative $$p = f'(x)$$
+2. Invert this equation to get $$x = f'^{-1}(p)$$.
 3. Insert into the expression $$p x - f(x)$$ to eliminate $$x$$ in favor of $$p$$
+
+The $$f'^{-1}(p)$$ notation is awkward so I'll write $$x = x(p)$$
 
 In summary, this is the prescription for finding the Legendre transform:
 
-> $$ g(p) = p \, x(p) - f(x(p))$$
->
-> $$\text{where } x(p) \text{ is obtained by inverting } p(x) = \frac{df(x)}{dx}$$
+$$\boxed{
+\begin{gather}
+  g(p) = p \, x(p) - f(x(p)) \\
+  \text{where } x(p) \text{ is obtained by inverting } p = f'(x)
+\end{gather}
+}$$
 
 Now we can answer the question of whether the Legendre transform of $$f(x) =
 x^2$$ is also a parabola:
 
-1. The derivative $$p(x) = 2x$$
+1. The derivative is $$p(x) = 2x$$
 2. The original coordinate in terms of the derivative is $$x(p) = p / 2$$
 3. The Legendre transform is $$g(p) = p \cdot p/2 - (p/2)^2 = p^2 / 4$$
 
@@ -168,8 +177,8 @@ is an involution.
 
 Before we move on, I want to show one other way to compute the Legendre
 transform that involves maximization, which turns out to be related to
-something that is always maximized in Nature (hint, it has to do with the
-second law of thermodynamics).
+something that is maximized in Nature (hint, it has to do with the second law
+of thermodynamics).
 
 Going back to the plot of our curve (solid green), pick a value of the slope
 $$p$$ and draw the line $$y = px$$ passing through the origin (solid blue).
@@ -192,14 +201,15 @@ Operationally, when calculating the maximum over $$x$$, we'll end up computing
 the derivative of the argument $$p\,x - f(x)$$ and setting it to zero, which
 gives $$p = f'(x)$$ as before.
 
-It turns out the definition changes if the function is concave down to $$g(p) =
-\min_x \{p\,x - f(x)\}$$.
+> For a concave down function, the definition changes to $$g(p) = \min_x \{p\,x - f(x)\}$$.
+
+Now let's have some fun.
 
 ## Visual examples and curves which get us in trouble
 
-Let's have some fun: I've worked out the Legendre transform in some common
-cases to give you a sense of how it behaves. Taking a function and translating
-the curve upwards shifts the Legendre transform downwards an equal amount:
+I've worked out the Legendre transform in some common cases to give you a sense
+of how it behaves. Taking a function and translating the curve upwards shifts
+the Legendre transform downwards an equal amount:
 
 ![](/images/legendre/translate-up.png)
 
@@ -207,6 +217,9 @@ Translating the original curve to the right shifts the Legendre transform to
 the left and downwards on a diagonal:
 
 ![](/images/legendre/translate-right.png)
+
+You can find a whole slew of properties of the Legendre transform on
+[Wikipedia](https://en.wikipedia.org/wiki/Legendre_transformation#Further_properties).
 
 Moving away from parabolas, the transform of the exponential function $$e^x$$
 is only defined for $$p > 0$$ because the slopes of the tangent lines are all
@@ -237,56 +250,201 @@ example: a double well.
 
 The Legendre transform (technically the
 [Legendre-Fenchel](https://en.wikipedia.org/wiki/Convex_conjugate) transform in
-this more general case) becomes multi-valued. The two minima in $$f(X)$$ map
-onto the "X" crossing at the origin in $$g(p)$$ while the two cusps or "horns"
-in the transform correspond to the two points where $$f$$ changes concavity.
+this more general case) becomes multi-valued. The two minima in $$f(x)$$ map
+onto the "X" crossing on the vertical axes in the $$g(p)$$ plot while the two
+cusps or "horns" in the transform correspond to the two points where $$f$$
+changes concavity.
 
 As an aside, transforms of non-convex functions are related to convex hulls and
 the [Maxwell construction](https://en.wikipedia.org/wiki/Maxwell_construction),
 but to avoid these complexities, we'll deal only with convex or concave
-functions going forward.
+functions going forward. Another way of saying this is that we'll restrict
+ourselves to functions whose derivative is *single-valued* when considered as a
+function of $$p$$. For our purposes, that means $$p = f'(x)$$ is monotonic
+increasing or decreasing. The example on the right is not permissible because
+there are some values of $$p$$ which corresponds to multiple values of $$x$$.
 
-## Differentials and potentials
+![](/images/legendre/single-valued.png)
 
-Behavior of differentials:
+> The fact that $$p = f'(x)$$ is single-valued means that choosing $$p$$
+> uniquely specifies $$x$$. Either one could play the role as the independent
+> variable. To make this symmetry explicity, physicists often overload the
+> notation and write $$p(x)$$ and $$x(p)$$ to represent the curve viewed as a
+> function of $$x$$ and $$p$$ respectively. It should be clear from the context
+> whether we mean $$x$$ the independent variable, or $$x$$ the function (and
+> similarly for $$p$$).
 
-$$df = p \, dx \quad \text{where } p = \frac{df}{dx}$$
+In the past three sections, we've explored the Legendre transform from the
+perspective of duality for plane curves, namely the mapping between points and
+tangent lines. In the next sections, I want to move from derivative calculus to
+integral calculus and reinterpret the construction in terms of areas. This will
+lead to a connection between Legendre transforms to integrals of inverse
+functions, the product rule and to an explict geometric symmetry between $$f$$
+and $$g$$.
 
-What about the differential of $$g$$?
+## From slopes to areas
 
-$$dg = x\,dp + p \frac{dx}{dp} - \frac{df}{dx} \frac{dx}{dp}$$
+Go back to the triangle in the plot of $$f(x)$$ constructed by picking a point
+$$x$$ and drawing the tangent line, which led to the relationship
 
-The last two terms cancel, and we find
+$$ p\,x = f + g $$
 
-$$dg = x\,dp$$
+Each of the three terms is a length, and the equation essentially is two ways
+to express the height of the triangle: "the height of the triangle is equal to
+the slope $$p$$ times the width $$x$$, or equivalently, the sum of the line
+segments $$f$$ and $$g$$".
 
-Point is the slope of the Legendre transform is the original independent
-variable $$x$$.
+Now switch to the plot the derivative $$p = f'(x)$$. What does the triangle
+(specifically the height of the triangle) become?
 
-In classical mechanics, a common question we want to know is "when an object is
-at some position $$x$$, what is the force $$F$$ acting on it?" For example,
-when a mass attached to a spring is stretched to a displacement $$x$$ away from
-its equilibrium position, what is the force $$F$$ will the mass experience? One
-way to answer this question is with the potential energy $$V(x)$$: taking its
-derivative with respect to $$x$$ tells us the force:
+![](/images/legendre/lengths-vs-areas.png)
+
+In the $$p$$-$$x$$ axes, the three terms representing lengths become areas:
+
+* The height of the triangle $$p \, x$$ becomes the area of the *rectangle*
+  with dimensions $$x \times p$$.
+
+* The value of the function $$f$$ at an argument $$x$$ becomes the *area* under
+  the curve of $$p$$ integrated up to $$x$$:
+
+  $$ f(x) = \int_0^x\! dx\, p(x) $$
+
+* To make things add up, the negative $$y$$-intercept $$g$$ must be the area
+  above the curve of $$p(x)$$. Because the derivative is single-valued, we can
+  work with the inverse $$x(p)$$ and integrate up to $$p$$:
+
+  $$ g(p) = \int_0^p\! dp\, x(p) $$
+
+Remember, because the derivative is single-valued, $$x$$ and $$p$$ uniquely
+specify one another. The area $$g(p)$$ is the Legendre transform of the
+function $$f(x)$$.
+
+![](/images/legendre/lengths-vs-areas-flipped.png)
+
+From this area diagram, we can read off almost every useful equation related to
+the Legendre transform!
+
+* Taking $$p$$ to be the independent variable, we can read off
+
+  $$ g(p) = p\,x(p) - f(x(p)) $$
+
+  which is the definition of the Legendre transform.
+
+* Imagine making a small change in the height of the triangle $$d(px)$$. Using
+  the product rule gives $$d(px) = p\,dx + x\,dp$$
+
+* Imagine making a small change $$dx$$ in the value of $$x$$. Then $$df = p
+  dx$$. Similarly, a small change $$dp$$ implies $$dg = x dp$$.
+
+> I've simplified the arguments by choosing a function $$f(x)$$ which both
+> passes through the origin and has zero slope at the origin. You can check
+> that a suitably modified construction continues to work for more general
+> functions satisfying neither of those conditions.
+
+* [switch axes graphically?]
+
+* Connect to integration of inverse functions
+
+* Connect to product rule and integration by parts
+
+* Behavior of differentials
+
+* Duality of derivatives and derivatives being inverses
+
+Remember that $$p$$, $$f$$ and $$g$$ are the slope, the value of the function
+and the $$y$$-intercept of the tangent line respectively for a chosen value of
+$$x$$. Because the derivative $$f'(x)$$ is single-valued, we can equivalently
+say that $$x$$, $$f$$ and $$g$$ are the $$x$$-coordinate, function value and
+$$y$$-intercept of the tangent line respectively for a chosen value of the
+slope $$p$$.
+
+
+# Integration of inverse functions
+
+The French mathematician Charles-Ange Laisant "could hardly believe that this
+theorem is new" when he published his article "Integration of Inverse
+Functions" in 1905. The question is simple: given a function $$y = f(x)$$ which
+has an inverse $$x = \phi(y)$$, what is the integral of $$\phi$$? (I'm going to
+use Laisant's original notation.)
+
+Defining $$F(x) = \int dx\, f(x)$$ and $$\Phi(x) = \int dx\, \phi(x)$$, Laisant
+showed that
+
+$$ \Phi(x) = x\, \phi(x) - F(\phi(x)) $$
+
+Does this formula look familiar? If we replace $$\Phi \rightarrow g$$, $$\phi
+\rightarrow p$$, $$x \rightarrow p$$ and $$F \rightarrow f$$, we have exactly
+the definition of the Legendre transform.
+
+[What's with the indefinite integration constants?]
+
+
+---
+
+The graphical behavior of the Legendre transform is fun to play with, but what
+are its properties that make it useful?
+
+## Derivatives and potentials
+
+It turns out a useful quantity to examine is the derivative of $$g(p)$$. A
+straightforward calculation gives the answer:
+
+$$ \begin{align}
+   \frac{dg}{dp} &= \frac{d}{dp} [ p\,x(p) - f(x(p)) ] \\
+                 &= x(p) + p \, \frac{dx}{dp} - \frac{df}{dx} \frac{dx}{dp} \\
+                 &= x(p)                 
+   \end{align}$$
+
+The derivative of the Legendre transform is the original independent variable
+$$x$$.
+
+Written side-by-side, derivatives of the original function and its Legendre
+transform display a pretty symmetry:
+
+$$\boxed{
+\begin{align}
+  \frac{df}{dx} &= p(x) \\
+  \frac{dg}{dp} &= x(p)
+\end{align}
+}$$
+
+Duality in action! This property is useful for constructing potentials in
+physics, and I'll introduce it by posing a toy problem.
+
+In classical mechanics, a common question we want to know is "in the presence
+of some potential $$V(x)$$, what is the force $$F$$ acting on an object when
+it's located at position $$x$$"? For example, when a mass attached to a spring
+is stretched to a displacement $$x$$ away from its equilibrium position
+$$x_0$$, what is the force $$F$$ that the mass experience?
+
+One way to answer this question is to introduce the concept of a potential
+energy $$V(x)$$ whose derivative with respect to $$x$$ tells us the force:
 
 $$ F(x) = -\frac{dV(x)}{dx} $$
 
 For the case of a spring with spring constant $$k$$, the potential energy is
-$$V(x) = kx^2/2$$ and the force is $$F(x) = -kx$$, which is Hooke's law.
+$$V(x) = k(x-x_0)^2/2$$ and the force is $$F(x) = -k(x-x_0)$$, which is Hooke's
+law.
 
-What if we wanted to invert the question: "when an object is experiencing a
-force $$F$$, what is its position $$x$$?" The easy answer would be to invert
-the equation between force and position, which in the case of the spring,
-gives:
+> Aside: the convention in physics is to compute the force of the potential
+> acting on the object, so there's an extra minus sign floating around which
+> we'll need to keep track of.
 
-$$ x(F) = -F/k $$
+What if I wanted to construct a potential $$W(F)$$ whose derivative with
+respect to the force $$F$$ experienced by the object gives us the displacement
+$$x$$?
 
-But what if we wanted a potential "energy" which is a function of the force
-$$F$$ and whose derivative gives us the position? This is the
-Legendre transform of $$V(x)$$:
+Use the derivative properties of the Legendre transform: the relationship
+between the potential energy and force is just the first relation with the
+substitutions $$f \rightarrow -V$$ and $$p \rightarrow F$$. Substituting $$g
+\rightarrow -W$$ in the second relation gives:
 
-$$ dW = -x dF $$
+$$ x(F) = -\frac{dW(F)}{dF} $$
+
+The potential $$W$$ is the Legendre transform of $$V$$, up to some minus signs!
+The answer for the mass attached to a spring is $$W = F^2/(2k) - Fx_0$$.
+
+---
 
 Going back to differentials, what happens when we have a function $$f(x,y)$$ of
 multiple variables and transform just one of them?
@@ -313,6 +471,26 @@ $$f(x)$$ and $$g(p)$$ are inverses of one another.
 ![area-interpretation](/images/legendre/area.png)
 
 [Relationship with Laplace transform via saddle point]
+
+[What is the derivative of $$g(p)$$, or equivalently, it's differential, and
+how is it useful for classical mechanics (=potentials)? How does this relate to
+the area interpretation and the product rule?]
+
+Behavior of differentials:
+
+$$df = p \, dx \quad \text{where } p = \frac{df}{dx}$$
+
+What about the differential of $$g$$?
+
+$$dg = x\,dp + p \frac{dx}{dp} - \frac{df}{dx} \frac{dx}{dp}$$
+
+The last two terms cancel, and we find
+
+$$dg = x\,dp$$
+
+Point is the slope of the Legendre transform is the original independent
+variable $$x$$.
+
 
 # Maximizing entropy
 

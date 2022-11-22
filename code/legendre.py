@@ -16,6 +16,10 @@ class LegendreAxesConfig:
     ylim2: Tuple[float, float] = (-2.7, 2.7)
     fontsize: int = 16
     dpi: int = 150
+    xlabel1: str = 'x'
+    ylabel1: str = 'f'
+    xlabel2: str = 'p'
+    ylabel2: str = 'g'
 
 
 def setup_legendre_axes(config: Optional[LegendreAxesConfig] = None):
@@ -28,15 +32,15 @@ def setup_legendre_axes(config: Optional[LegendreAxesConfig] = None):
     ax1.set_ylim(*config.ylim1)
     ax1.spines['right'].set_visible(False)
     ax1.spines['top'].set_visible(False)
-    ax1.text(.97, -.10, 'x', fontsize=config.fontsize, transform=ax1.transAxes)
-    ax1.text(-.10, .97, 'f', fontsize=config.fontsize, transform=ax1.transAxes)
+    ax1.text(.97, -.10, config.xlabel1, fontsize=config.fontsize, transform=ax1.transAxes)
+    ax1.text(-.10, .97, config.ylabel1, fontsize=config.fontsize, transform=ax1.transAxes)
 
     ax2.set_xlim(*config.xlim2)
     ax2.set_ylim(*config.ylim2)
     ax2.spines['right'].set_visible(False)
     ax2.spines['top'].set_visible(False)
-    ax2.text(0.97, -0.10, 'p', fontsize=config.fontsize, transform=ax2.transAxes)
-    ax2.text(-0.10, 0.97, 'g', fontsize=config.fontsize, transform=ax2.transAxes)
+    ax2.text(0.97, -0.10, config.xlabel2, fontsize=config.fontsize, transform=ax2.transAxes)
+    ax2.text(-0.10, 0.97, config.ylabel2, fontsize=config.fontsize, transform=ax2.transAxes)
 
     return fig, ax1, ax2
 
@@ -180,6 +184,8 @@ def translate_up():
     alphas = np.linspace(0, 1, 5)
     for alpha in alphas:
         ax1.plot(x, x**2 + alpha, color=plt.cm.viridis(alpha))
+
+    ax1.text(-2, -2, "f(x) + a")
     
     # p-g (right) plot
     ax2.axhline(0, color="lightgrey")
@@ -188,6 +194,8 @@ def translate_up():
     for alpha in alphas:
         ax2.plot(x, x**2/4 - alpha, color=plt.cm.viridis(alpha))
     
+    ax2.text(-2, -2, "g(p) - a")
+
     plt.tight_layout()
     plt.savefig(IMGDIR / 'translate-up.png', bbox_inches='tight')
 
@@ -205,12 +213,16 @@ def translate_right():
     for alpha in alphas:
         ax1.plot(x, (x - alpha)**2, color=plt.cm.viridis(alpha))
     
+    ax1.text(-2, -2, "f(x-a)")
+    
     # p-g (right) plot
     ax2.axhline(0, color="lightgrey")
     ax2.axvline(0, color="lightgrey")
 
     for alpha in alphas:
         ax2.plot(x, x**2/4 + x*alpha, color=plt.cm.viridis(alpha))
+    
+    ax2.text(-2, -2, "g(p) + a p")
     
     plt.tight_layout()
     plt.savefig(IMGDIR / 'translate-right.png', bbox_inches='tight')
@@ -233,6 +245,8 @@ def legendre_exponential():
 
     ax1.plot(x, np.exp(x), color=plt.cm.viridis(0))
     
+    ax1.text(-2.5, 2.5, "exp(x)")
+    
     # p-g (right) plot
     ax2.axhline(0, color="lightgrey")
     ax2.axvline(0, color="lightgrey")
@@ -240,6 +254,8 @@ def legendre_exponential():
     x = np.linspace(0.0001, 5, 201)
     ax2.plot(x, x * np.log(x) - x, color=plt.cm.viridis(0.7))
     
+    ax2.text(0.5, 2.5, "p log p - p")
+
     plt.tight_layout()
     plt.savefig(IMGDIR / 'legendre-exponential.png', bbox_inches='tight')
 
@@ -261,6 +277,8 @@ def legendre_logarithm():
 
     ax1.plot(x, np.log(x), color=plt.cm.viridis(0))
     
+    ax1.text(0.5, 2.5, "log x")
+
     # p-g (right) plot
     ax2.axhline(0, color="lightgrey")
     ax2.axvline(0, color="lightgrey")
@@ -268,6 +286,8 @@ def legendre_logarithm():
     x = np.linspace(1e-5, 5, 201)
     ax2.plot(x, np.log(x) + 1, color=plt.cm.viridis(0.7))
     
+    ax2.text(0.5, 2.5, "1 + log p")
+
     plt.tight_layout()
     plt.savefig(IMGDIR / 'legendre-logarithm.png', bbox_inches='tight')
 
@@ -338,6 +358,172 @@ def legendre_double_well():
     plt.savefig(IMGDIR / 'legendre-double-well.png', bbox_inches='tight')
 
 
+def single_valued():
+    config = LegendreAxesConfig(
+        xlim1=(-0.6, 1.7),
+        ylim1=(-0.6, 1.7),
+        xlim2=(-0.6, 1.7),
+        ylim2=(-0.6, 1.7),
+        xlabel1='x',
+        ylabel1='p',
+        xlabel2='x',
+        ylabel2='p',
+    )
+    fig, ax1, ax2 = setup_legendre_axes(config)
+
+    def p1(x): return x + x**3/6
+    def p2(x): return x * (4 * (x-1)**2 / (1 + (x-1)**4) + 1)
+
+    # Triangle (left) plot
+    ax1.axhline(0, color="lightgrey")
+    ax1.axvline(0, color="lightgrey")
+
+    xx = np.linspace(-1, 2, 101)
+
+    ax1.plot(xx, p1(xx), 'k', alpha=0.7)
+
+    ax1.set_xticks([0, 1])
+    ax1.set_yticks([0, 1])
+
+    ax1.text(0.5, -0.3, "single-valued")
+
+    # Area (right) plot
+    ax2.axhline(0, color="lightgrey")
+    ax2.axvline(0, color="lightgrey")
+
+    ax2.plot(xx, p2(xx), color="k", alpha=0.7)
+    
+    ax2.set_xticks([0, 1])
+    ax2.set_yticks([0, 1])
+
+    ax2.text(0.5, -0.3, "not single-valued")
+
+    plt.tight_layout()
+    plt.savefig(IMGDIR / 'single-valued.png', bbox_inches='tight')
+
+
+def lengths_vs_areas():
+    config = LegendreAxesConfig(
+        xlim1=(-0.7, 1.6),
+        ylim1=(-1.2, 1.1),
+        xlim2=(-0.7, 1.6),
+        ylim2=(-0.6, 1.7),
+        xlabel2='x',
+        ylabel2='p',
+    )
+    fig, ax1, ax2 = setup_legendre_axes(config)
+
+    def f(x): return x**2/2 + x**4/24
+    def p(x): return x + x**3/6
+
+    # Triangle (left) plot
+    ax1.axhline(0, color="lightgrey")
+    ax1.axvline(0, color="lightgrey")
+
+    xx = np.linspace(-5, 5, 101)
+    x = 1
+    g = x * p(x) - f(x)
+    ax1.plot(xx, p(x)*xx - g, 'k', alpha=0.3)
+    ax1.plot(xx, f(xx), 'k', alpha=0.7)
+    ax1.plot([0, x, x, 0], [-g, -g, f(x), -g], color=plt.cm.viridis(0.7))
+    ax1.plot([x], [f(x)], 'o', color=plt.cm.viridis(.99))
+
+    pad = 0.05
+    ax1.text(x/2, -g, "$x$", va="top")
+    ax1.text(x + pad, -g/2, "$g$", ha="left")
+    ax1.text(x + pad, f(x)/2, "$f$", ha="left")
+    
+    ax1.text(-0.33, 0.7, "height = p x = f + g\nwhere p is the slope")
+
+    ax1.set_xticks([0, 1])
+    ax1.set_yticks([-1, 0, 1])
+
+    # Area (right) plot
+    ax2.axhline(0, color="lightgrey")
+    ax2.axvline(0, color="lightgrey")
+
+    ax2.plot(xx, p(xx), color="k", alpha=0.7)
+    
+    alpha = .5
+    x = np.linspace(0, 1, 200)
+    ax2.fill_between(x, p(x), alpha=alpha, color='C0')
+    ax2.fill_between(x, p(1), p(x), alpha=alpha, color='C1')
+
+    ax2.text(0.7, 0.3, "f")
+    ax2.text(0.3, 0.8, "g")
+    ax2.text(1.0, -0.05, "x", va="top", ha="center")
+    ax2.text(-0.05, p(1), "p", va="center", ha="right")
+    ax2.text(1, 1.6, "p(x)")
+
+    ax2.set_xticks([0, 1])
+    ax2.set_yticks([0, 1])
+
+    plt.tight_layout()
+    plt.savefig(IMGDIR / 'lengths-vs-areas.png', bbox_inches='tight')
+
+
+def lengths_vs_areas_flipped():
+    config = LegendreAxesConfig(
+        xlim1=(-0.7, 1.6),
+        ylim1=(-0.6, 1.7),
+        xlim2=(-0.7, 1.6),
+        ylim2=(-1.2, 1.1),
+        xlabel1='p',
+        ylabel1='x',
+    )
+    fig, ax1, ax2 = setup_legendre_axes(config)
+
+    def f(x): return x**2/2 + x**4/24
+    def p(x): return x + x**3/6
+
+    # Area (left) plot
+    ax1.axhline(0, color="lightgrey")
+    ax1.axvline(0, color="lightgrey")
+
+    xx = np.linspace(-5, 5, 101)
+    ax1.plot(p(xx), xx, color="k", alpha=0.7)
+    
+    alpha = .5
+    x = np.linspace(0, 1, 200)
+    ax1.fill_between(p(x), x, alpha=alpha, color='C0')
+    ax1.fill_between(p(x), x, 1, alpha=alpha, color='C1')
+
+    ax1.text(0.3, 0.7, "f")
+    ax1.text(0.8, 0.3, "g")
+    ax1.text(-0.05, 1.0, "x", va="center", ha="right")
+    ax1.text(p(1), -0.05, "p", va="top", ha="center")
+    ax1.text(1.4, 1.35, "x(p)")
+
+    ax1.set_xticks([0, 1])
+    ax1.set_yticks([0, 1])
+
+    # Triangle (right) plot
+    ax2.axhline(0, color="lightgrey")
+    ax2.axvline(0, color="lightgrey")
+
+    xx = np.linspace(-5, 5, 101)
+    pp = p(xx)
+    gg = pp * xx - f(xx)
+    g1 = p(1)-f(1)
+    ax2.plot(pp, pp * 1 - f(1), 'k', alpha=0.3)
+    ax2.plot(pp, gg, 'k', alpha=0.7)
+    ax2.plot([0, p(1), p(1), 0], [-f(1), -f(1), g1, -f(1)], color=plt.cm.viridis(0.7))
+    ax2.plot([p(1)], [g1], 'o', color=plt.cm.viridis(.99))
+
+    pad = 0.05
+    ax2.text(p(1)/2, -f(1), "$p$", va="top")
+    ax2.text(p(1) + pad, -f(1)/2, "$f$", ha="left")
+    ax2.text(p(1) + pad, g1/2, "$g$", ha="left")
+    
+    ax2.text(-0.33, 0.7, "height = p x = f + g\nwhere x is the slope")
+
+    ax2.set_xticks([0, 1])
+    ax2.set_yticks([-1, 0, 1])
+
+    plt.tight_layout()
+    plt.savefig(IMGDIR / 'lengths-vs-areas-flipped.png', bbox_inches='tight')
+
+
 with plt.xkcd():
     # parabola_one_tangent()
     # duality()
@@ -348,4 +534,7 @@ with plt.xkcd():
     # legendre_exponential()
     # legendre_logarithm()
     # legendre_circle()
-    legendre_double_well()
+    # legendre_double_well()
+    # single_valued()
+    # lengths_vs_areas()
+    lengths_vs_areas_flipped()

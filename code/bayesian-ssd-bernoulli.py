@@ -106,7 +106,7 @@ def posterior_grid():
     axs = gs.subplots(sharex=True)
 
     for n in range(1, nmax+1):
-z        theta = np.linspace(0, 1, 201)
+        theta = np.linspace(0, 1, 201)
         lambda1, lambda2 = 1, 1
         ax = axs[(n-1) % 5, (n-1)// 5]
         n_above_threshold = 0
