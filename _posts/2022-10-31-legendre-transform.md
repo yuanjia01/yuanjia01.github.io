@@ -7,14 +7,16 @@ draft: true
 ---
 
 For a physics student, the Legendre transform is one of those mathematical
-techniques which textbooks pull out with little explanation and intuition. You
-may have encountered it in thermodynamics, where it is used to relate the
-internal energy of a system to other thermodynamic potentials like the free
-energy or enthalpy. Or maybe you came across the Legendre transform in
-classical mechanics as the link between the Lagrangian and the Hamiltonian.
+techniques which textbooks often don't give as much love and attention as
+compared to the Fourier or Laplace transforms. Yet, it's used in key pieces of
+classical physics: you may have encountered it in thermodynamics, where it is
+used to relate the internal energy of a system to other thermodynamic
+potentials like the free energy or enthalpy. Or maybe you came across the
+Legendre transform in classical mechanics as the link between the Lagrangian
+and the Hamiltonian.
 
-As compared to common operations like the Fourier or Laplace transforms, I
-found the Legendre transform to be more opaque and less intuitive:
+I found the Legendre transform to be opaque and less intuitive than other
+operations:
 
 * I did not understand why the Legendre transform $$G(p)$$ of a function
   $$F(x)$$ is defined by $$G = p\,x - F$$.
@@ -27,8 +29,6 @@ If you've asked the same questions, then my goal with this post is to share a
 clear exposition of what the Legendre transform is, as well as why it is the
 right way to describe the deep connection between energy, temperature and
 entropy.
-
-Let's get started.
 
 
 ## Curves and tangent lines
@@ -331,42 +331,17 @@ another):
 
 $$ G(p) = \int_0^p\! dp\, g(p) $$
 
-Now it's clear that the inverse of $$f$$ is indeed the derivative of $$G$$. The
-Legendre transform has the property the derivatives of the original function
-and its transform are inverses of one another.
-
-From this area diagram, we can read off almost every useful equation related to
-the Legendre transform, starting with the definition: take $$p$$ to be the
-independent variable. The relationship between the areas is
+From this area diagram, we can read off the definition for the Legendre
+transform. Take $$p$$ to be the independent variable and 
 
 $$ G(p) = p\,g(p) - F(g(p)) $$
 
-which is the definition.
 
-How do differentials behave? Imagine making a small change $$dx$$
+As promised, the derivative of the $$G$$ is indeed the inverse of $$f$$.
 
-Imagine making a small change in the height of the
-triangle $$d(px)$$. Using the product rule gives $$d(px) = p\,dx + x\,dp$$
+The Legendre transform has the property the derivatives of the original
+function and its transform are inverses of one another.
 
-![](/images/legendre/differentials.png)
-
-The curve of the derivative $$p = f(x)$$ is
-
-$$\boxed{
-\begin{align}
-  \frac{dF}{dx} &= p(x) \\
-  \frac{dG}{dp} &= x(p)
-\end{align}
-}$$
-
-* Connect to product rule and integration by parts
-
-* Duality of derivatives and derivatives being inverses
-
-> I've simplified the arguments by choosing a function $$f(x)$$ which both
-> passes through the origin and has zero slope at the origin. You can check
-> that a suitably modified construction continues to work for more general
-> functions satisfying neither of those conditions.
 
 # Integration of inverse functions
 
@@ -412,6 +387,33 @@ $$ G(x) = x\, \arctanh x - \log\cosh\arctanh x = x\, \arctanh x + \frac{1}{2} \l
 where we used $$\cosh\arctanh x = 1 / \sqrt{1-x^2}$$.
 
 ![](/images/legendre/arctanh-integral.png)
+
+---
+
+How do differentials behave? Imagine making a small change $$dx$$
+
+Imagine making a small change in the height of the
+triangle $$d(px)$$. Using the product rule gives $$d(px) = p\,dx + x\,dp$$
+
+![](/images/legendre/differentials.png)
+
+The curve of the derivative $$p = f(x)$$ is
+
+$$\boxed{
+\begin{align}
+  \frac{dF}{dx} &= p(x) \\
+  \frac{dG}{dp} &= x(p)
+\end{align}
+}$$
+
+* Connect to product rule and integration by parts
+
+* Duality of derivatives and derivatives being inverses
+
+> I've simplified the arguments by choosing a function $$f(x)$$ which both
+> passes through the origin and has zero slope at the origin. You can check
+> that a suitably modified construction continues to work for more general
+> functions satisfying neither of those conditions.
 
 
 ## Potentials and their derivatives
