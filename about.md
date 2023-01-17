@@ -5,4 +5,4 @@ permalink: /about/
 published: true
 ---
 
-AI Research Engineer in New York, NY.
+ML Engineer in New York, NY.
