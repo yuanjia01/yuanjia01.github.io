@@ -3,7 +3,6 @@ layout: post
 title: "Company tagging"
 published: true
 mathjax: true
-draft: true
 ---
 
 Let's say you are an analyst and you want to know the fraction of companies
