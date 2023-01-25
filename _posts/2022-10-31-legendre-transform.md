@@ -304,8 +304,8 @@ Now switch to the plot the derivative $$p = f(x)$$. What does the triangle
 
 In the $$p$$-$$x$$ axes, the three terms representing lengths become areas:
 
-1. The triangle height $$p \, x$$ becomes the area of the *rectangle* with
-   dimensions $$x \times p$$.
+1. The height of the triangle $$p \, x$$ becomes a *rectangle* with dimensions
+   $$x \times p$$.
 
 2. The value $$F(x)$$ becomes the *area* under the curve $$f$$ integrated up to
    $$x$$:
@@ -315,51 +315,71 @@ In the $$p$$-$$x$$ axes, the three terms representing lengths become areas:
 3. To make things add up, the area above the curve $$f$$ must be the Legendre
    transform $$G$$!
 
-In terms of areas, the symmetry between $$F$$ and $$G$$ is beautifully
-explicit: they are the two partitions of a rectangle delineated by the
-derivative curve $$f$$.
-
-To express the area $$G$$, use the fact that the derivative $$p = f(x)$$ is
-single-valued and view the curve in terms of its inverse $$x = g(p)$$. We can
-plot it by flipping the axes:
+This area diagram will give us the equation for the Legendre transform: to
+express the area $$G$$ as a function of $$p$$, use the fact that the derivative
+$$p = f(x)$$ is single-valued and view the curve in terms of its inverse $$x =
+g(p)$$. I've flipped the axes and plotted the inverse below on the left:
 
 ![](/images/legendre/lengths-vs-areas-flipped.png)
 
-The value $$G(p)$$ becomes the area under the curve $$g$$ integrated up to
-$$p$$ (remember that $$p$$ and $$x$$ aren't independent and determine one
-another):
-
-$$ G(p) = \int_0^p\! dp\, g(p) $$
-
-From this area diagram, we can read off the definition for the Legendre
-transform. Take $$p$$ to be the independent variable and 
+The area under the curve up to $$p$$ is:
 
 $$ G(p) = p\,g(p) - F(g(p)) $$
 
+which is the Legendre transform. In terms of areas, the symmetry between $$F$$
+and $$G$$ is beautifully explicit: they are the two partitions of a rectangle
+defined by the derivative curve $$f(x)$$, or equivalently, $$g(p)$$.
 
-As promised, the derivative of the $$G$$ is indeed the inverse of $$f$$.
+The area diagram answers another question we hinted at earlier: how are the
+derivatives of $$F$$ and $$G$$ related? They are inverses! Mathematically, the
+area under the curve is the integral
 
-The Legendre transform has the property the derivatives of the original
-function and its transform are inverses of one another.
+$$ G(p) = \int_0^p\! dp\, g(p) $$
 
+which means the derivative $$g(p) = G'(p)$$ is indeed the inverse of $$f(x) =
+F'(x)$$, as promised.
+
+Physicists will often abuse notation and write the duality between the
+derivatives as
+
+$$\boxed{
+\begin{align}
+  \frac{dF}{dx} &= p \\
+  \frac{dG}{dp} &= x
+\end{align}
+}$$
+
+Yes, it doesn't tell you when $$p$$ and $$x$$ are acting as functions or as
+variables, but the equations sure are symmetric! This duality is useful because
+it allows us to construct families of potentials in physical applications. For
+a system, if $$x$$ is the independent variable
+
+> I've simplified the arguments by choosing a function $$F(x)$$ which both
+> passes through the origin and has zero slope at the origin. You can check
+> that a suitably modified construction, involving keeping track of the
+> constant of integration and the integration limits, continues to work for
+> more general functions satisfying neither of those conditions.
+
+I can't pass up showing you one more surprising connection the Legendre
+transform has to integral calculus before moving to physics.
 
 # Integration of inverse functions
 
-Back in 1905 when the French mathematician Charles-Ange Laisant published his
-article "Integration of Inverse Functions", he wrote that he "could hardly
-believe that this theorem is new". The question is simple: given a function $$y
-= f(x)$$ which has an inverse $$x = g(y)$$, what is the integral of $$g$$?
+Back in 1905, the mathematician Charles-Ange Laisant published a short article
+titled "Integration of Inverse Functions". In it, he posed a simple question:
+given a function $$y = f(x)$$ which has an inverse $$x = g(y)$$, what is the
+integral of $$g$$?
 
-Defining $$F(x) = \int dx\, f(x)$$ and $$G(x) = \int dx\, g(x)$$, Laisant
-showed that
+Given the simplicity of the question, he wrote that he "could hardly believe
+that this theorem is new." Defining $$F(x) = \int dx\, f(x)$$ and $$G(x) = \int
+dx\, g(x)$$, Laisant showed that
 
 $$ G(x) = x\, g(x) - F(g(x)) $$
 
 Look familiar?! In fact, among the three proofs he provided, his graphical
-proof is based on the area construction we discussed above.
-
-From this viewpoint, the Legendre transform of a function is the integral of
-the inverse of its derivative.
+proof is based on the area construction we discussed above. From this
+viewpoint, the Legendre transform of a function is the integral of the inverse
+of its derivative.
 
 Another of the proofs provided by Laisant uses integration by parts:
 
@@ -382,61 +402,40 @@ $$
 
 straightforward substitution gives
 
-$$ G(x) = x\, \arctanh x - \log\cosh\arctanh x = x\, \arctanh x + \frac{1}{2} \log (1-x^2) $$
+$$ G(x) = x\, \arctanh x - \log\cosh\arctanh x
+  = x\, \arctanh x + \frac{1}{2} \log (1-x^2) $$
 
 where we used $$\cosh\arctanh x = 1 / \sqrt{1-x^2}$$.
 
 ![](/images/legendre/arctanh-integral.png)
 
----
+The domain of the transform is restricted to $$[-1, 1]$$ because $$F$$ has
+asymptotes with slope $$p = \pm 1$$.
 
-How do differentials behave? Imagine making a small change $$dx$$
-
-Imagine making a small change in the height of the
-triangle $$d(px)$$. Using the product rule gives $$d(px) = p\,dx + x\,dp$$
-
-![](/images/legendre/differentials.png)
-
-The curve of the derivative $$p = f(x)$$ is
-
-$$\boxed{
-\begin{align}
-  \frac{dF}{dx} &= p(x) \\
-  \frac{dG}{dp} &= x(p)
-\end{align}
-}$$
-
-* Connect to product rule and integration by parts
-
-* Duality of derivatives and derivatives being inverses
-
-> I've simplified the arguments by choosing a function $$f(x)$$ which both
-> passes through the origin and has zero slope at the origin. You can check
-> that a suitably modified construction continues to work for more general
-> functions satisfying neither of those conditions.
-
+To conclude these sections on mathematics, I hope you've discovered that the
+Legendre transform is actually rather pedestrian and requires nothing more than
+basic calculus to understand, yet provides insight into the tangents of plane
+curves and the connections between core elements of calculus. It's properties
+naturally find application in physics, which we turn to next.
 
 ## Potentials and their derivatives
 
-This property is useful for constructing potentials in physics, and I'll
-introduce it by posing a toy problem.
+In classical mechanics, we often want to know how a system will respond when we
+apply some perturbation. For example, given a spring, what is the restoring
+force when we stretch it an amount $$x - x_0$$ away from its equilibrium
+length? The experimentally determined relationship in the linear regime is $$F
+= -k\,(x-x_0)$$, termed Hooke's law.
 
-In classical mechanics, a common question we want to know is "in the presence
-of some potential $$V(x)$$, what is the force $$F$$ acting on an object when
-it's located at position $$x$$"? For example, when a mass attached to a spring
-is stretched to a displacement $$x$$ away from its equilibrium position
-$$x_0$$, what is the force $$F$$ that the mass experiences?
-
-One way to answer this question is to introduce the concept of a potential
-energy $$V(x)$$ whose derivative with respect to $$x$$ tells us the force:
+However, another way to answer this question is to introduce the concept of a
+potential energy $$V(x)$$ whose derivative with respect to $$x$$ tells us the
+force:
 
 $$ F(x) = -\frac{dV(x)}{dx} $$
 
 For the case of a spring with spring constant $$k$$, the potential energy is
-$$V(x) = k(x-x_0)^2/2$$ and the force is $$F(x) = -k(x-x_0)$$, which is Hooke's
-law.
+$$V(x) = k(x-x_0)^2/2$$.
 
-> Aside: the convention in physics is to compute the force of the potential
+> Note: the convention in physics is to compute the force of the potential
 > acting on the object, so there's an extra minus sign floating around which
 > we'll need to keep track of.
 
@@ -452,12 +451,40 @@ substitutions $$f \rightarrow -V$$ and $$p \rightarrow F$$. Substituting $$g
 $$ x(F) = -\frac{dW(F)}{dF} $$
 
 The potential $$W$$ is the Legendre transform of $$V$$, up to some minus signs!
-The answer for the mass attached to a spring is $$W = F^2/(2k) - Fx_0$$.
+The answer for the mass attached to a spring is
+
+$$ W = \frac{F^2}{2k} - Fx_0 $$
 
 > What physical quantity does $$W$$ measure? It has units of energy, and it is
 > the Legendre transform of the potential energy, so $$W$$ must be something
 > related to the potential energy (and not, e.g. related to the kinetic
 > energy).
+
+The Legendre transform allows us to construct a potential where the perturbing
+and reponse variables are swapped. In this example, the original perturbing
+(also called the control or independent) variable $$x$$ is replaced in favor of
+the response variable $$F$$. Control-response pairs occur in many physics, and
+when they satisfy [XYZ] condition, they are termed conjugate variables.
+
+## Lagrangians and Hamiltonians
+
+For students of analytical mechanics, one of the first concepts introduced is
+that of a Lagrangian, which is the kinetic $$T$$ minus the potential $$V$$
+energy, written as a function of the coordinates $$q_i(t)$$ and velocities
+$$\dot{q}_i(t)$$.
+
+steps is to derive the
+Lagrangian by imagining small displacements in the coordinates of a system. The
+result is a functional that takes as input a function 
+
+---
+
+How do differentials behave? Imagine making a small change $$dx$$
+
+Imagine making a small change in the height of the
+triangle $$d(px)$$. Using the product rule gives $$d(px) = p\,dx + x\,dp$$
+
+![](/images/legendre/differentials.png)
 
 ---
 
@@ -492,16 +519,9 @@ important?
 
 $$df + dg = p\,dx + x\,dp$$
 
-An interesting property of the Legendre transform is that the derivatives of
-$$f(x)$$ and $$g(p)$$ are inverses of one another.
-
 [Relationship with Laplace transform via saddle point]
 
-[What is the derivative of $$g(p)$$, or equivalently, it's differential, and
-how is it useful for classical mechanics (=potentials)? How does this relate to
-the area interpretation and the product rule?]
-
-Behavior of differentials:
+xBehavior of differentials:
 
 $$df = p \, dx \quad \text{where } p = \frac{df}{dx}$$
 
@@ -581,23 +601,19 @@ spring. [Wait, doesn't this involve a change in volume?]
 
 Questions:
 
-- What is the Legendre transform intuitively?
-
-- How is the Legendre transform expressed mathematically? How are the supremum
-  and $$G + F = xy$$ expressions related?
-
-- What are useful mathematical properties of the Legendre transform? Why is the
-  Legendre transform an involution?
-
 - How does Legendre transforms relate to derivatives and conjugate pairs? What
   about units?
 
 - What's wrong with using $$F(x(p))$$, where $$p = dF(x)/dx$$?
 
-- Why is there a convexity constraint?
-
 - What is the differential form of the Legendre transform? How does it relate
   to integration by parts or the product rule?
+
+- Ex: classical mechanics
+
+  - What does the Legendre transform of a potential $$V(x)$$ mean?
+
+  - Both have units of energy: what energy is it?
 
 - Ex: Hamiltonian mechanics
 
@@ -616,12 +632,17 @@ Questions:
   - How are Legendre transforms related to entropy maximization and free energy
     minimization?
 
-- Ex: classical mechanics
+Answered:
 
-  - What does the Legendre transform of a potential $$V(x)$$ mean?
+- What is the Legendre transform intuitively?
 
-  - Both have units of energy: what energy is it?
+- How is the Legendre transform expressed mathematically? How are the supremum
+  and $$G + F = xy$$ expressions related?
 
+- What are useful mathematical properties of the Legendre transform? Why is the
+  Legendre transform an involution?
+
+- Why is there a convexity constraint?
 
 Writer's notes:
 
