@@ -3,7 +3,6 @@ layout: post
 title: "When precision equals recall"
 published: true
 mathjax: true
-draft: true
 ---
 
 For many of you who are machine learning practitioners, I know precision and
@@ -122,5 +121,5 @@ $$ \boxed{\mathbb{E}(\hat{X}) = \frac{r}{p} \cdot \mathbb{E}(X)} $$
 This tells us how to convert between the prevalences of the classifier and the
 ground truth.
 
-In the case where the precision and recall are equal, we indeed find that the
-prevalences are equal: $$ \mathbb{E}(\hat{X}) = \mathbb{E}(X) $$.
+In the case where the precision and recall are the same, we indeed find that
+the prevalences are equal: $$ \mathbb{E}(\hat{X}) = \mathbb{E}(X) $$.
