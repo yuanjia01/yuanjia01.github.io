@@ -48,15 +48,15 @@ shaped object with thin walls that sometimes blends in with the surrounding
 tissue. Here are the manually drawn contours for the inner and outer walls
 (endocardium and epicardium) of the right ventricle in an MRI snapshot:
 
-![data-easy](/images/data-easy.png)
+![data-easy](/images/cardiac-segmentation/data-easy.png)
 
 That was an easy example. This one is more difficult:
 
-![data-medium](/images/data-medium.png)
+![data-medium](/images/cardiac-segmentation/data-medium.png)
 
 And this one is downright challenging to the untrained eye:
 
-![data-hard](/images/data-hard.png)
+![data-hard](/images/cardiac-segmentation/data-hard.png)
 
 Human physicians in fact take twice as long to determine the RV volume and
 produce results that have 2-3 times the variability as compared to the left
@@ -85,7 +85,7 @@ translations, zooms and shears. In addition, I implemented elastic
 deformations, which locally stretch and compress the image
 [[2](https://www.microsoft.com/en-us/research/publication/best-practices-for-convolutional-neural-networks-applied-to-visual-document-analysis/)].
 
-![data-augmentation](/images/data-augmentation.png)
+![data-augmentation](/images/cardiac-segmentation/data-augmentation.png)
 
 The goal of such augmentations is to prevent the network from memorizing just
 the training examples, and to force it to learn that the RV is a solid,
@@ -98,7 +98,7 @@ are background. Normalizing the pixel intensities to lie between 0 and 1, we
 see that across the entire dataset, only 5.1% of the pixels are part of the RV
 cavity.
 
-![pixel-stats](/images/pixel-statistics.png)
+![pixel-stats](/images/cardiac-segmentation/pixel-statistics.png)
 
 In constructing the loss functions, I experimented with reweighting schemes to
 balance the class distributions, but ultimately found that the unweighted
@@ -135,7 +135,7 @@ detail simultaneously.
 
 The architecture we used is shown here:
 
-![unet-architecture](/images/unet-architecture.png)
+![unet-architecture](/images/cardiac-segmentation/unet-architecture.png)
 
 We adapted the u-net to our purposes by reducing the number of downsampling
 layers in the original model from four to three, since our images were roughly
@@ -158,14 +158,14 @@ that the network would have no understanding that there is only one right
 ventricle in a human. For example, it misclassifies the blob marked with an
 arrow in the following image:
 
-![receptive-field-unet](/images/receptive-field-unet.png)
+![receptive-field-unet](/images/cardiac-segmentation/receptive-field-unet.png)
 
 Rather than adding two more downsampling layers at the cost of a huge increase
 in network parameters, we use dilated convolutions
 [[6](https://arxiv.org/abs/1511.07122)] to increase the receptive fields of our
 network.
 
-![dilated-convs](/images/dilated-convs.png)
+![dilated-convs](/images/cardiac-segmentation/dilated-convs.png)
 
 Dilated convolutions space out the pixels summed over in the convolution by a
 dilation factor. In the diagram above, the convolutions in the bottom layer are
@@ -176,7 +176,7 @@ producing 15$$\times$$15 receptive fields. Dilated convolutions produce
 *exponentially* expanding receptive fields with depth, in contrast to linear
 expansion for stacked conventional convolutions.
 
-![receptive-field-dilated-unet](/images/receptive-field-dilated-unet.png)
+![receptive-field-dilated-unet](/images/cardiac-segmentation/receptive-field-dilated-unet.png)
 
 Schematically, we replace the convolutional layers producing the feature maps
 marked in yellow with dilated convolutions in our u-net. The innermost neurons
@@ -192,7 +192,7 @@ the image down to a small height and width? Now that the convolutional layers
 all have the same size, we could use "copy and concatenate" connections between
 all the layers:
 
-![dilated-densenet](/images/dilated-densenet.png)
+![dilated-densenet](/images/cardiac-segmentation/dilated-densenet.png)
 
 This is a "dilated densenet", which combines two ideas: dilated convolutions
 and densenets, which were developed by Huang, *et. al.*
@@ -235,7 +235,7 @@ coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficien
 The model will output a mask $$X$$ delineating what it thinks is the RV, and
 the dice coefficient compares it to the mask $$Y$$ produced by a physician via:
 
-![dice-venn](/images/dice-venn.png)
+![dice-venn](/images/cardiac-segmentation/dice-venn.png)
 
 $$ \mathrm{dice}(X, Y) = \frac{2 X \cap Y}{X + Y} $$
 
@@ -355,29 +355,29 @@ plateaus and does not exhibit an upturn characteristic of overfitting. On a per
 epoch basis, it is astounding to see how quickly the dilated densenet learns
 relative to the u-net and dilated u-net.
 
-![learning-curves](/images/learning-curves-aaug.png)
+![learning-curves](/images/cardiac-segmentation/learning-curves-aaug.png)
 
 Returning to cardiac segmentation, in our results, as well as in the published
 literature, the dice scores exhibit large standard deviations. Boxplots show
 that for some images, the networks struggle to segment the RV to any extent:
 
-![boxplots](/images/boxplots-eaug.png)
+![boxplots](/images/cardiac-segmentation/boxplots-eaug.png)
 
 Examining the outliers, we find they mostly arise from apical slices (near the
 bottom tip) of the heart where the RV is difficult to identify. This is an
 outlier for the dilated densenet on the validation set:
 
-![val-bad](/images/val-0.000-dilated-densenet.png)
+![val-bad](/images/cardiac-segmentation/val-0.000-dilated-densenet.png)
 
 The right ventricle is barely visible in the original image and the ground
 truth mask is quite small in area. Compare that to a relatively successful
 segmentation:
 
-![val-ok](/images/val-0.731-dilated-densenet.png)
+![val-ok](/images/cardiac-segmentation/val-0.731-dilated-densenet.png)
 
 or even an easy case:
 
-![val-good](/images/val-0.971-dilated-densenet.png)
+![val-good](/images/cardiac-segmentation/val-0.971-dilated-densenet.png)
 
 Considering these edge cases, it's clear that a big challenge facing these
 models lies in eliminating catastrophic failures, as they would lead to skewed
