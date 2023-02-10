@@ -38,6 +38,8 @@ alpha is useful because (1) it generalizes to more than two annotators, and
 more importantly, (2) it can handle missing data in the cases where some data
 points haven't been labeled by all annotators.
 
+## Intuition: observed vs. expected disagreements
+
 Now, to gain intuition around what alpha measures, I found it useful to look
 again at the zoo of metrics: for the common case of comparing two annotators on
 a binary (yes/no) labeling task, Krippendorff himself has a handy table
@@ -66,7 +68,8 @@ The metrics are all variations of inter-annotator agreement rescaled by chance.
 >
 > Consider one dataset with binary labels where 50% of samples are positive,
 > compared to another where 90% are positive. Chance agreement of two labelers
-> in the first case is 0.5, while in the second, chance agreement is 0.82.
+> in the first case is 0.5, while in the second, chance agreement is 0.82 (work
+> it out!).
 >
 > If metrics weren't rescaled by chance, annotators would appear to be
 > performing better on the second dataset by almost a third, even though in
@@ -80,6 +83,33 @@ The metrics are all variations of inter-annotator agreement rescaled by chance.
 > metric are possible. This means the annotators are systematically disagreeing
 > with one another.
 
+Krippendorff's alpha provides a useful measure of how often labels from
+different annotators agree in a manner that isolates annotator skill and is
+comparable across datasets with varying proportions of positives. Here is some
+intuition:
+
+* An $$\alpha = 0.5$$ means the annotators agreed on 50% of the labels they
+  were expected to disagree on by chance.
+ 
+* An $$\alpha = 0.8$$ means the annotators agreed on 80% of the labels they
+  were expected to disagree on by chance.
+ 
+* An $$\alpha = -1.0$$ means the annotators *disagreed* on 200% of the labels
+  they were expected to disagree on by chance.
+
+As suggested by Krippendorff, alphas above 0.8 are considered very good
+agreement, and tentative conclusions can be made with data where $$\alpha \ge
+0.667$$ (that is, two thirds). These are rules of thumb he derived from
+examples in content analysis, and we've adopted them for our team's work.
+
+I like to imagine that similar to bias and variance in machine learning, there
+is something akin to "bias" and "variance" in the measures for label quality.
+Krippendorff's alpha measures the "variance", namely how much scatter there is
+between the annotators. Other metrics are needed to monitor the "bias", namely
+whether the annotators are labeling the concept correctly.
+
+## A derivation and Bessel's correction: that $$n\,/\,(n-1)$$ factor
+
 Taking a deeper look at the above table, the metrics largely differ on how the
 denominator estimating the expected disagreement is defined. The thing that
 jumped out at me about Krippendorff's alpha?
@@ -92,8 +122,8 @@ approaches one from above as $$n$$ becomes large.
 
 If you're familiar with the construction of estimators, you might suspect this
 has something to do with unbiased estimation. I'll spend the rest of this post
-showing why your intuition is correct, and giving you some insight into the
-formula.
+showing why your intuition is correct, and giving you a derivation of
+Krippendorff's alpha.
 
 To explain the factor, we will work out the answer to the question:
 
@@ -181,23 +211,19 @@ from the following definitions included in his paper that $$\bar{p} = 1 -
 
 ![contingency table](/images/krippendorff/krippendorff-2004-fig1.png# bordered)
 
-Krippendorff's alpha provides a useful measure of how often labels from
-different annotators agree. Here is some intuition:
+Using Krippendorff's notation from the figure above, where $$b$$ is the
+proportion of instances where Coder A marked 1 and Coder B marked 0, and $$c$$
+is the proportion of instances where the opposite occurred, the observed
+disagreement is $$(b+c)$$ and the formula for Krippendorff's alpha is:
 
-> An $$\alpha = 0.5$$ means the annotators agreed on 50% of the labels they
-> were expected to disagree on by chance.
->
-> An $$\alpha = 0.8$$ means the annotators agreed on 80% of the labels they
-> were expected to disagree on by chance.
+$$
+\boxed{
+  \alpha = 1 - (b + c) \left/ \frac{n}{n-1} 2 \, \bar{p} \, \bar{q} \right.
+}
+$$
 
-As suggested by Krippendorff, alphas above 0.8 are considered very good
-agreement, and tentative conclusions can be made with data where $$\alpha \ge
-0.667$$ (that is, two thirds). These are rules of thumb he derived from
-examples in content analysis, and we've adopted them for our team's work.
+which is what was shown in the first table.
 
-As a footnote, I like to imagine that similar to bias and variance in machine
-learning, there is something akin to "bias" and "variance" in the measures for
-label quality. Krippendorff's alpha measures the "variance", namely how much
-scatter there is between the annotators. Other metrics are needed to monitor
-the "bias"--whether the annotators are labeling the concept correctly--which is
-a topic for a separate post.
+*Last updated Feb 9, 2023*
+
+_
