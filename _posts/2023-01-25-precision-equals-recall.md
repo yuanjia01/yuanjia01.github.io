@@ -123,3 +123,38 @@ ground truth.
 
 In the case where the precision and recall are the same, we indeed find that
 the prevalences are equal: $$ \mathbb{E}(\hat{X}) = \mathbb{E}(X) $$.
+
+## Application to company tagging
+
+In a prior post on company tagging {% post_url 2023-01-16-company-tagging.md
+%}, we found that when the precision of our model equaled its recall, the bias
+of the predicted fraction of companies discussing a topic vanished. From the
+above result, we know why there is no bias at the paragraph level. However,
+wouldn't the fact that just *one* candidate paragraph of a company being
+positive causes a positive label at the company level cause bias?
+
+The answer is no. Here's a derivation that shows why:
+
+$$
+\begin{align}
+  \mathbb{E} Y &= P(Y = 1) \\
+  &= 1 - P(Y = 0) \\
+  &= 1 - P(X_1 = 0 \cap X_2 = 0 \cap \ldots \cap X_N = 0)
+\end{align}
+$$
+
+If we assume the labels for the paragraphs are independent and identically
+distributed, which admittedly likely is only approximately true, the joint
+probability factors:
+
+$$
+\begin{align}
+  \mathbb{E} Y &= 1 - P(X = 0)^N \\
+   &= 1 - (1 - P(X = 1))^N \\
+   &= 1 - (1 - (\mathbb{E} X)^N
+\end{align}
+$$
+
+When precision equals recall, we've shown that $$ \mathbb{E}(\hat{X}) =
+\mathbb{E}(X) $$, which when applied to this equation, allows us to conclude
+that $$ \mathbb{E}(\hat{Y}) = \mathbb{E}(Y) $$.
