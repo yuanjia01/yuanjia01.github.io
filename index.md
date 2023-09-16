@@ -5,13 +5,13 @@ title: Home
 
 <img src="MB_SF.jpg" alt="Michael in San Francisco" width="200"/>
 
-Hello, welcome to my website, my name is Michael Burton and I am a graduate of North Carolina State University's masters of statistics program (2020). I currently work as a Biostatistician at WCG Statistics Collaborative where I perform statistical analyses and program datasets, tables, listings, and figures for data monitoring committee (DMC) reports. I am thrilled to be contributing to such an impactful field.
+Hello, welcome to my website, my name is Michael Burton and I am a graduate of North Carolina State University's masters of statistics program (2020). I currently work as a Biostatistician at Fred Hutch Cancer Center in the Statistical Center for HIV/AIDS Research and Prevention (SCHARP) group. Here I perform statistical analyses, program datasets and presentations for statistical reports. I am thrilled to be contributing to such an impactful field.
 
-Prior to my current role I worked as a data science intern at The Boeing Company (2019) analyzing experimental data for a corrosion study, and an analytics intern for Hanesbrands Inc. (2018) where I worked to identify the optimal color mix for new and ongoing bra styles. 
+Prior to my current role I worked as a biostatistician at WCG Statistics Collaborative creating DMC reports (2020-2022), a data science intern at The Boeing Company (2019) analyzing experimental data for a corrosion study, and an analytics intern for Hanesbrands Inc. (2018) where I worked to identify the optimal color mix for new and ongoing bra styles. 
 
 If you would like to learn more about my skill set you can click [here](https://michaeleburton.github.io/about/). 
 
-When not working you can find me rock climbing around Chattanooga Tennessee where I currently reside. My current projects include [Rustoleum (V6)](https://www.mountainproject.com/route/121715919/rustoleum) and [Tristar (V4)](https://www.mountainproject.com/route/106071696/tristar).
+When not working you can find me rock climbing around Chattanooga Tennessee where I currently reside. My current projects include [Latin for Dagger (V5)](https://www.mountainproject.com/route/106342585/latin-for-daggers) and [a fun 12D](https://www.mountainproject.com/route/113431230/cock-the-hammer).
 
 ## Professional Interests
 + Programming (Statistical or not; I previously  taught myself some [C++](https://github.com/MichaelEBurton/PPP_Cpp))
@@ -30,7 +30,7 @@ When not working you can find me rock climbing around Chattanooga Tennessee wher
 As someone who is always eager to learn here is a list of some resources that I've found helpful, or think will be useful in the future.
      
 + Books I'm paging my way through 
-  - [Anna Karenina](https://en.wikipedia.org/wiki/Anna_Karenina)
+  - [The Puzzle Master](https://www.penguinrandomhouse.com/books/717438/the-puzzle-master-by-danielle-trussoni/)
   
   
   
