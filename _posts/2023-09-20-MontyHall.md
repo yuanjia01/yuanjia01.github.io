@@ -10,7 +10,7 @@ Well... yes, they should switch. In this post I am going to walk you through the
 
 ### Probability, I hardly know her
 First we need to make a few assumptions about how prizes are distributed amongst the doors. We'll assume each game is independent of the other and each door has an equal chance of having the prize behind it. Furthermore let's denote events that door 1 contains the prize, door 2 contains the prize, and door 3 contains the prize as A, B, and C. Thats is:
-    $A = {Door 1 contains the prize}
-     B = {Door 2 contains the prize}
-     C = {Door 3 contains the prize}
+    $A = \{Door 1 contains the prize\}\n
+     B = \{Door 2 contains the prize\}\n
+     C = \{Door 3 contains the prize\}\n
      P(A) = P(B) = P(C) = \frac{1}{3}$
