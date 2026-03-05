@@ -7,6 +7,8 @@ title: CloudFront VPC Origins - A Better Way to Protect API Gateway
 
 Welcome back to another post. If you've been following along, you may recall that back in November 2024 I published a post on [using Amazon CloudFront to protect Amazon API Gateway]({{ site.baseurl }}/Amazon-CloudFront-API-SEC-Part1/). In that post I set up a Regional API Gateway with a mock endpoint and placed an **Amazon CloudFront** distribution in front of it with geographic restrictions. I promised a Part 2 covering custom origin headers with an API Gateway Resource Policy, and a Part 3 adding a Lambda Authoriser for request-level validation.
 
+Before we continue, a quick apology for the long gap between posts. Some events in my personal life meant blogging had to take a back seat for a while. Things have settled enough that I can finally come back to the series, although 2026 already has a big life change on the horizon as well.
+
 Those posts never materialised — and for good reason. On 20 November 2024, the very same month Part 1 went live, AWS announced **CloudFront VPC Origins**. This new feature fundamentally changed the approach to protecting API Gateway behind CloudFront, making the custom header workaround I had planned for Part 2 largely unnecessary for new architectures.
 
 Rather than writing a now-outdated walkthrough, this post covers what VPC Origins is, how it changes the game for API Gateway security, and why it is the better approach going forward.
