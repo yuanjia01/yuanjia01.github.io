@@ -26,7 +26,7 @@ export default function HeroSection() {
 
   if (!mounted) {
     return (
-      <section className="min-h-screen flex items-center justify-center px-4 pt-16 relative">
+      <section className="min-h-screen flex items-center justify-center px-4 relative">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
             <div className="w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full bg-gradient-to-br from-accent-blue to-accent-yellow p-1">
@@ -47,7 +47,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 pt-16 relative">
+    <section className="min-h-screen flex items-center justify-center px-4 relative">
       <div className="max-w-6xl mx-auto w-full">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
           {/* Avatar - Left Side */}

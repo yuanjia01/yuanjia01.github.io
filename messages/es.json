@@ -166,6 +166,12 @@
       "description": "Información sobre cómo recopilamos, usamos y protegemos tus datos personales"
     }
   },
+  "announcementBanner": {
+    "text": "¡Estoy nominado en los Golden Kodee Community Awards en la categoría \"In-Person Presence\"! Vota hasta el 22 de marzo.",
+    "textShort": "¡Nominado en Golden Kodee Awards!",
+    "cta": "Votar",
+    "dismiss": "Cerrar"
+  },
   "cookieConsent": {
     "title": "🍪 Uso de Cookies",
     "description": "Utilizamos cookies para analizar el tráfico del sitio y mejorar tu experiencia. Tus datos son tratados de forma anónima.",

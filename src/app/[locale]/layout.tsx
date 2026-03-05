@@ -5,6 +5,7 @@ import { locales } from '@/i18n';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CookieConsent from '@/components/CookieConsent';
+import AnnouncementBanner from '@/components/AnnouncementBanner';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -35,8 +36,13 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          {children}
+          <div className="fixed top-0 left-0 right-0 z-50">
+            <AnnouncementBanner />
+            <Navbar />
+          </div>
+          <div style={{ paddingTop: 'calc(4rem + var(--announcement-height, 2.5rem))' }}>
+            {children}
+          </div>
           <Footer />
           <CookieConsent />
         </NextIntlClientProvider>
