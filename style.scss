@@ -287,3 +287,25 @@ footer {
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
 @import "highlights";
 @import "svg-icons";
+
+/* style.scss 맨 밑에 추가 */
+body {
+  background-color: #1a1a1b;
+  color: #d7dadc;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+}
+
+.site-info .site-name {
+  color: #ffffff;
+}
+
+.post {
+  background: #272729;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #343435;
+}
+
+a {
+  color: #4fbcff;
+}
