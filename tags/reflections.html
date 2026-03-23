@@ -1,14 +1,15 @@
 ---
 layout: default
+title: Reflections
 ---
 
 <div class="homepage-layout">
   <div class="homepage-main">
-    <h4>Recent Posts</h4>
+    <h1>Reflections</h1>
 
     <div class="posts">
 
-  {% for post in paginator.posts %}
+  {% for post in site.tags["Reflections"] %}
          <article class="post">
 
           <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
@@ -21,18 +22,6 @@ layout: default
         </article>
   {% endfor %}
 
-<nav>
-  {% if paginator.previous_page %}
-    <a href="{{ paginator.previous_page_path | relative_url }}">Newer</a>
-  {% endif %}
-
-  <span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
-
-  {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path | relative_url }}">Older</a>
-  {% endif %}
-</nav>
-      
     </div>
   </div>
 

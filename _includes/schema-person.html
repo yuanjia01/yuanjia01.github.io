@@ -1,0 +1,36 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "George Walkley",
+  "url": "https://www.georgewalkley.com",
+  "sameAs": [
+    "https://www.linkedin.com/in/georgewalkley",
+    "https://bsky.app/profile/georgewalkley.com"
+  ],
+  "jobTitle": "AI and Publishing Strategy Expert",
+  "description": "Independent strategy consultant, AI expert, keynote speaker, and author specialising in publishing, media and knowledge-intensive industries.",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Outside Context Ltd",
+    "url": "https://www.georgewalkley.com"
+  },
+  "knowsAbout": ["Artificial Intelligence", "Publishing Strategy", "Digital Transformation", "Scenario Planning", "AI Training"]
+}
+</script>
+
+{% if page.date %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": "{{ page.url | absolute_url }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Outside Context Ltd",
+    "url": "https://www.georgewalkley.com"
+  }{% if page.tags.size > 0 %},
+  "keywords": "{{ page.tags | join: ', ' }}"{% endif %}
+}
+</script>
+{% endif %}

@@ -1,0 +1,27 @@
+<aside class="homepage-sidebar">
+  <h4>Content by Topic</h4>
+  {% assign defined_tags = "Artificial Intelligence,Games,Journalism,Presentations,Publishing,Reflections,Research,Scenario Planning,Strategy" | split: "," %}
+  {% for tag_name in defined_tags %}
+    {% assign tag_posts = site.tags[tag_name] %}
+    {% if tag_posts %}
+      <a href="{{ site.baseurl }}/tags/{{ tag_name | slugify }}/">{{ tag_name }} ({{ tag_posts.size }})</a><br/>
+    {% else %}
+      <a href="{{ site.baseurl }}/tags/{{ tag_name | slugify }}/">{{ tag_name }} (0)</a><br/>
+    {% endif %}
+  {% endfor %}
+
+  <h4>Content by Year</h4>
+  {% assign defined_years = "2026,2025,2024,2023,2022,2021,2020" | split: "," %}
+  {% for year in defined_years %}
+    {% assign year_count = 0 %}
+    {% for post in site.posts %}
+      {% capture post_year %}{{ post.date | date: "%Y" }}{% endcapture %}
+      {% if post_year == year %}
+        {% assign year_count = year_count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+    <a href="{{ site.baseurl }}/years/{{ year }}/">{{ year }} ({{ year_count }})</a><br/>
+  {% endfor %}
+
+  {% include writing-stats.html %}
+</aside>

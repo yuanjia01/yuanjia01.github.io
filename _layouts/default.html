@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
-
+    <!-- <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title> -->
+ 
+    {% seo %}
     {% include meta.html %}
+    {% include schema-person.html %}
+  
 
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -11,24 +14,31 @@
 
     <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
-
-    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+    <!-- Google Fonts embed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+     
   </head>
 
   <body>
     <div class="wrapper-masthead">
       <div class="container">
         <header class="masthead clearfix">
-          <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" /></a>
+         <!-- <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" /></a> -->
 
           <div class="site-info">
             <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
-            <p class="site-description">{{ site.description }}</p>
+            <!-- <p class="site-description">{{ site.description }}</p> -->
           </div>
 
           <nav>
-            <a href="{{ site.baseurl }}/">Blog</a>
-            <a href="{{ site.baseurl }}/about">About</a>
+            <a href="{{ site.baseurl }}/">Home</a>
+            <a href="{{ site.baseurl }}/about/">About</a>
+            <a href="{{ site.baseurl }}/consulting/">Consulting</a>
+            <a href="{{ site.baseurl }}/speaking/">Speaking</a>
+            <a href="{{ site.baseurl }}/training/">Training</a>
+            <a href="{{ site.baseurl }}/newsletter/">Newsletter</a>
           </nav>
         </header>
       </div>
@@ -37,11 +47,33 @@
     <div id="main" role="main" class="container">
       {{ content }}
     </div>
-
+  
     <div class="wrapper-footer">
       <div class="container">
         <footer class="footer">
-          {% include svg-icons.html %}
+
+         <div class="footer-column footer-column-1">
+            <!-- Content for 60% width column -->
+            <h3>Impressum</h3>
+          <p>&copy; Copyright 2026 Outside Context Ltd. Outside Context Ltd is registered in England and Wales with company registration number 12584087 and VAT number 351665690. Registered office address: 22 The Portway Centre, Old Sarum, Salisbury, Wiltshire, SP4 6EB.</p>
+         </div>
+         <div class="footer-column footer-column-2">
+            <!-- Content for 20% width column -->
+            <h3>Contact</h3>  
+          <p><a href="mailto:hello@outsidecontext.co.uk">hello@outsidecontext.co.uk</a><br />+44 01722 435610</p>
+         </div>
+         <div class="footer-column footer-column-3">
+            <!-- Content for 20% width column -->
+            <h3>Links</h3>
+<p>
+  <a href="https://www.linkedin.com/in/georgewalkley" title="George Walkley's profile on LinkedIn">LinkedIn</a><br>
+  <a href="https://bsky.app/profile/georgewalkley.com" title="George Walkley's profile on Bluesky">Bluesky</a><br>
+  <a href="{{ site.baseurl }}/feed.xml" title="RSS feed for George Walkley's website">RSS Feed</a><br>
+  <a href="{{ site.baseurl }}/privacy/" title="Privacy and Cookie Policy">Privacy</a><br>
+  <a href="{{ site.baseurl }}/sitemap.xml" title="Sitemap">Sitemap</a>
+</p>
+            </div>
+          
         </footer>
       </div>
     </div>
