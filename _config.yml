@@ -3,14 +3,27 @@
 #
 
 # Name of your site (displayed in the header)
-name: Your Name
+name: Akshay Ranganath's Blogs
+author: rakshay 
+
+
+#adding twitter details
+twitter:
+  site: Akshay Ranganath's Blogs
+  username: rakshay
 
 # Short bio or description (displayed in the header)
-description: Web Developer from Somewhere
+description: Blogs about Media Optimization, Web Performance, SEO and web technology.
+tagline: Musings from a Tech Entrepreneur
+
+paginate: 8
+paginate_path: '/blog/page:num'
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
+avatar: /images/blog/github_profile.jpg
 
+
+logo: /images/blog/github_profile.jpg
 #
 # Flags below are optional
 #
@@ -21,12 +34,12 @@ footer-links:
   email:
   facebook:
   flickr:
-  github: barryclark/jekyll-now
+  github: akshayranganath
   instagram:
-  linkedin:
+  linkedin: akshayranganath
   pinterest:
-  rss: # just type anything here for a working RSS icon
-  twitter: jekyllrb
+  rss: rss # just type anything here for a working RSS icon
+  twitter: rakshay
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
   youtube: # channel/<your_long_string> or user/<user-name>
   googleplus: # anything in your profile username that comes after plus.google.com/
@@ -34,14 +47,14 @@ footer-links:
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts
 # You can find your shortname on the Settings page of your Disqus account
-disqus:
+# disqus: akshayranganath
 
 # Enter your Google Analytics web tracking code (e.g. UA-2110908-2) to activate tracking
-google_analytics:
+google_analytics: UA-92984102-1
 
 # Your website URL (e.g. http://barryclark.github.io or http://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
-url:
+url: https://akshayranganath.github.io
 
 # If you're hosting your site at a Project repository on GitHub pages
 # (http://yourusername.github.io/repository-name)
@@ -70,12 +83,15 @@ kramdown:
 
 # Set the Sass partials directory, as we're using @imports
 sass:
-  style: :expanded # You might prefer to minify using :compressed
+  style: :compressed #:expanded # You might prefer to minify using :compressed
 
 # Use the following plug-ins
 gems:
   - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
   - jekyll-feed # Create an Atom feed using the official Jekyll feed gem
+  - jekyll-seo-tag # Add SEO related tags and JSON-LD
+  - jekyll-paginate # Adding pagination capability
+  - jekyll-redirect-from #redirect functionalit
 
 # Exclude these files from your production _site
 exclude:
@@ -84,3 +100,28 @@ exclude:
   - LICENSE
   - README.md
   - CNAME
+
+# inspired by https://github.com/codinfox/codinfox-lanyon
+# Adding category and tags support
+categories:
+  type: liquid
+  path: /categories/
+tags:
+  type: liquid
+  path: /tags/
+
+nav:
+  Home:           
+    - '/'
+  Blog:           
+    - '/blog/'
+    - { Categories: '/blog/categories/' }
+    - { Tags: '/blog/tags/' }
+  About:          
+    - '/about/'
+  Github Project: 
+    - 'http://akshayranganath.github.io/'
+
+# Where are tags and categories displayed
+tag_page: '/blog/tags/'
+category_page: '/blog/categories/'
