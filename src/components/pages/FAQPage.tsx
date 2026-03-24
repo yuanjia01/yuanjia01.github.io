@@ -15,6 +15,7 @@ const faqs = [
   { q: t.food.q, a: t.food.a },
   { q: t.parking.q, a: t.parking.a },
   { q: t.lodging.q, a: t.lodging.a },
+  { q: t.gifts.q, a: t.gifts.a },
 ];
 
 

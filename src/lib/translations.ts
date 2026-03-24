@@ -10,6 +10,7 @@ export const translations = {
       faq: "FAQ",
       travel: "Travel",
       venue: "Venue",
+      registry: "Registry",
       saveTheDate: "Save the date"
     },
     home: {
@@ -98,6 +99,10 @@ schedule: {
   lodging: {
     q: "Where should I stay?",
     a: "Montréal has an abundance of great hotels, and short-term vacation rentals are plentiful. We recommend staying in the city of Montréal as it's got a bit more life than Baie-D'Urfé. Downtown Montréal is most convenient, and the Plateau / Mile-End is great for a trendier scene. Villeray has fewer hotels but plenty of Airbnb options, and it's close to the Sunday brunch."
+  },
+  gifts: {
+    q: "Do you have a gift registry?",
+    a: "Your presence truly is the best gift! If you'd still like to give something, there will be a box for envelopes at the venue. You can also contribute to our honeymoon fund via Venmo or e-Transfer. We're saving up for a month-long trip to Vietnam next year. See the Registry page for details."
   }
 },
 
@@ -119,6 +124,15 @@ schedule: {
   weatherDesc: "June in Montreal is beautiful! Expect pleasant temperatures around 20-25°C (68-77°F). We recommend bringing a light jacket for the evening. Please note, the ceremony will be outdoors on grass. The dinner and reception will be indoors."
 },
 
+    registry: {
+      title: "Registry",
+      subtitle: "Your presence is our present",
+      description: "Honestly, the greatest gift you could give us is being there to celebrate with us. That truly is more than enough. But if you'd still like to give something, there will be a box for envelopes at the venue. You can also contribute to our honeymoon fund via Venmo or e-Transfer:",
+      venmoLabel: "Venmo",
+      venmoValue: "@afnorfolk",
+      etransferLabel: "Interac e-Transfer",
+      etransferValue: "justine.and.alex.wedding@gmail.com"
+    },
     venue: {
       title: "The venue",
       name: weddingConfig.venue.fullName,
@@ -139,6 +153,7 @@ schedule: {
       faq: "FAQ",
       travel: "Voyager",
       venue: "Lieu",
+      registry: "Registre",
       saveTheDate: "Réservez la date"
     },
     home: {
@@ -230,6 +245,10 @@ Nous vous invitons à vous joindre à nous — famille et amis, anciens comme no
   lodging: {
     q: "Où devrais-je loger ?",
     a: "Montréal offre un grand choix d'hôtels, et les locations à court terme sont faciles à trouver. Nous recommandons de loger à Montréal plutôt qu'à Baie-D'Urfé. Le centre-ville est le plus pratique, et le Plateau / Mile-End est idéal pour une ambiance plus animée. Villeray compte moins d'hôtels, mais offre plusieurs Airbnb, et c'est tout près du brunch du dimanche."
+  },
+  gifts: {
+    q: "Avez-vous un registre de cadeaux?",
+    a: "Votre présence est vraiment le plus beau cadeau! Si vous souhaitez tout de même offrir quelque chose, il y aura une boîte pour les enveloppes sur place. Vous pouvez aussi contribuer à notre fonds lune de miel via Venmo ou virement Interac. Nous économisons pour un voyage d'un mois au Vietnam l'année prochaine. Consultez la page Registre pour les détails."
   }
 },
     travel: {
@@ -249,6 +268,15 @@ Nous vous invitons à vous joindre à nous — famille et amis, anciens comme no
   weatherDesc: "Juin à Montréal est magnifique! Attendez-vous à des températures agréables autour de 20–25°C (68–77°F). Nous recommandons d'apporter une veste légère pour la soirée. À noter : la cérémonie aura lieu à l'extérieur sur du gazon. Le souper et la réception seront à l'intérieur."
 },
 
+    registry: {
+      title: "Registre",
+      subtitle: "Votre présence est notre cadeau",
+      description: "Honnêtement, le plus beau cadeau que vous puissiez nous offrir, c'est d'être là pour célébrer avec nous. C'est vraiment plus que suffisant. Mais si vous souhaitez tout de même offrir quelque chose, il y aura une boîte pour les enveloppes sur place. Vous pouvez aussi contribuer à notre fonds lune de miel via Venmo ou virement Interac :",
+      venmoLabel: "Venmo",
+      venmoValue: "@afnorfolk",
+      etransferLabel: "Virement Interac",
+      etransferValue: "justine.and.alex.wedding@gmail.com"
+    },
     venue: {
       title: "Le lieu",
       name: weddingConfig.venue.fullNameFr,

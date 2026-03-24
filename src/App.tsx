@@ -9,6 +9,7 @@ import { RSVPPage } from '@/components/pages/RSVPPage';
 import { FAQPage } from '@/components/pages/FAQPage';
 import { TravelPage } from '@/components/pages/TravelPage';
 import { VenuePage } from '@/components/pages/VenuePage';
+import { RegistryPage } from '@/components/pages/RegistryPage';
 import { Language } from '@/lib/translations';
 import { weddingConfig } from '@/lib/config';
 
@@ -55,6 +56,8 @@ function App() {
         return <TravelPage language={currentLanguage} />;
       case 'venue':
         return <VenuePage language={currentLanguage} />;
+      case 'registry':
+        return <RegistryPage language={currentLanguage} />;
       default:
         return <HomePage language={currentLanguage} onNavigate={setCurrentPage} />;
     }
