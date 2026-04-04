@@ -1,0 +1,42 @@
+// Dark theme for code blocks
+.highlight {
+  background-color: #2d3748 !important;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 16px 0;
+  
+  pre {
+    background-color: transparent !important;
+    margin: 0;
+    padding: 0;
+  }
+  
+  code {
+    background-color: transparent !important;
+    color: #e2e8f0 !important;
+    font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+  }
+}
+
+// Inline code styling
+code {
+  background-color: #4a5568 !important;
+  color: #e2e8f0 !important;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+}
+
+// Override any existing code block styles
+pre {
+  background-color: #2d3748 !important;
+  color: #e2e8f0 !important;
+  border-radius: 6px;
+  padding: 16px;
+  overflow-x: auto;
+  
+  code {
+    background-color: transparent !important;
+    padding: 0;
+  }
+}
