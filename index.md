@@ -11,7 +11,7 @@ Prior to my current role I worked as a biostatistician at WCG Statistics Collabo
 
 If you would like to learn more about my skill set you can click [here](https://michaeleburton.github.io/about/). 
 
-When not working you can find me rock climbing around Chattanooga Tennessee where I currently reside. My current projects include [Latin for Dagger (V5)](https://www.mountainproject.com/route/106342585/latin-for-daggers) and [a fun 12D](https://www.mountainproject.com/route/113431230/cock-the-hammer).
+When not working you can find me rock climbing around Chattanooga Tennessee where I currently reside. My current projects include [The Orb (V8)](https://www.mountainproject.com/route/106036141/the-orb) and [a fun 12D](https://www.mountainproject.com/route/113431230/cock-the-hammer). Additionally, for the past year I have been learning French through the [Chattanooga School of Language](https://www.chattanoogalanguage.com/) and with other aides such as Duolingo, and French speaking nights with [International Cafe](https://intlcafe.io/) and the French American Chamber of Commerce of Tennessee.
 
 ## Professional Interests
 + Programming (Statistical or not; I previously  taught myself some [C++](https://github.com/MichaelEBurton/PPP_Cpp))
@@ -23,17 +23,17 @@ When not working you can find me rock climbing around Chattanooga Tennessee wher
 + Canoeing (**not kayaking!**)
   - During the summer of 2017, I was a canoe guide at [Northern Tier](https://www.ntier.org) BSA national high adventure base located next to [Boundary Waters Canoe Area Wilderness](https://www.fs.usda.gov/detail/superior/specialplaces/?cid=fseprd555184).
 + Backpacking/Hiking
-+ Rock Climbing (I prefer bouldering)
-+ Bowling
++ Rock Climbing (I prefer [bouldering](https://youtube.com/shorts/iMG65EJv69I?feature=share))
++ Cycling
 
 ## Resources
-As someone who is always eager to learn here is a list of some resources that I've found helpful, or think will be useful in the future.
+<!-- As someone who is always eager to learn here is a list of some resources that I've found helpful, or think will be useful in the future.-->
      
 + Books I'm paging my way through 
-  - [The Puzzle Master](https://www.penguinrandomhouse.com/books/717438/the-puzzle-master-by-danielle-trussoni/)
+  - [Short stories in French for intermediate learners](https://www.goodreads.com/book/show/56481099-short-stories-in-french-for-intermediate-learners)
   
   
-  
+ <!--  
 + Books of interest
   - [Advanced R](http://adv-r.had.co.nz/)
   - [Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/)
@@ -49,7 +49,7 @@ As someone who is always eager to learn here is a list of some resources that I'
 
 + Wishlist
   - [Data Structures and Algorithms in Python](https://www.amazon.com/Structures-Algorithms-Python-Michael-Goodrich/dp/1118290275)
-  
+-->  
 ## Contact Me
 If you would like to get in touch with me about potential job opportunities, statistics, machine learning, rock climbing, or the BWCAW/Quetico then shoot me an email.
 

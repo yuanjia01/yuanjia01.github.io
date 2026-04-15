@@ -16,9 +16,13 @@ Currently, I work as a Statistical Research Associate III at Fred Hutch Cancer C
 
 
 
-For a copy of my current resume click [here]({{ https://MichaelEBurton.github.io }}/michael_burton_resume_fall2022.pdf) 
+For a copy of my current resume click [here]({{ https://MichaelEBurton.github.io }}/michael_burton_resume_spring2026.pdf) 
 
 ## Skills
+**Languages**
++ English (native)
++ French (A2/B1)
+
 **Programming Languages**:    
 + [C++](https://github.com/MichaelEBurton/PPP_Cpp)
 + [SAS Programming](https://github.com/MichaelEBurton/SAS_Samples)
