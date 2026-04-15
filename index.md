@@ -33,23 +33,23 @@ When not working you can find me rock climbing around Chattanooga Tennessee wher
   - [Short stories in French for intermediate learners](https://www.goodreads.com/book/show/56481099-short-stories-in-french-for-intermediate-learners)
   
   
- <!--  
-+ Books of interest
-  - [Advanced R](http://adv-r.had.co.nz/)
-  - [Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/)
-  - [Elements of Statistical Learning](https://web.stanford.edu/~hastie/ElemStatLearn/)
-  - [Deep Learning](https://www.deeplearningbook.org/)
-  - [Deep Learning with R](https://www.manning.com/books/deep-learning-with-r)
-  - [A whirlwind tour of Python](https://jakevdp.github.io/WhirlwindTourOfPython/)
-  - [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
-  - [The Linux Command Line](http://linuxcommand.org/tlcl.php)
-  - [Learning SAS by Example](https://www.sas.com/store/books/categories/getting-started/learning-sas-by-example-a-programmer-s-guide-second-edition/prodBK_71442_en.html)
-  - [Programming -- Principles and Practice using C++](http://www.stroustrup.com/Programming/)
+ 
+<!--  + Books of interest-->  
+<!--    - [Advanced R](http://adv-r.had.co.nz/)-->  
+<!--    - [Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/)-->  
+<!--  - [Elements of Statistical Learning](https://web.stanford.edu/~hastie/ElemStatLearn/)-->  
+<!--    - [Deep Learning](https://www.deeplearningbook.org/)-->  
+<!--    - [Deep Learning with R](https://www.manning.com/books/deep-learning-with-r)-->  
+<!--    - [A whirlwind tour of Python](https://jakevdp.github.io/WhirlwindTourOfPython/)-->  
+<!--    - [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)-->  
+<!--    - [The Linux Command Line](http://linuxcommand.org/tlcl.php)-->  
+<!--    - [Learning SAS by Example](https://www.sas.com/store/books/categories/getting-started/learning-sas-by-example-a-programmer-s-guide-second-edition/prodBK_71442_en.html)-->  
+<!--    - [Programming -- Principles and Practice using C++](http://www.stroustrup.com/Programming/)-->  
 
 
-+ Wishlist
-  - [Data Structures and Algorithms in Python](https://www.amazon.com/Structures-Algorithms-Python-Michael-Goodrich/dp/1118290275)
--->  
+<!--  + Wishlist -->  
+<!--    - [Data Structures and Algorithms in Python](https://www.amazon.com/Structures-Algorithms-Python-Michael-Goodrich/dp/1118290275) -->  
+
 ## Contact Me
 If you would like to get in touch with me about potential job opportunities, statistics, machine learning, rock climbing, or the BWCAW/Quetico then shoot me an email.
 
