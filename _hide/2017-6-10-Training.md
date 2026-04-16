@@ -1,0 +1,10 @@
+---
+layout: post
+title: Training is Fun!
+---
+
+It’s been about a week and a half since I’ve arrived at Northern Tier. I had a bit of trouble getting up here after I missed my shuttle from the airport but the logistics staff helped me figure out an alternative way to get here. That first night I got to see my foreman from last year and that was great I’m glad to see them and be up in the Northwoods. 
+
+The next day we begin training which consisted of going through different sessions on Northern Tier basics including what it offers and how as a staff member we can be professional. We also went through a number of round robins learning different wilderness skills which was helpful because I learned some new tips from other veteran interpreters. I also took a wilderness first aid and CPR course so I’ll actually be able to take crews out on the water. 
+
+Yesterday was alumni day and we had lots of cool sessions taught by previous Charlie Guides. The end of the day we were taught about the Charlie Guide legacy. As a member of the Northern Tier staff were responsible for giving each crew a life changing wilderness experience and I’m going to strive my best to do that. They say you never paddle the same lake twice and although you may paddle basswood a hundred times it’s a different lake each time. Personally I think this means not that the lake is changing but each time you paddle it you’re with a different group and you yourself may have changed also.
