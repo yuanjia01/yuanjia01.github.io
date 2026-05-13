@@ -12,12 +12,10 @@ export default function HeroSection() {
   const t = useTranslations('home.hero');
 
   const roles = [
-    t('roles.mobileDev'),
+    t('roles.seniorMobileDev'),
     t('roles.androidEng'),
     t('roles.techLead'),
-    t('roles.speaker'),
-    t('roles.designer'),
-    t('roles.contentCreator'),
+    t('roles.kmpEnthusiast'),
   ];
 
   useEffect(() => {
@@ -101,10 +99,24 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-400 mb-8"
+              className="text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-400 mb-6"
             >
               {t('description')}
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="flex flex-col gap-3 md:items-start"
+            >
+              <p className="inline-flex rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-900 shadow-sm dark:border-blue-800/70 dark:bg-blue-950/40 dark:text-blue-100">
+                {t('status')}
+              </p>
+              <p className="inline-flex rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-900 shadow-sm dark:border-green-800/70 dark:bg-green-950/40 dark:text-green-100">
+                {t('availability')}
+              </p>
+            </motion.div>
           </div>
         </div>
 

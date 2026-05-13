@@ -6,12 +6,23 @@
   "hero": {
     "greeting": "¡Hola! Soy",
     "name": "Armando Picón",
-    "role": "Android Engineer · Tech Leader · Speaker",
-    "description": "Apasionado por crear experiencias móviles excepcionales y compartir conocimiento con la comunidad tech.",
+    "role": "Tech Lead · Senior Mobile Developer",
+    "description": "Apasionado por crear experiencias móviles excepcionales y liderar equipos técnicos que construyen productos robustos y escalables.",
+    "status": "📍 Actualmente en Múnich por los Golden Kodee Awards 2026 (finalista en In-Person Presence).",
+    "availability": "🟢 Abierto a nuevos roles Tech Lead / Senior Mobile.",
     "cta": {
       "contact": "Hablemos",
       "projects": "Ver proyectos"
     }
+  },
+  "CurrentFocus": {
+    "title": "En qué estoy trabajando ahora",
+    "aiLabsTitle": "🧠 On-Device AI Labs",
+    "aiLabsDesc": "Benchmarking e implementación de modelos de IA locales en mobile. Explorando Model Context Protocol (MCP) y ejecución on-device para reducir latencia y proteger la privacidad del usuario.",
+    "sslTitle": "🔒 SSL Pinning Hands-on",
+    "sslDesc": "Una guía práctica de implementación y playground para asegurar comunicaciones de red mobile contra ataques man-in-the-middle.",
+    "kmpTitle": "🧩 Kotlin Multiplatform",
+    "kmpDesc": "Adaptando continuamente arquitecturas para compartir lógica de negocio entre plataformas sin comprometer el rendimiento nativo."
   },
   "latestContent": {
     "title": "Últimos contenidos",
@@ -126,15 +137,15 @@
     "hero": {
       "greeting": "Hola, soy",
       "name": "Armando",
-      "description": "Apasionado por la tecnología móvil y la creación de contenido. Compartiendo conocimiento sobre desarrollo Android y liderazgo técnico.",
+      "description": "Tech Lead y Senior Mobile Developer enfocado en Android escalable, Kotlin Multiplatform y arquitectura mobile de alta calidad.",
+      "status": "📍 Actualmente en Múnich por los Golden Kodee Awards 2026 (finalista en In-Person Presence).",
+      "availability": "🟢 Abierto a nuevos roles Tech Lead / Senior Mobile.",
       "scrollLabel": "Scroll to content",
       "roles": {
-        "mobileDev": "Mobile Developer",
+        "seniorMobileDev": "Senior Mobile Developer",
         "androidEng": "Android Engineer",
         "techLead": "Technical Leader",
-        "speaker": "Speaker",
-        "designer": "Designer",
-        "contentCreator": "Content Creator"
+        "kmpEnthusiast": "KMP Enthusiast"
       }
     },
     "latestContent": {
@@ -154,8 +165,8 @@
   },
   "metadata": {
     "home": {
-      "title": "Armando Picón | Mobile Developer & Content Creator",
-      "description": "Android Engineer, Technical Leader, Speaker, Designer, and Content Creator"
+      "title": "Armando Picón | Tech Lead & Senior Mobile Developer",
+      "description": "Tech Lead, Senior Mobile Developer, Android Engineer y KMP Enthusiast"
     },
     "contact": {
       "title": "Contacto - Armando Picón",

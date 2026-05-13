@@ -1,7 +1,7 @@
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export async function generateMetadata({ params }: { params: { locale: string } }) {
+  const { locale } = params;
   const t = await getTranslations({ locale, namespace: 'metadata.privacy' });
 
   return {
@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export default async function PrivacyPage({ params }: { params: { locale: string } }) {
+  const { locale } = params;
   unstable_setRequestLocale(locale);
   const t = await getTranslations('privacy');
 
