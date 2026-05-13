@@ -16,9 +16,9 @@ export default async function LocaleLayout({
   params
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: { locale: string };
 }) {
-  const { locale } = await params;
+  const { locale } = params;
 
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) {
@@ -33,20 +33,16 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body>
-        <NextIntlClientProvider messages={messages}>
-          <div className="fixed top-0 left-0 right-0 z-50">
-            <AnnouncementBanner />
-            <Navbar />
-          </div>
-          <div style={{ paddingTop: 'calc(4rem + var(--announcement-height, 2.5rem))' }}>
-            {children}
-          </div>
-          <Footer />
-          <CookieConsent />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages} locale={locale}>
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <AnnouncementBanner />
+        <Navbar />
+      </div>
+      <div style={{ paddingTop: 'calc(4rem + var(--announcement-height, 2.5rem))' }}>
+        {children}
+      </div>
+      <Footer />
+      <CookieConsent />
+    </NextIntlClientProvider>
   );
 }

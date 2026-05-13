@@ -4,8 +4,8 @@ import ProfessionalContact from '@/components/ProfessionalContact';
 import SocialLinks from '@/components/SocialLinks';
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export async function generateMetadata({ params }: { params: { locale: string } }) {
+  const { locale } = params;
   const t = await getTranslations({ locale, namespace: 'metadata.contact' });
 
   return {
@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export default async function ContactPage({ params }: { params: { locale: string } }) {
+  const { locale } = params;
   unstable_setRequestLocale(locale);
   return (
     <main className="min-h-screen bg-white dark:bg-[#0b0f19] transition-colors">
