@@ -1,0 +1,281 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "greeting": "¡Hola! Soy",
+    "name": "Armando Picón",
+    "role": "Tech Lead · Senior Mobile Developer",
+    "description": "Apasionado por crear experiencias móviles excepcionales y liderar equipos técnicos que construyen productos robustos y escalables.",
+    "status": "📍 Actualmente en Múnich por los Golden Kodee Awards 2026 (finalista en In-Person Presence).",
+    "availability": "🟢 Abierto a nuevos roles Tech Lead / Senior Mobile.",
+    "cta": {
+      "contact": "Hablemos",
+      "projects": "Ver proyectos"
+    }
+  },
+  "CurrentFocus": {
+    "title": "En qué estoy trabajando ahora",
+    "aiLabsTitle": "🧠 On-Device AI Labs",
+    "aiLabsDesc": "Benchmarking e implementación de modelos de IA locales en mobile. Explorando Model Context Protocol (MCP) y ejecución on-device para reducir latencia y proteger la privacidad del usuario.",
+    "sslTitle": "🔒 SSL Pinning Hands-on",
+    "sslDesc": "Una guía práctica de implementación y playground para asegurar comunicaciones de red mobile contra ataques man-in-the-middle.",
+    "kmpTitle": "🧩 Kotlin Multiplatform",
+    "kmpDesc": "Adaptando continuamente arquitecturas para compartir lógica de negocio entre plataformas sin comprometer el rendimiento nativo."
+  },
+  "latestContent": {
+    "title": "Últimos contenidos",
+    "youtube": {
+      "badge": "YouTube",
+      "watchNow": "Ver ahora"
+    },
+    "podcast": {
+      "badge": "Podcast",
+      "listenNow": "Escuchar ahora"
+    },
+    "articles": {
+      "badge": "Artículo",
+      "readMore": "Leer más"
+    }
+  },
+  "about": {
+    "title": "Sobre mí",
+    "description": "Con más de 8 años de experiencia en desarrollo móvil, me especializo en crear aplicaciones Android robustas y escalables. Actualmente lidero equipos técnicos y comparto mi conocimiento a través de charlas, podcasts y contenido en redes sociales.",
+    "stats": {
+      "experience": "Años de experiencia",
+      "talks": "Charlas dadas",
+      "projects": "Proyectos completados"
+    }
+  },
+  "skills": {
+    "title": "Stack tecnológico",
+    "categories": {
+      "mobile": "Desarrollo Mobile",
+      "architecture": "Arquitectura",
+      "tools": "Herramientas"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Conectemos",
+      "description": "Siempre estoy abierto a nuevas oportunidades, colaboraciones y conversaciones interesantes.",
+      "availableProjects": "Disponible para proyectos",
+      "openCollabs": "Abierto a colaboraciones"
+    },
+    "newsletter": {
+      "title": "Suscríbete a mi newsletter",
+      "description": "Recibe contenido exclusivo directamente en tu inbox",
+      "benefits": {
+        "podcast": "Nuevos episodios de Codalot Podcast",
+        "articles": "Artículos técnicos y tutoriales",
+        "tips": "Tips de desarrollo Android/Kotlin",
+        "news": "Novedades de la industria tech"
+      },
+      "form": {
+        "email": "Correo electrónico",
+        "name": "Nombre",
+        "phone": "Teléfono",
+        "submit": "Suscribirme",
+        "privacy": "Respetamos tu privacidad. Puedes darte de baja en cualquier momento.",
+        "placeholder": {
+          "email": "tu@email.com",
+          "name": "Tu nombre",
+          "phone": "+51 999 999 999"
+        }
+      }
+    },
+    "professional": {
+      "title": "Proyectos y colaboraciones",
+      "description": "¿Tienes un proyecto en mente? ¿Quieres colaborar en tu podcast o evento?",
+      "emailLabel": "Email profesional",
+      "copyButton": "Copiar",
+      "copied": "¡Copiado!",
+      "specialties": {
+        "title": "Especialidades",
+        "android": {
+          "title": "Desarrollo Android",
+          "description": "Kotlin / Java / Jetpack Compose"
+        },
+        "architecture": {
+          "title": "Arquitectura de apps",
+          "description": "MVVM / Clean Architecture / Modular"
+        },
+        "consulting": {
+          "title": "Consultoría técnica",
+          "description": "Code reviews / Mentoring / Tech decisions"
+        },
+        "speaking": {
+          "title": "Charlas y workshops",
+          "description": "Eventos / Podcasts / Conferencias"
+        }
+      }
+    },
+    "social": {
+      "title": "Sígueme en redes",
+      "description": "Conecta conmigo en tus plataformas favoritas",
+      "footer": "¿Prefieres el email? Escríbeme a",
+      "platforms": {
+        "youtube": "@devpicon",
+        "spotify": "Codalot Podcast",
+        "github": "@DevPicon",
+        "linkedin": "/in/devpicon",
+        "devto": "@devpicon",
+        "medium": "@devpicon"
+      }
+    }
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados",
+    "madeWith": "Hecho con",
+    "and": "y",
+    "love": "amor",
+    "code": "código",
+    "privacy": "Política de Privacidad"
+  },
+  "home": {
+    "hero": {
+      "greeting": "Hola, soy",
+      "name": "Armando",
+      "description": "Tech Lead y Senior Mobile Developer enfocado en Android escalable, Kotlin Multiplatform y arquitectura mobile de alta calidad.",
+      "status": "📍 Actualmente en Múnich por los Golden Kodee Awards 2026 (finalista en In-Person Presence).",
+      "availability": "🟢 Abierto a nuevos roles Tech Lead / Senior Mobile.",
+      "scrollLabel": "Scroll to content",
+      "roles": {
+        "seniorMobileDev": "Senior Mobile Developer",
+        "androidEng": "Android Engineer",
+        "techLead": "Technical Leader",
+        "kmpEnthusiast": "KMP Enthusiast"
+      }
+    },
+    "latestContent": {
+      "title": "Último",
+      "titleHighlight": "Contenido",
+      "video": "Último Video",
+      "podcast": "Último Podcast",
+      "blog": "Último Blog"
+    },
+    "dateFormats": {
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "daysAgo": "Hace {days} días",
+      "weeksAgo": "Hace {weeks} semanas",
+      "monthsAgo": "Hace {months} meses"
+    }
+  },
+  "metadata": {
+    "home": {
+      "title": "Armando Picón | Tech Lead & Senior Mobile Developer",
+      "description": "Tech Lead, Senior Mobile Developer, Android Engineer y KMP Enthusiast"
+    },
+    "contact": {
+      "title": "Contacto - Armando Picón",
+      "description": "Contacta conmigo para proyectos, colaboraciones, o suscríbete a mi newsletter para contenido tech y actualizaciones."
+    },
+    "privacy": {
+      "title": "Política de Privacidad - Armando Picón",
+      "description": "Información sobre cómo recopilamos, usamos y protegemos tus datos personales"
+    }
+  },
+  "announcementBanner": {
+    "text": "¡Estoy nominado en los Golden Kodee Community Awards en la categoría \"In-Person Presence\"! Vota hasta el 22 de marzo.",
+    "textShort": "¡Nominado en Golden Kodee Awards!",
+    "cta": "Votar",
+    "dismiss": "Cerrar"
+  },
+  "cookieConsent": {
+    "title": "🍪 Uso de Cookies",
+    "description": "Utilizamos cookies para analizar el tráfico del sitio y mejorar tu experiencia. Tus datos son tratados de forma anónima.",
+    "learnMore": "Más información",
+    "accept": "Aceptar",
+    "reject": "Rechazar"
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización",
+    "date": "1 de noviembre de 2025",
+    "intro": {
+      "title": "Introducción",
+      "description": "Esta Política de Privacidad describe cómo picon.dev ('nosotros', 'nuestro') recopila, utiliza y protege tu información personal cuando visitas nuestro sitio web."
+    },
+    "collection": {
+      "title": "Información que Recopilamos",
+      "analytics": {
+        "title": "Datos de Análisis",
+        "description": "Utilizamos Google Analytics para entender cómo los visitantes utilizan nuestro sitio. Esta información incluye:",
+        "items": {
+          "pageViews": "Páginas visitadas y tiempo de permanencia",
+          "location": "Ubicación geográfica aproximada (país/ciudad)",
+          "device": "Tipo de dispositivo y sistema operativo",
+          "browser": "Navegador web utilizado",
+          "referrer": "Sitio web de referencia"
+        }
+      },
+      "newsletter": {
+        "title": "Suscripción al Newsletter",
+        "description": "Si decides suscribirte a nuestro newsletter, recopilamos tu dirección de correo electrónico a través de Mailchimp."
+      }
+    },
+    "usage": {
+      "title": "Cómo Usamos Tu Información",
+      "items": {
+        "improve": "Mejorar y optimizar nuestro sitio web",
+        "understand": "Entender el comportamiento y las preferencias de los usuarios",
+        "newsletter": "Enviar contenido relevante si te has suscrito al newsletter",
+        "communicate": "Responder a tus consultas o comentarios"
+      }
+    },
+    "cookies": {
+      "title": "Cookies",
+      "description": "Utilizamos cookies para mejorar tu experiencia en nuestro sitio. Las cookies son pequeños archivos de texto almacenados en tu dispositivo.",
+      "types": {
+        "title": "Tipos de cookies que utilizamos:",
+        "essential": {
+          "name": "Cookies esenciales",
+          "description": "Necesarias para el funcionamiento básico del sitio (preferencias de idioma, consentimiento de cookies)"
+        },
+        "analytics": {
+          "name": "Cookies de análisis",
+          "description": "Google Analytics para entender el uso del sitio (solo con tu consentimiento)"
+        }
+      },
+      "control": "Puedes controlar y/o eliminar las cookies según desees. Puedes eliminar todas las cookies que ya están en tu computadora y configurar la mayoría de los navegadores para evitar que se almacenen."
+    },
+    "thirdParty": {
+      "title": "Servicios de Terceros",
+      "ga": {
+        "description": "Utilizamos Google Analytics para análisis web. Google puede usar estos datos según su propia política de privacidad.",
+        "link": "Política de Privacidad de Google"
+      },
+      "mailchimp": {
+        "description": "Utilizamos Mailchimp para gestionar nuestro newsletter. Tu dirección de correo se almacena en sus servidores.",
+        "link": "Política de Privacidad de Mailchimp"
+      }
+    },
+    "rights": {
+      "title": "Tus Derechos (GDPR)",
+      "description": "Si eres residente de la Unión Europea, tienes los siguientes derechos:",
+      "items": {
+        "access": "Derecho de acceso a tus datos personales",
+        "rectification": "Derecho de rectificación de datos inexactos",
+        "erasure": "Derecho de supresión ('derecho al olvido')",
+        "restriction": "Derecho de limitación del tratamiento",
+        "portability": "Derecho a la portabilidad de los datos",
+        "objection": "Derecho de oposición al tratamiento"
+      }
+    },
+    "security": {
+      "title": "Seguridad de Datos",
+      "description": "Implementamos medidas de seguridad técnicas y organizativas apropiadas para proteger tu información personal contra acceso no autorizado, alteración, divulgación o destrucción."
+    },
+    "changes": {
+      "title": "Cambios a esta Política",
+      "description": "Podemos actualizar esta Política de Privacidad ocasionalmente. Te notificaremos sobre cambios significativos publicando la nueva política en esta página y actualizando la fecha de 'Última actualización'."
+    },
+    "contact": {
+      "title": "Contacto",
+      "description": "Si tienes preguntas sobre esta Política de Privacidad o deseas ejercer tus derechos, por favor contáctanos:",
+      "email": "Email"
+    }
+  }
+}
