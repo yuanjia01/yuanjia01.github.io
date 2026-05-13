@@ -2,18 +2,18 @@
   "latestContent": {
     "videos": [
       {
+        "title": "IA en tu bolsillo: Gemini Nano, límites y futuro On-Device | DevPicon",
+        "description": "En esta charla, exploramos cómo llevar Inteligencia Artificial directamente al bolsillo del usuario usando modelos on-device.",
+        "url": "https://www.youtube.com/watch?v=ZlpRLanMdUo",
+        "date": "2026-04-05",
+        "image": "https://i.ytimg.com/vi/ZlpRLanMdUo/hqdefault.jpg"
+      },
+      {
         "title": "¿Vale la pena Gemini 3? Benchmarks reales y prueba con un juego tipo Sokoban",
         "description": "En este video analizo Gemini 3, el nuevo modelo de Google. Voy directo a lo que importa para los desarrolladores: • Qué cambia ...",
         "url": "https://www.youtube.com/watch?v=Xr66s44af24",
         "date": "2025-11-20",
         "image": "https://i.ytimg.com/vi/Xr66s44af24/hqdefault.jpg"
-      },
-      {
-        "title": "🚀 Android actualiza su ruta de aprendizaje para KMP: todo lo que debes saber.",
-        "description": "Kotlin Multiplatform acaba de recibir una actualización importante en su Pathway oficial de Android Developers, y vale la pena ...",
-        "url": "https://www.youtube.com/watch?v=TOCmftJg5QQ",
-        "date": "2025-11-10",
-        "image": "https://i.ytimg.com/vi/TOCmftJg5QQ/hqdefault.jpg"
       }
     ],
     "podcast": {
@@ -24,12 +24,12 @@
       "image": "https://i.scdn.co/image/ab6765630000ba8a9e21665f1a35c4c175def9f5"
     },
     "blog": {
-      "title": "Android - Scalable dependency management with version catalogs",
-      "description": "I’m revisiting some helpful content for starting a new Android project. One of the pain points is how...",
-      "url": "https://dev.to/devpicon/scalable-dependency-management-with-version-catalog-47lj",
-      "date": "2023-12-13",
-      "image": "https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F14zr2e2vtbov9e6r7eds.png"
+      "title": "🔐 Beyond SSL Pinning: mTLS, Backend Security & Real-World Mobile Architecture (Part 3)",
+      "description": "In the previous parts, we explored SSL pinning across Android and iOS, including both certificate...",
+      "url": "https://dev.to/devpicon/beyond-ssl-pinning-mtls-backend-security-real-world-mobile-architecture-part-3-oeb",
+      "date": "2026-05-04",
+      "image": "https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fqgmbj8ejep96m34rc68r.png"
     }
   },
-  "lastUpdated": "2025-11-20T23:47:46.583Z"
+  "lastUpdated": "2026-05-13T07:54:42.457Z"
 }
