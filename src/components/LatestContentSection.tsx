@@ -31,7 +31,7 @@ interface LatestContentSectionProps {
   contentData: ContentData;
 }
 
-function formatDate(dateString: string, locale: string, t: any): string {
+function formatDate(dateString: string, locale: string, t: (key: string, values?: Record<string, string | number>) => string): string {
   const date = new Date(dateString);
   const now = new Date();
   const diffTime = Math.abs(now.getTime() - date.getTime());

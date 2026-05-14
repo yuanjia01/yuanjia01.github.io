@@ -6,8 +6,8 @@ import { useLocale, useTranslations } from 'next-intl';
 // Declare gtag for TypeScript
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
-    dataLayer?: any[];
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
   }
 }
 
@@ -35,8 +35,8 @@ export default function CookieConsent() {
 
       // Define gtag function if not exists
       if (!window.gtag) {
-        window.gtag = function() {
-          window.dataLayer!.push(arguments);
+        window.gtag = function(...args) {
+          window.dataLayer!.push(args);
         };
       }
 
@@ -60,8 +60,8 @@ export default function CookieConsent() {
 
       // Define gtag function if not exists
       if (!window.gtag) {
-        window.gtag = function() {
-          window.dataLayer!.push(arguments);
+        window.gtag = function(...args) {
+          window.dataLayer!.push(args);
         };
       }
 

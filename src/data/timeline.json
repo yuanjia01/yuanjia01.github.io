@@ -1,0 +1,98 @@
+[
+  {
+    "title": "Gemini in Android Studio: Características y configuraciones esenciales",
+    "event_context": "GDG Santiago",
+    "date": "2024-03-20",
+    "display_date": "Marzo 2024",
+    "media": {
+      "thumbnail_url": "https://lh3.googleusercontent.com/pw/AP1GczN1_A68vT1QyQU_FNYoQqXVTewiU8VGZRI1D6kiW9GqPsasijX4K4w0s9wTg6MHxNgs1Lptv2IfVpYpNs7HBuq0J_aSRe8xgmbHLiG22eemeA8ZEzC1",
+      "zoom_url": "https://lh3.googleusercontent.com/pw/AP1GczN1_A68vT1QyQU_FNYoQqXVTewiU8VGZRI1D6kiW9GqPsasijX4K4w0s9wTg6MHxNgs1Lptv2IfVpYpNs7HBuq0J_aSRe8xgmbHLiG22eemeA8ZEzC1=w2400"
+    },
+    "links": {
+      "presentation": "https://speakerdeck.com/devpicon/gemini-in-android-studio",
+      "video": null
+    },
+    "tags": ["Android", "AI", "Gemini", "Mobile"],
+    "description": "Exploración de las capacidades de IA generativa integradas en Android Studio para acelerar el desarrollo y la calidad del código."
+  },
+  {
+    "title": "Scalable Dependency Management with Version Catalog",
+    "event_context": "Webinar / Technical Session",
+    "date": "2023-11-15",
+    "display_date": "Noviembre 2023",
+    "media": {
+      "thumbnail_url": "https://lh3.googleusercontent.com/pw/AP1GczOEzcnml95YR8eeoz6xrqy2ldGjgpNUK7iKe5LYGFhIhzT3M2bTKYGoX36kl4qZiyssczruuq3EDOPCWc06n9J4a0q8DVau7dR3x4ZYzZg20E200Bed",
+      "zoom_url": "https://lh3.googleusercontent.com/pw/AP1GczOEzcnml95YR8eeoz6xrqy2ldGjgpNUK7iKe5LYGFhIhzT3M2bTKYGoX36kl4qZiyssczruuq3EDOPCWc06n9J4a0q8DVau7dR3x4ZYzZg20E200Bed=w2400"
+    },
+    "links": {
+      "presentation": "https://speakerdeck.com/devpicon/scalable-depency-management-with-version-catalog",
+      "video": null
+    },
+    "tags": ["Android", "Gradle", "Architecture", "Best Practices"],
+    "description": "Guía práctica sobre la implementación de Gradle Version Catalogs para centralizar y escalar la gestión de dependencias en proyectos multi-módulo."
+  },
+  {
+    "title": "Introducción a Kotlin Flow",
+    "event_context": "Work-from-home Technical Content",
+    "date": "2021-08-10",
+    "display_date": "Agosto 2021",
+    "media": {
+      "thumbnail_url": "https://lh3.googleusercontent.com/pw/AP1GczN1_A68vT1QyQU_FNYoQqXVTewiU8VGZRI1D6kiW9GqPsasijX4K4w0s9wTg6MHxNgs1Lptv2IfVpYpNs7HBuq0J_aSRe8xgmbHLiG22eemeA8ZEzC1",
+      "zoom_url": "https://lh3.googleusercontent.com/pw/AP1GczN1_A68vT1QyQU_FNYoQqXVTewiU8VGZRI1D6kiW9GqPsasijX4K4w0s9wTg6MHxNgs1Lptv2IfVpYpNs7HBuq0J_aSRe8xgmbHLiG22eemeA8ZEzC1=w2400"
+    },
+    "links": {
+      "presentation": "https://speakerdeck.com/devpicon/introduccion-a-kotlin-flow",
+      "video": null
+    },
+    "tags": ["Kotlin", "Flow", "Reactive", "Mobile"],
+    "description": "Análisis profundo de los streams asíncronos en Kotlin y su comparación con SharedFlow y LiveData."
+  },
+  {
+    "title": "Kotlin Coroutines: Empleando Coroutines en tu Android App",
+    "event_context": "Kotlin Everywhere Lima 2019",
+    "date": "2019-10-24",
+    "display_date": "Octubre 2019",
+    "media": {
+      "thumbnail_url": "https://lh3.googleusercontent.com/pw/AP1GczPTad2FKEuor139Wao3XYX5VMF4698T9Cw-tR5yAnLFeQUc3dtEr-Zhki4PKAgLX8TaKtmWpR9u9-GxO1FyOxnZHdQrs_eTaDhAOoLeuSMIXZhpHCwS",
+      "zoom_url": "https://lh3.googleusercontent.com/pw/AP1GczPTad2FKEuor139Wao3XYX5VMF4698T9Cw-tR5yAnLFeQUc3dtEr-Zhki4PKAgLX8TaKtmWpR9u9-GxO1FyOxnZHdQrs_eTaDhAOoLeuSMIXZhpHCwS=w2400"
+    },
+    "links": {
+      "presentation": "https://speakerdeck.com/devpicon/coroutines-on-the-way",
+      "video": null
+    },
+    "tags": ["Kotlin", "Coroutines", "Android", "Async"],
+    "description": "Presentación sobre el uso eficiente de Coroutines para manejar la asincronía en Android, realizada durante la gira global Kotlin Everywhere."
+  },
+  {
+    "title": "Desmitificando Clean Architecture en Android",
+    "event_context": "GDG Open Lima",
+    "date": "2018-06-12",
+    "display_date": "Junio 2018",
+    "media": {
+      "thumbnail_url": "https://lh3.googleusercontent.com/pw/AP1GczPy5MDQRqaK--Lu6G6PFjIzvSy-0ZeIMzzqEEVBrXpt3hKjKf_68cigslaMZIvWIj2NkB76bfTYw0Xsjw96mqV6aYny_kjEsBIw_EU5C9o_hgdm-wI2",
+      "zoom_url": "https://lh3.googleusercontent.com/pw/AP1GczPy5MDQRqaK--Lu6G6PFjIzvSy-0ZeIMzzqEEVBrXpt3hKjKf_68cigslaMZIvWIj2NkB76bfTYw0Xsjw96mqV6aYny_kjEsBIw_EU5C9o_hgdm-wI2=w2400"
+    },
+    "links": {
+      "presentation": "https://speakerdeck.com/devpicon/desmitificando-clean-architecture-en-android",
+      "video": null
+    },
+    "tags": ["Architecture", "Clean Architecture", "Android", "Testing"],
+    "description": "Clarificación de los conceptos de Clean Architecture aplicados a proyectos Android del mundo real para mejorar la mantenibilidad y el testeo."
+  },
+  {
+    "title": "Android Testing - Mi camino hacia la iluminación",
+    "event_context": "DevFest Lima",
+    "date": "2017-11-20",
+    "display_date": "Noviembre 2017",
+    "media": {
+      "thumbnail_url": "https://lh3.googleusercontent.com/pw/AP1GczPi_LvzgU4jR01bexIqpxh77DugkTQFGRH7U7P6U_IJSm6JLTGWrk3h-zGZWVg4Uz7Mua8ABNImPgHsyAvwT0amSTpUylRC0QVuxBySWf3fQggLN4TA",
+      "zoom_url": "https://lh3.googleusercontent.com/pw/AP1GczPi_LvzgU4jR01bexIqpxh77DugkTQFGRH7U7P6U_IJSm6JLTGWrk3h-zGZWVg4Uz7Mua8ABNImPgHsyAvwT0amSTpUylRC0QVuxBySWf3fQggLN4TA=w2400"
+    },
+    "links": {
+      "presentation": "https://speakerdeck.com/devpicon/android-testing-mi-camino-hacia-la-iluminacion",
+      "video": null
+    },
+    "tags": ["Android", "Testing", "QA", "Espresso"],
+    "description": "Relato de la transición hacia una cultura de pruebas automatizadas en Android, cubriendo unit testing y UI testing con Espresso."
+  }
+]

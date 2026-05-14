@@ -1,7 +1,8 @@
 {
   "nav": {
     "home": "Home",
-    "contact": "Contact"
+    "contact": "Contact",
+    "contributions": "Contributions"
   },
   "hero": {
     "greeting": "Hi! I'm",
@@ -132,6 +133,14 @@
     "love": "love",
     "code": "code",
     "privacy": "Privacy Policy"
+  },
+  "contributions": {
+    "title": "Contributions & Talks",
+    "description": "A timeline of my public presentations, workshops, and technical talks in the community.",
+    "filterByTopic": "Filter by topic",
+    "all": "All",
+    "slides": "Slides",
+    "video": "Video"
   },
   "home": {
     "hero": {

@@ -1,7 +1,8 @@
 {
   "nav": {
     "home": "Inicio",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "contributions": "Contribuciones"
   },
   "hero": {
     "greeting": "¡Hola! Soy",
@@ -132,6 +133,14 @@
     "love": "amor",
     "code": "código",
     "privacy": "Política de Privacidad"
+  },
+  "contributions": {
+    "title": "Contribuciones y Charlas",
+    "description": "Una línea de tiempo de mis presentaciones públicas, talleres y charlas técnicas en la comunidad.",
+    "filterByTopic": "Filtrar por tema",
+    "all": "Todos",
+    "slides": "Diapositivas",
+    "video": "Video"
   },
   "home": {
     "hero": {
