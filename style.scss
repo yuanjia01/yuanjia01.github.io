@@ -19,22 +19,20 @@ html {
 
 body {
 	background: $white;
-  font: 18px/1.4 $helvetica;
+  font: 16px/1.5 $helvetica;
   color: $darkGray;
 }
 
-.container {
+.container {	
   margin: 0 auto;
-  max-width: 740px;
-  padding: 0 10px;
-  width: 100%;
+  max-width: 1024px;
+  padding: 0 20px;
+  width: 95%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $helveticaNeue;
-  color: $darkerGray;
-  font-weight: bold;
-
+  font-family: $playfair;
+  color: $black;
   line-height: 1.7;
   margin: 1em 0 15px;
   padding: 0;
@@ -45,7 +43,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 28px;
   a {
     color: inherit;
   }
@@ -56,12 +54,11 @@ h2 {
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 h4 {
-  font-size: 18px;
-  color: $gray;
+  font-size: 20px;
 }
 
 p {
@@ -69,11 +66,11 @@ p {
 }
 
 a {
-  color: $blue;
-  text-decoration: none;
+  color: $darkGray;
+  text-decoration: underline;
 	cursor: pointer;
   &:hover, &:active {
-    color: $blue;
+    color: $darkGray;
   }
 }
 
@@ -192,18 +189,22 @@ img {
 
 .site-name {
   margin: 0;
-  color: $darkGray;
+  color: $black;
   cursor: pointer;
-  font-family: $helveticaNeue;
-  font-weight: 300;
-  font-size: 28px;
-  letter-spacing: 1px;
+  font-family: $playfair;
+  font-size: 48px;
+
+	 a {
+    text-decoration: none;
+  }
 }
 
 .site-description {
   margin: -5px 0 0 0;
   color: $gray;
   font-size: 16px;
+  letter-spacing: 1px;
+
 
   @include mobile {
     margin: 3px 0;
@@ -211,7 +212,7 @@ img {
 }
 
 nav {
-  float: right;
+  float: left;
   margin-top: 23px; // @TODO: Vertically middle align
   font-family: $helveticaNeue;
   font-size: 18px;
@@ -226,13 +227,14 @@ nav {
   a {
     margin-left: 20px;
     color: $darkGray;
+    text-decoration: none;
     text-align: right;
     font-weight: 300;
     letter-spacing: 1px;
 
     @include mobile {
       margin: 0 10px;
-      color: $blue;
+      color: $darkGray;
     }
   }
 }
@@ -240,6 +242,41 @@ nav {
 //
 // .main
 //
+
+//
+// Homepage two-column layout
+//
+
+.homepage-layout {
+  display: flex;
+  gap: 40px;
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.homepage-main {
+  flex: 0 0 70%;
+  min-width: 0;
+
+  @include mobile {
+    flex: 1 1 100%;
+  }
+}
+
+.homepage-sidebar {
+  flex: 0 0 calc(30% - 40px);
+  min-width: 0;
+
+  @include mobile {
+    flex: 1 1 100%;
+  }
+
+  p {
+    margin: 0;
+  }
+}
 
 .posts > .post {
   padding-bottom: 2em;
@@ -256,9 +293,9 @@ nav {
     margin: 1.8em .8em;
     border-left: 2px solid $gray;
     padding: 0.1em 1em;
-    color: $gray;
-    font-size: 22px;
-    font-style: italic;
+    color: $darkGray;
+    font-family: $playfair;
+    font-size: 24px;
   }
 
   .comments {
@@ -266,22 +303,61 @@ nav {
   }
 
   .read-more {
-    text-transform: uppercase;
-    font-size: 15px;
+    font-size: 16px;
   }
 }
 
 .wrapper-footer {
   margin-top: 50px;
   border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
   background-color: $lightGray;
+  color: $black;
 }
 
 footer {
   padding: 20px 0;
-  text-align: center;
+  text-align: left;
 }
+
+.footer p {
+	  font-size: 16px;
+}
+
+.footer a {
+    padding-right: 20px;
+    font-size: 16px;
+    color: black;
+}
+
+.footer {
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-start;
+}
+
+.footer-column {
+   padding: 20px;
+}
+
+/* Set column widths */
+.footer-column-1 {
+   width: 50%;
+}
+
+.footer-column-2, .footer-column-3 {
+   width: 25%;
+}
+
+/* Responsive design: Stack columns on smaller screens */
+@media (max-width: 768px) {
+   .footer {
+      flex-direction: column;
+   }
+   .footer-column-1, .footer-column-2, .footer-column-3 {
+      width: 100%;
+   }
+}
+
 
 // Settled on moving the import of syntax highlighting to the bottom of the CSS
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start

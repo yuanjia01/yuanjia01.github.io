@@ -1,0 +1,11 @@
+---
+layout: post
+title: Society of Indexers Conference and Content Quality
+tags: ["Artificial Intelligence", Presentations]
+description: "Reflections from a Society of Indexers conference presentation on how publishers are using AI, and whether AI-generated content will lower—or diversify—creative standards."
+---
+I gave a short presentation on how publishers are using AI at the [Society of Indexers Conference](https://www.indexers.org.uk/training-development/conferences/conference-2024/) today. It was great to give the publisher perspective ahead of a fascinating presentation from [Tanya Izzard](https://tanyaizzard.co.uk) on experimenting with LLMs for indexing: the mix of general and specific themes led into a lively discussion. 
+
+To develop one answer that I gave, there was an interesting question from the audience on whether a proliferation of low quality, AI-generated content would lead to a general lowering of standards. In the moment, my response was to question whether the opposite could also be true: could human creativity really stand out against AI and be a point of competitive difference. As I think about it, I wonder whether that was poor framing on my part. It assumes a natural superiority on one side which may not always be true, and the binary framing probably oversimplifies what are nuanced consumer choices. Neither the technology nor consumer preferences will remain static, and AI-generated content could lead to a divergence in the creative landscape rather than simply a lowering or raising of standards. For certain types of mass-produced content, AI may become the norm, meeting the demand for quick, inexpensive solutions where depth and originality aren’t prioritized. In contrast, human-crafted work, particularly in areas where emotional resonance, cultural context, and personal experience matter, could become even more distinctive and valuable. Finally, we might also see more of a hybrid approach, where AI tools enhance human creativity rather than replace it, allowing creators to focus on more conceptual or high-level elements while automating the repetitive tasks. This could, in fact, raise the overall standard of creative output in many fields. 
+
+&#8212; <a href="/downloads/SOI_18_September_2024.pdf"><i class="fa-solid fa-file-pdf"></i> Download slides</a>

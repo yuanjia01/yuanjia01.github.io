@@ -1,0 +1,63 @@
+<h4>Writing Stats</h4>
+{% assign total_words = 0 %}
+{% for post in site.posts %}
+  {% assign post_words = post.content | number_of_words %}
+  {% assign total_words = total_words | plus: post_words %}
+{% endfor %}
+<span id="writing-wordcount">{{ total_words }}</span> words<br/>
+<span id="writing-streak"></span>
+<noscript>Streak requires JavaScript</noscript>
+
+<script>
+(function() {
+  var wc = document.getElementById('writing-wordcount');
+  if (wc) {
+    wc.textContent = parseInt(wc.textContent, 10).toLocaleString();
+  }
+
+  var postDates = [
+    {% for post in site.posts %}"{{ post.date | date: '%Y-%m-%d' }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  function getMonday(d) {
+    d = new Date(d);
+    var day = d.getDay();
+    var diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.getFullYear(), d.getMonth(), diff);
+  }
+
+  function toKey(d) {
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  var weeks = {};
+  postDates.forEach(function(dateStr) {
+    var monday = getMonday(new Date(dateStr + 'T12:00:00'));
+    weeks[toKey(monday)] = true;
+  });
+
+  var currentMonday = getMonday(new Date());
+  var checkMonday = new Date(currentMonday);
+
+  // If no post yet this week, start checking from last week
+  if (!weeks[toKey(checkMonday)]) {
+    checkMonday.setDate(checkMonday.getDate() - 7);
+  }
+
+  var streak = 0;
+  while (weeks[toKey(checkMonday)]) {
+    streak++;
+    checkMonday.setDate(checkMonday.getDate() - 7);
+  }
+
+  var el = document.getElementById('writing-streak');
+  if (el) {
+    el.textContent = streak > 0
+      ? streak + ' week streak'
+      : 'No current streak';
+  }
+})();
+</script>
