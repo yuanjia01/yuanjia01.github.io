@@ -85,5 +85,8 @@ exclude:
   - LICENSE
   - README.md
   - CNAME
+  - CLAUDE.md
+  - vendor
 
-theme: jekyll-theme-dinky
+# Theme line removed: site uses its own _layouts/ and _sass/.
+# `jekyll-theme-dinky` was only resolvable via the legacy `github-pages` gem.
