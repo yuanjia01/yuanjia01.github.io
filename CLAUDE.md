@@ -8,7 +8,7 @@ A personal blog (chuckyee.github.io) built on Jekyll and hosted by GitHub Pages.
 
 ## Deployment
 
-Built and deployed by **GitHub Actions**, not by GitHub Pages' built-in Jekyll runner. The workflow at `.github/workflows/pages.yml` runs on every push to `master`: it sets up Ruby 3.3 via `ruby/setup-ruby@v1`, runs `bundle exec jekyll build`, and publishes via `actions/deploy-pages@v4`.
+Built and deployed by **GitHub Actions**, not by GitHub Pages' built-in Jekyll runner. The workflow at `.github/workflows/pages.yml` runs on every push to `main`: it sets up Ruby 3.3 via `ruby/setup-ruby@v1`, runs `bundle exec jekyll build`, and publishes via `actions/deploy-pages@v5`.
 
 This means the site is **not** locked to the `github-pages` gem's pinned Jekyll/Ruby versions. The Gemfile depends directly on `jekyll ~> 4.4` and the plugins this site uses (`jekyll-feed`, `jekyll-sitemap`). To upgrade Ruby or Jekyll, bump the version in `pages.yml` and/or the Gemfile — that is the single source of truth.
 
