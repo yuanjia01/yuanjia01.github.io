@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>applytrack on the tailnet — dogfooding the product I applied to</title>
+<meta name="description" content="How I put my self-hosted job-application tracker behind tailscale serve — real cert, no 0.0.0.0, identity-based access — while interviewing at Tailscale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Spline+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070b08;
+    --bg-2:#0c130d;
+    --panel:#0e1610;
+    --panel-edge:#1c2a1f;
+    --phosphor:#5ef38c;
+    --phosphor-dim:#36a35c;
+    --amber:#ffb454;
+    --amber-dim:#7a5a26;
+    --text:#cfe0d2;
+    --muted:#7d917f;
+    --faint:#4f5f52;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --disp:'Chakra Petch',var(--mono);
+    --body:'Spline Sans',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(120% 80% at 80% -10%, rgba(94,243,140,.06), transparent 60%),
+      radial-gradient(100% 60% at 0% 110%, rgba(255,180,84,.05), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    min-height:100vh;
+    padding:clamp(1.2rem,4vw,4rem) clamp(1rem,5vw,2rem) 6rem;
+    position:relative;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:50;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.18) 2px 3px);
+    mix-blend-mode:multiply;opacity:.5;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:49;
+    background:radial-gradient(120% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%);
+  }
+  .wrap{max-width:920px;margin:0 auto;position:relative;z-index:1}
+
+  header{
+    border:1px solid var(--panel-edge);
+    border-radius:14px;
+    background:linear-gradient(180deg,var(--panel),var(--bg-2));
+    padding:clamp(1.4rem,4vw,2.6rem);
+    position:relative;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(94,243,140,.04),0 30px 80px -40px rgba(0,0,0,.9);
+    opacity:0;transform:translateY(14px);
+    animation:rise .7s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  header::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--phosphor),transparent);
+    opacity:.6;
+  }
+  .prompt{
+    font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;
+    color:var(--phosphor-dim);margin-bottom:1.1rem;text-transform:uppercase;
+  }
+  .prompt .blink{
+    display:inline-block;width:.55em;height:1.05em;background:var(--phosphor);
+    margin-left:.15em;vertical-align:-.18em;animation:blink 1.1s steps(1) infinite;
+    box-shadow:0 0 8px var(--phosphor);
+  }
+  h1{
+    font-family:var(--disp);font-weight:700;
+    font-size:clamp(2.1rem,7vw,4rem);line-height:1.02;
+    letter-spacing:-.01em;color:#eafff0;
+    text-shadow:0 0 26px rgba(94,243,140,.25);
+  }
+  h1 .x{color:var(--phosphor);text-shadow:0 0 22px rgba(94,243,140,.6)}
+  .sub{
+    margin-top:1rem;max-width:64ch;color:var(--muted);
+    font-size:clamp(.98rem,2.3vw,1.12rem);
+  }
+  .machine{
+    margin-top:1.5rem;display:flex;gap:.6rem;flex-wrap:wrap;
+    font-family:var(--mono);font-size:.76rem;
+  }
+  .chip{
+    border:1px solid var(--panel-edge);border-radius:999px;
+    padding:.3rem .8rem;color:var(--muted);background:rgba(94,243,140,.03);
+  }
+  .chip b{color:var(--phosphor);font-weight:600}
+
+  section{margin-top:clamp(2.2rem,5vw,3.4rem)}
+  .eyebrow{
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:.7rem;
+    display:flex;align-items:center;gap:.7rem;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--phosphor-dim)}
+  h2{
+    font-family:var(--disp);font-weight:600;
+    font-size:clamp(1.4rem,4vw,2rem);color:#e6f5ea;letter-spacing:-.01em;
+    line-height:1.15;
+  }
+  h2 .num{color:var(--phosphor);font-weight:700;margin-right:.5rem}
+  p.lead{margin-top:.7rem;color:var(--muted);max-width:66ch}
+  p.lead+p.lead{margin-top:.8rem}
+
+  .callout{
+    margin-top:1.3rem;border:1px solid var(--amber-dim);border-radius:12px;
+    background:linear-gradient(180deg,rgba(255,180,84,.07),rgba(255,180,84,.02));
+    padding:1.3rem 1.4rem;position:relative;overflow:hidden;
+  }
+  .callout::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:var(--amber);box-shadow:0 0 14px var(--amber);
+  }
+  .callout .tag{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--amber);font-weight:600;
+    display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;
+  }
+  .callout h3{font-family:var(--disp);font-size:1.2rem;color:#fce7c4;font-weight:600;margin-bottom:.5rem}
+  .callout p{color:#d8c6a6}
+  .callout strong{color:var(--amber)}
+  .callout.green{border-color:var(--phosphor-dim);background:linear-gradient(180deg,rgba(94,243,140,.07),rgba(94,243,140,.02))}
+  .callout.green::before{background:var(--phosphor);box-shadow:0 0 14px var(--phosphor)}
+  .callout.green .tag{color:var(--phosphor)}
+  .callout.green h3{color:#dff7e6}
+  .callout.green p{color:#bcd6c2}
+  .callout.green strong{color:var(--phosphor)}
+
+  .code{
+    margin-top:1.1rem;border:1px solid var(--panel-edge);border-radius:12px;
+    background:var(--bg-2);overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.02),0 18px 40px -28px rgba(0,0,0,.9);
+  }
+  .code .bar{
+    display:flex;align-items:center;gap:.5rem;padding:.6rem .9rem;
+    border-bottom:1px solid var(--panel-edge);background:rgba(94,243,140,.02);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;background:#283326}
+  .dot.r{background:#3a2424}.dot.y{background:#3a3324}.dot.g{background:#243a2c}
+  .code .bar span{
+    font-family:var(--mono);font-size:.72rem;color:var(--faint);margin-left:.4rem;
+  }
+  pre{
+    font-family:var(--mono);font-size:.86rem;line-height:1.7;
+    padding:1.05rem 1.2rem;overflow-x:auto;color:var(--text);
+  }
+  pre .c{color:var(--faint);font-style:italic}
+  pre .p{color:var(--phosphor)}
+  pre .k{color:var(--amber)}
+  pre .a{color:#9fd6ff}
+  pre .u{color:#e07a7a}
+
+  code.inline{
+    font-family:var(--mono);font-size:.86em;
+    background:rgba(94,243,140,.08);color:var(--phosphor);
+    padding:.12em .4em;border-radius:5px;border:1px solid rgba(94,243,140,.12);
+  }
+
+  .grid{
+    margin-top:1.2rem;display:grid;gap:.7rem;
+    grid-template-columns:repeat(auto-fit,minmax(255px,1fr));
+  }
+  .kcard{
+    border:1px solid var(--panel-edge);border-radius:11px;
+    background:linear-gradient(180deg,var(--panel),var(--bg-2));
+    padding:1rem 1.1rem;transition:border-color .25s,transform .25s,box-shadow .25s;
+  }
+  .kcard:hover{
+    border-color:var(--phosphor-dim);transform:translateY(-3px);
+    box-shadow:0 16px 30px -22px rgba(94,243,140,.5);
+  }
+  .kcard .lbl{font-size:.95rem;color:var(--text);margin-bottom:.4rem;font-weight:600}
+  .kcard .desc{font-size:.84rem;color:var(--muted)}
+
+  ol.flow{margin-top:1.2rem;list-style:none;counter-reset:s}
+  ol.flow li{
+    counter-increment:s;position:relative;padding:.55rem 0 .55rem 2.6rem;
+    color:var(--muted);border-left:1px solid var(--panel-edge);margin-left:.9rem;
+  }
+  ol.flow li::before{
+    content:counter(s,decimal-leading-zero);position:absolute;left:-1rem;top:.5rem;
+    font-family:var(--mono);font-size:.72rem;color:var(--phosphor);
+    background:var(--bg);border:1px solid var(--phosphor-dim);border-radius:50%;
+    width:2rem;height:2rem;display:grid;place-items:center;
+    box-shadow:0 0 12px rgba(94,243,140,.2);
+  }
+  ol.flow li b{color:var(--text);font-weight:600}
+
+  .verdict{
+    margin-top:clamp(2.4rem,6vw,3.6rem);
+    border:1px solid var(--phosphor-dim);border-radius:14px;
+    background:linear-gradient(135deg,rgba(94,243,140,.08),rgba(94,243,140,.02));
+    padding:clamp(1.4rem,4vw,2.2rem);position:relative;overflow:hidden;
+  }
+  .verdict::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(80% 120% at 100% 0%,rgba(94,243,140,.12),transparent 55%);
+  }
+  .verdict .tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--phosphor);margin-bottom:.7rem}
+  .verdict p{font-size:clamp(1rem,2.6vw,1.2rem);color:#dff0e2;max-width:68ch;position:relative;z-index:1}
+  .verdict p+p{margin-top:.8rem;font-size:1rem;color:#c2d8c8}
+  .verdict strong{color:var(--phosphor);font-weight:600}
+
+  footer{
+    margin-top:3rem;text-align:center;font-family:var(--mono);
+    font-size:.72rem;color:var(--faint);letter-spacing:.05em;
+  }
+  footer a{color:var(--phosphor-dim);text-decoration:none}
+  footer .blink{color:var(--phosphor-dim)}
+
+  .reveal{opacity:0;transform:translateY(16px);animation:rise .65s cubic-bezier(.2,.8,.2,1) forwards}
+  .d1{animation-delay:.12s}.d2{animation-delay:.22s}.d3{animation-delay:.32s}
+  .d4{animation-delay:.42s}.d5{animation-delay:.52s}.d6{animation-delay:.62s}.d7{animation-delay:.72s}
+
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important}
+    .reveal,header{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="prompt">you@host:~$ sudo tailscale up<span class="blink"></span></div>
+    <h1>applytrack on the<br>Tailnet<span class="x">.</span></h1>
+    <p class="sub">I built a little self-hosted job-application tracker. When I needed to reach it from another device, I put it behind <b>tailscale serve</b> instead of opening a port — a real trusted cert, no <code class="inline">0.0.0.0</code>, identity-based access. The fun part: I was dogfooding the exact product I'd just applied to.</p>
+    <div class="machine">
+      <span class="chip">app <b>FastAPI</b></span>
+      <span class="chip">front <b>tailscale serve</b></span>
+      <span class="chip">cert <b>Let's Encrypt (auto)</b></span>
+      <span class="chip">bind <b>127.0.0.1</b></span>
+    </div>
+  </header>
+
+  <!-- WHY -->
+  <section class="reveal d1">
+    <div class="eyebrow">the setup</div>
+    <h2>From "bind all interfaces" to "bind nothing public"</h2>
+    <p class="lead">My first instinct for remote access was the usual: bind the server to <code class="inline">0.0.0.0</code>, slap Basic Auth on it, generate a self-signed cert. It works — but it means a publicly-listening port, a browser "not secure" warning, and a shared password as the only gate.</p>
+    <p class="lead">Tailscale flips that. The app stays bound to <code class="inline">127.0.0.1</code> — invisible to the network — and the tailnet becomes the boundary. Every device that should reach it is already authenticated to my tailnet; nothing else can even see it. And <code class="inline">tailscale serve</code> provisions a genuine Let's Encrypt cert for the machine's <code class="inline">*.ts.net</code> name, so the green padlock just works.</p>
+    <div class="callout green">
+      <div class="tag">▌ the shape</div>
+      <h3>Install → join the tailnet → point Tailscale at a loopback app.</h3>
+      <p>A few of these steps need <strong>sudo</strong> and your <strong>Tailscale login</strong> — by design. That's the onboarding worth paying attention to if you're learning the product.</p>
+    </div>
+  </section>
+
+  <!-- 01 install -->
+  <section class="reveal d2">
+    <div class="eyebrow">step one</div>
+    <h2><span class="num">01</span>Install Tailscale</h2>
+    <p class="lead">The official one-liner detects your distro and installs the client + daemon. Needs sudo.</p>
+    <div class="code">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>install</span></div>
+<pre><span class="p">$</span> <span class="k">curl</span> <span class="a">-fsSL</span> https://tailscale.com/install.sh | <span class="k">sh</span></pre>
+    </div>
+  </section>
+
+  <!-- 02 up -->
+  <section class="reveal d3">
+    <div class="eyebrow">step two</div>
+    <h2><span class="num">02</span>Join the tailnet</h2>
+    <p class="lead">This prints a <code class="inline">login.tailscale.com</code> URL and opens a browser. First run is where you create the account (Google / GitHub / Microsoft / email). When it returns, the machine is on your tailnet — this is the whole onboarding flow, and it's genuinely a 30-second affair.</p>
+    <div class="code">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>register this machine</span></div>
+<pre><span class="u">sudo</span> <span class="k">tailscale</span> up</pre>
+    </div>
+  </section>
+
+  <!-- 03 operator -->
+  <section class="reveal d4">
+    <div class="eyebrow">step three</div>
+    <h2><span class="num">03</span>Run it without sudo</h2>
+    <p class="lead">By default the <code class="inline">tailscale</code> CLI needs root. Setting an operator lets your normal user drive the daemon, which makes the <code class="inline">serve</code> step (and day-to-day <code class="inline">status</code> checks) friction-free.</p>
+    <div class="code">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>hand the daemon to your user</span></div>
+<pre><span class="u">sudo</span> <span class="k">tailscale</span> set <span class="a">--operator</span>=$USER</pre>
+    </div>
+  </section>
+
+  <!-- 04 toggles -->
+  <section class="reveal d5">
+    <div class="eyebrow">step four · admin console</div>
+    <h2>Two toggles for the real cert</h2>
+    <p class="lead">In the admin console under <code class="inline">DNS</code>, flip these on. They're what let <code class="inline">tailscale serve</code> mint a trusted cert for your <code class="inline">&lt;host&gt;.&lt;tailnet&gt;.ts.net</code> name — no warning, nothing to import on the client.</p>
+    <div class="grid">
+      <div class="kcard">
+        <div class="lbl">① MagicDNS</div>
+        <div class="desc">Gives every machine a stable <code class="inline">*.ts.net</code> name instead of a raw IP.</div>
+      </div>
+      <div class="kcard">
+        <div class="lbl">② HTTPS Certificates</div>
+        <div class="desc">Authorizes Let's Encrypt certs for your tailnet names — the magic behind no-warning HTTPS.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 serve -->
+  <section class="reveal d6">
+    <div class="eyebrow">step five</div>
+    <h2><span class="num">05</span>Point Tailscale at the app</h2>
+    <p class="lead">Now the good part. I bound the app back to <code class="inline">127.0.0.1</code> — the tailnet is the security boundary, so there's no reason to listen on anything public — and let <code class="inline">tailscale serve</code> front it with the trusted cert.</p>
+    <div class="code">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>reverse-proxy the loopback app over the tailnet, with HTTPS</span></div>
+<pre><span class="c"># app listens on 127.0.0.1:8765 — invisible to the LAN</span>
+<span class="p">$</span> <span class="k">tailscale</span> serve <span class="a">--bg</span> https / http://127.0.0.1:8765
+
+<span class="c"># confirm what's being served, and at what URL</span>
+<span class="p">$</span> <span class="k">tailscale</span> serve status</pre>
+    </div>
+    <p class="lead">That's it. From any device on the tailnet I hit <code class="inline">https://&lt;host&gt;.&lt;tailnet&gt;.ts.net</code> — green padlock, no port, no password prompt, no <code class="inline">0.0.0.0</code> anywhere.</p>
+    <div class="callout">
+      <div class="tag">⚠ one gotcha</div>
+      <p>The other device has to be <strong>on the same tailnet</strong> to resolve the <code class="inline">.ts.net</code> name — so install Tailscale there too and log in with the same account. That's the access list; there isn't a second one.</p>
+    </div>
+  </section>
+
+  <!-- the loop -->
+  <section class="reveal d6">
+    <div class="eyebrow">recap</div>
+    <h2>The whole thing, end to end</h2>
+    <ol class="flow">
+      <li><b>Install</b> the client + daemon (<code class="inline">install.sh</code>).</li>
+      <li><b>tailscale up</b> — create the account, join the machine to the tailnet.</li>
+      <li><b>Set an operator</b> so the CLI works without sudo.</li>
+      <li><b>Enable MagicDNS + HTTPS</b> in the admin console.</li>
+      <li><b>tailscale serve</b> in front of the loopback app — trusted cert, tailnet-only.</li>
+    </ol>
+  </section>
+
+  <!-- VERDICT -->
+  <div class="verdict reveal d7">
+    <div class="tag">▌ the takeaway</div>
+    <p>I came in having never used Tailscale, and an afternoon later my own app was reachable from anywhere I'm logged in — with a real cert and zero public surface. The mental model that clicked: <strong>the tailnet is the auth boundary</strong>, so the app doesn't need its own front door at all.</p>
+    <p>If you're evaluating it, the fastest way to "get it" is to put something you already run behind <strong>tailscale serve</strong> and watch the padlock go green. That beats reading about it.</p>
+  </div>
+
+  <footer>
+    written while interviewing at Tailscale — yes, using the app that applied · <a href="/">← back to the blog</a> <span class="blink">_</span>
+  </footer>
+
+</div>
+</body>
+</html>
