@@ -1,0 +1,12 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Mentor figure -->
+    <circle cx="30" cy="25" r="10" fill="#0077cc"/>
+    <path d="M15 55 C15 40 45 40 45 55" fill="#0077cc"/>
+    
+    <!-- Mentee figure (smaller) -->
+    <circle cx="50" cy="30" r="8" fill="#005299"/>
+    <path d="M38 55 C38 43 62 43 62 55" fill="#005299"/>
+    
+    <!-- Connection line -->
+    <line x1="35" y1="25" x2="42" y2="30" stroke="#0077cc" stroke-width="2"/>
+</svg> 
