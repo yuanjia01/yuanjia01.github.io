@@ -1,0 +1,83 @@
+---
+
+---
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+	<title>The Hill Club - Sand Hills in Florida</title>
+	<meta name="description" CONTENT="The Hill Club New Dream Golf Michael Keiser Jr. Florida Sand Dunes Tom Doak Architecture Construction Brooksville ">
+	{% include hLeaflet.html %}
+</head>
+	
+<body>	
+	<div class="main-container" role="main">
+		<div id="map" aria-label="80 acres"></div>
+			  <div class="content" tabindex="0"  aria-label="Washington County">
+  				<H1>The Hill Club - Sand Hills in Florida</H1>
+  				<p>The Hill Club in Washington County, Northwest Florida is a new golf course with Withlacoochee State Forest surrounding the 293 acre property.  The course is core golf with no surrounding real estate.</p>
+				<p>Tom Doak has planned a compact, minimalist design to make use of the natural sand dune terrain.</p>
+				<p>Golf architect Blake Conant is assisting in design following his success at Old Barnwell.  Conant is known for his aspirational golf course <a style='font-weight:bold' target='_blank' rel='nofollow' href="https://www.dundeegolf.com/map">map</a> which includes the remote <a style='font-weight:bold' target='_blank' rel='nofollow' href="https://ootygymkhana.club/">Ooty Golf Club</a> where Doak admired the opening downhill hole.</p>
+				<p>Design Associate Angela Moser who led Doak's Pinehurst #10 build started to clear the site in late 2025 for golf course construction scheduled to start in early 2026.  Walking the course will be prioritized with a compact design of green to next tee a short distance.  Match play club focus and Alister MacKenzie design principles is the founding philosophy.  Doak's routing of the site provides flexible whiskey loop options for 6 hole or 12 hole loops for shorter rounds.</p>
+				<p>The ground and soil of the course is formed by the <a style='font-weight:bold' target='_blank' rel='nofollow' href="https://www.hernandosun.com/2024/01/21/cool-explorations-brooksville-ridge-caves/">Brooksville Ridge</a> geological formation.  Brooksville Ridge is in west-central Florida with rolling hills, elevations up to 75 meters above sea level.  The ridge stretches over 100 miles.  The formation splits into two segments at the Withlacoochee River.  The topography is notably rolling with ideal sandy soil for internal drainage from sand hills formed over millions of years.  The sand hills extend down to the golf courses at <a style='font-weight:bold' href="https://fescue.github.io/Cabot-Oaks-Golf/">Cabot Citrus Farms</a>.</p>
+  				<div id="image-container"></div>
+		    </div>
+		</div>
+	</div>
+	
+  <script>
+  	  	window.addEventListener('load', function() {
+			var img = new Image();
+			img.src = "https://fescue.github.io/images/Hope.jpg";
+			img.alt = "Old Shores";
+			img.style.width = "90%";
+			img.onload = function() {
+				document.getElementById('image-container').appendChild(img);
+			};
+		});
+	  
+        const map = L.map('map').setView([28.381370,-82.195380], 7);
+        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 30,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+	    L.CustomOverlay = L.Layer.extend({
+	            onAdd: function(map) {
+	                this._map = map;
+	                this._container = L.DomUtil.create('div', 'leaflet-custom-overlay');
+					  
+	                // Add the container to the map
+	                map._panes.overlayPane.appendChild(this._container);
+	                
+	                // Update the position of the overlay on the map
+	                this._update();
+	            },
+	        
+	            onRemove: function(map) {
+	                L.DomUtil.remove(this._container);
+	            },
+	        
+	            _update: function() {
+	                // Position the layer. This example assumes a fixed position, but you can use map latlng to position dynamically
+	                // var position = this._map.latLngToLayerPoint(this._latlng || this._map.getCenter());
+	                
+	                    var position = this._map.containerPointToLayerPoint([10, 10]); // Adjust the position as needed
+	                L.DomUtil.setPosition(this._container, position);
+	            }
+	    });
+	
+	    // Add the custom overlay to the map
+	    var myCustomOverlay = new L.CustomOverlay();
+	    myCustomOverlay.addTo(map);
+	
+	    // Add a marker to the map at the same location as the map center
+	    //var marker = L.marker([28.381370,-82.195380]).addTo(map);
+	    //marker.bindPopup("<b>New Hope Dunes</b>").openPopup();
+  </script>
+	
+	<p><a href="https://fescue.github.io/Ouli-Farms/">Tom Doak + Eric Iverson at Ouli Farms in Hawaii</a></p>
+	<p><a href="https://fescue.github.io/Wild-Spring-Dunes/">Dream Golf's Wild Spring Dunes in East Texas</a></p>
+  {% include bodyFooter.html %}
+ </body>	
+ {% include footer.html %}
+</html>

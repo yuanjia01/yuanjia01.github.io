@@ -1,0 +1,72 @@
+---
+
+---
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+	<title>Hogans Gully - New Zealand Golf Resort</title>
+	<meta name="description" CONTENT="Hogans Gully Hogan New Zealand Golf Tourism Resort Gil Hanse Greg Turner Golf Architect">
+	{% include h50.html %}
+</head>
+		
+<body>
+	<div class="main-container" role="main">
+		<div id="map" aria-label="Stonebridge"></div>
+			<div class="content" tabindex="0"  aria-label="Kipp Schulties">
+				<H1>Hogans Gully - New Zealand Golf Resort</H1>
+				<p>A $30 million golf resort is set to enhance the landscape near Arrowtown, New Zealand has been permitted and approved by <a style='font-weight:bold' href="https://www.qldc.govt.nz/media/t2gbgyz2/pdp-chapter-48-hogans-gully-resort-zone-jun-2023.pdf">Queensland Lakes District Council</a>.  Development of the 300+ acres Hogan’s Gully property will feature an 18 hole golf course designed by <a style='font-weight:bold' href='https://www.hansegolfdesign.com/' target='_blank' rel='nofollow'>Hanse Golf Design</a> and <a style='font-weight:bold' href='http://www.gregturnergolf.com/' target='_blank' rel='nofollow'>Greg Turner</a>.  This will be Gil Hanse's first golf course design in New Zealand.</p>
+				<p><a style='font-weight:bold' href='https://www.linkedin.com/in/ben-taylor-81ab942a5/?originalSubdomain=nz' target='_blank' rel='nofollow'>Ben Taylor</a> is the grow-in superintendent.  Taylor was previously the course manager/superintendent at The Hills.</p>
+				<p>Additionally, 96 homes have been permitted.  The resort aligns with the Queenstown Lakes District Council's Proposed District Plan aiming to provide desirable international golf tourist visitor amenities while respecting the surrounding rural context.</p>
+				<p>The 158 hectare resort plans to prioritize ecological planting and protection programs to enhance the countryside.  The resort will include a walking/cycling trail apart from the golf course linking the property to the wider Wakatipu Trails network.  Neighboring golf courses in Arrowtown are Millbrook Resort, The Hills, and Jack’s Point.</p>
+				<p>Golf architect Greg Turner has been working alongside Queenstown's Baxter Design Group for landscape design and site plan.  The clubhouse will be designed by Auckland architect Andrew Patterson.  The site’s terrain is a unique, rocky landscape rich in natural features like schist.  Project consultant is Ryan Brandeburg.  Brandeburg is the executive director of Golf Tourism New Zealand and brings his past experience as director of golf at North Island courses Kauri Cliffs and Cape Kidnappers to this ambitious project.</p>
+				<p><a style='font-weight:bold' href='https://nzpod.co.nz/podcast/the-yardage-book-podcast/greg-turner-discusses-his-career-on-and-off-the-co' target='_blank' rel='nofollow'>Yardage Book</a> podcast interviewed golf architect Greg Turner discussing the ongoing project's progress with a likely opening in 2028.  Turner has also designed and built nearby <a style='font-weight:bold' href='https://www.gibbstonvalley.com/' target='_blank' rel='nofollow'>Gibbston</a> 9 hole resort project.</p>
+			</div>
+	</div>
+
+    <script>
+            const map = L.map('map').setView([-44.9639062,168.8317387], 8);
+            const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 30,
+				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			}).addTo(map);
+
+			L.CustomOverlay = L.Layer.extend({
+	            onAdd: function(map) {
+					this._map = map;
+					this._container = L.DomUtil.create('div', 'leaflet-custom-overlay');
+			
+	                // Add the container to the map
+	                map._panes.overlayPane.appendChild(this._container);
+	                
+	                // Update the position of the overlay on the map
+	                this._update();
+	            },
+	        
+	            onRemove: function(map) {
+	                L.DomUtil.remove(this._container);
+	            },
+	        
+	            _update: function() {
+	                // Position the layer. This example assumes a fixed position, but you can use map latlng to position dynamically
+	                // var position = this._map.latLngToLayerPoint(this._latlng || this._map.getCenter());
+	                
+	                var position = this._map.containerPointToLayerPoint([10, 10]); // Adjust the position as needed
+	                L.DomUtil.setPosition(this._container, position);
+	            }
+	        });
+	
+	        // Add the custom overlay to the map
+	        var myCustomOverlay = new L.CustomOverlay();
+	        myCustomOverlay.addTo(map);
+	
+	        // Add a marker to the map at the same location as the map center
+	        var marker = L.marker([-44.9639062,168.8317387]).addTo(map);
+
+	        marker.bindPopup("<b>Hogan Gully</b><br>Queenstown, New Zealand</br>").openPopup();
+	</script>
+	<p><a href="https://fescue.github.io/High-Grove/">High Grove - Hanse Golf Design</a></p>
+	<p><a href="https://fescue.github.io/Yale-Golf-Course/">Yale Restoration - Hanse Golf Design</a></p>
+	{% include bodyFooter.html %}
+ </body>	
+ {% include footer.html %}
+</html>
