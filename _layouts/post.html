@@ -2,16 +2,23 @@
 layout: default
 ---
 
-<article class="post">
-  <h1>{{ page.title }}</h1>
+<article class="post post-article">
+  <header class="article-header">
+    <a href="{{ site.baseurl }}/" class="back-link"><span aria-hidden="true">←</span> 返回林间</a>
+    <div class="article-kicker">FOREST NOTE · {{ page.date | date: "%Y" }}</div>
+    <h1>{{ page.title }}</h1>
+    <time class="article-date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y 年 %m 月 %d 日" }}</time>
+  </header>
 
   <div class="entry">
     {{ content }}
   </div>
 
-  <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
-  </div>
+  <footer class="article-footer">
+    <span aria-hidden="true">❦</span>
+    <p>谢谢你读到这里。</p>
+    <a href="{{ site.baseurl }}/">继续看看其他记录</a>
+  </footer>
 
   {% include disqus.html %}
 </article>

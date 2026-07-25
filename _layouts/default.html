@@ -1,51 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
   <head>
     <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
 
     {% include meta.html %}
 
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
-
-    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
   </head>
 
-  <body>
+  <body class="page-{{ page.page_class | default: page.layout }}">
+    <a class="skip-link" href="#main">跳到正文</a>
+    <div class="forest-glow forest-glow-one" aria-hidden="true"></div>
+    <div class="forest-glow forest-glow-two" aria-hidden="true"></div>
+
     <div class="wrapper-masthead">
       <div class="container">
-        <header class="masthead clearfix">
-          <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" /></a>
+        <header class="masthead">
+          <a href="{{ site.baseurl }}/" class="site-brand" aria-label="{{ site.name }} 首页">
+            <span class="site-avatar">
+              <img src="{{ site.avatar }}" alt="Gia 的头像" />
+            </span>
+            <span class="site-info">
+              <span class="site-name">{{ site.name }}</span>
+              <span class="site-description">{{ site.description }}</span>
+            </span>
+          </a>
 
-          <div class="site-info">
-            <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
-            <p class="site-description">{{ site.description }}</p>
-          </div>
-
-          <nav>
-            <a href="{{ site.baseurl }}/">Blog</a>
-            <a href="{{ site.baseurl }}/about">About</a>
+          <nav aria-label="主导航">
+            <a href="{{ site.baseurl }}/"{% if page.url == "/" %} class="is-active"{% endif %}>首页</a>
+            <a href="{{ site.baseurl }}/about"{% if page.url == "/about/" %} class="is-active"{% endif %}>关于</a>
           </nav>
         </header>
       </div>
     </div>
 
-    <div id="main" role="main" class="container">
+    <main id="main" class="container site-main">
       {{ content }}
-    </div>
+    </main>
 
     <div class="wrapper-footer">
       <div class="container">
         <footer class="footer">
-          {% include svg-icons.html %}
+          <div class="footer-leaf" aria-hidden="true">❦</div>
+          <p>愿每一次停留，都像走进一片安静的森林。</p>
+          <div class="footer-links">{% include svg-icons.html %}</div>
+          <p class="footer-copyright">© {{ site.time | date: "%Y" }} {{ site.name }}</p>
         </footer>
       </div>
     </div>
 
     {% include analytics.html %}
+    <script src="{{ site.baseurl }}/assets/js/site.js" defer></script>
   </body>
 </html>

@@ -1,18 +1,46 @@
 ---
 layout: default
+page_class: home
 ---
 
-<div class="posts">
+<section class="home-hero" aria-labelledby="home-title">
+  <div class="hero-kicker"><span aria-hidden="true">✦</span> WELCOME TO MY LITTLE FOREST</div>
+  <h1 id="home-title">你好，欢迎来到<br><em>Gia's Blog</em></h1>
+  <p>收集日常里的微小光亮，也记录学习、生活与不断生长的自己。</p>
+  <a class="hero-link" href="#recent-posts">沿着小径读下去 <span aria-hidden="true">↓</span></a>
+  <div class="hero-botanical" aria-hidden="true">
+    <span class="stem"></span>
+    <span class="leaf leaf-one"></span>
+    <span class="leaf leaf-two"></span>
+    <span class="leaf leaf-three"></span>
+  </div>
+</section>
+
+<section class="posts-section" id="recent-posts" aria-labelledby="recent-title">
+  <div class="section-heading">
+    <div>
+      <span class="section-eyebrow">RECENT NOTES</span>
+      <h2 id="recent-title">近期记录</h2>
+    </div>
+    <span class="section-count">{{ site.posts | size }} 篇</span>
+  </div>
+
+  <div class="posts">
   {% for post in site.posts %}
-    <article class="post">
-
-      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
-
-      <div class="entry">
-        {{ post.excerpt }}
-      </div>
-
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">阅读全文</a>
+    <article class="post-card">
+      <a href="{{ site.baseurl }}{{ post.url }}" class="post-card-link" aria-label="阅读《{{ post.title }}》">
+        <div class="post-card-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y · %m · %d" }}</time>
+          <span class="post-card-mark" aria-hidden="true">↗</span>
+        </div>
+        <h3>{{ post.title }}</h3>
+        <div class="post-card-excerpt">
+          {% assign post_text = post.content | strip_html | strip_newlines %}
+          {{ post_text | truncate: 150 }}
+        </div>
+        <span class="read-more">阅读全文 <span aria-hidden="true">→</span></span>
+      </a>
     </article>
   {% endfor %}
-</div>
+  </div>
+</section>
