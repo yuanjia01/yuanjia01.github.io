@@ -85,7 +85,7 @@ Token 不一定对应一个汉字或一个完整单词。它可能是一个字�
 
 ![压缩是一次任务交接](/images/article-content/context-management/06-compaction-handoff.png)
 
-# 05　常见 Harness 压缩实现
+## 05　常见 Harness 压缩实现
 
 Agent 产品通常会自动压缩，但方式可能并不相同。本文基于 DeepSeek Harness 和 Codex 公开的源码，对比二者的压缩实现路径。两者都在为长任务腾出空间，但关键步骤的先后不同。
 
